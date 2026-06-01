@@ -1,0 +1,267 @@
+---
+title: "Einen Konversations-Sprach-KI-Agenten mit Avaluma bauen"
+sidebarTitle: "Konversations-Agent"
+description: "Verbinde eine vollständige STT → LLM → TTS-Sprach-Pipeline mit einem Avaluma-Avatar — mit LiveKit Inference, AssemblyAI, GPT-4.1-mini und Cartesia Sonic-3."
+---
+
+`agent-1` ist der Standard-Konversations-Avatar-Agent. Er verbindet eine komplette Sprach-KI-Pipeline — Speech-to-Text, Large Language Model und Text-to-Speech — direkt mit einem Avaluma-Avatar über LiveKit Inference. Spricht ein Nutzer, läuft das Audio durch AssemblyAI zur Transkription, OpenAI GPT-4.1-mini für eine Antwort und Cartesia Sonic-3 zur Synthese; das finale Audio wird vom Avatar-Server in einen Live-Video-Stream gerendert.
+
+## Pipeline
+
+```
+Mikrofon → STT → LLM → TTS → Avaluma-Avatar → Video-Stream
+           │                       │
+     AssemblyAI            Avatar-Server
+     (universal-          (animiert .hvia-
+      streaming)            Avatar-Datei)
+             LLM: OpenAI GPT-4.1-mini
+             TTS: Cartesia Sonic-3
+```
+
+## Setup
+
+<Steps>
+  <Step title="Plugin installieren">
+    Das Paket `avaluma-livekit-plugin` stellt die `AvatarSession`-Klasse bereit, die die Agent-Pipeline mit deinem Avatar verbindet. Die `pyproject.toml` deklariert es bereits als Abhängigkeit — bei Verwendung von Docker ist kein zusätzlicher Installationsschritt nötig:
+
+    ```toml pyproject.toml
+    dependencies = [
+        "livekit",
+        "livekit-agents[silero,turn-detector]~=1.2",
+        "livekit-plugins-noise-cancellation~=0.2",
+        "python-dotenv",
+        "avaluma-livekit-plugin @ git+https://github.com/avaluma-ai/avaluma-livekit-plugin.git"
+    ]
+    ```
+  </Step>
+
+  <Step title="Zugangsdaten konfigurieren">
+    Kopiere `.env.example` nach `.env.local` und trage deine Zugangsdaten ein:
+
+    ```bash
+    cp .env.example .env.local
+    ```
+
+    ```env .env.local
+    AVALUMA_LICENSE_KEY="your-license-key"
+    AVATAR_SERVER_URL="https://your-avatar-server.com"  # oder https://api.avaluma.ai
+
+    LIVEKIT_URL="wss://your-project.livekit.cloud"
+    LIVEKIT_API_KEY="your-api-key"
+    LIVEKIT_API_SECRET="your-api-secret"
+    ```
+  </Step>
+
+  <Step title="Avatar-ID setzen">
+    Öffne `agents/1-agent-with-livekit-inference/agent-1.py` und setze `avatar_id` auf den Namen deiner `.hvia`-Datei ohne Endung:
+
+    ```python agent-1.py
+    avatar_id = "your-avatar-id"  # entspricht your-avatar-id.hvia
+    ```
+  </Step>
+
+  <Step title="Agent starten">
+    Starte `livekit-agent-1` mit Docker Compose:
+
+    ```bash
+    docker compose up livekit-agent-1 -d
+    ```
+
+    Der Container baut aus dem Projekt-Root, lädt `.env.local` und mountet `agent-1.py` im Container unter `/app/src/agent.py`.
+  </Step>
+</Steps>
+
+## Vollständiger Agent-Code
+
+Dies ist der komplette Quellcode von `agent-1.py`:
+
+```python agent-1.py
+import os
+
+# highlight-next-line
+from avaluma_livekit_plugin import AvatarSession
+from dotenv import load_dotenv
+from livekit.agents import (
+    Agent,
+    AgentSession,
+    JobContext,
+    JobProcess,
+    RoomInputOptions,
+    WorkerOptions,
+    cli,
+    inference,
+)
+from livekit.plugins import noise_cancellation, silero
+from livekit.plugins.turn_detector.multilingual import MultilingualModel
+
+load_dotenv(".env.local")
+agent_name = "agent-1"
+avatar_id = "260218-Avaluma_Avatar_Kadda_v5"
+license_key = os.getenv("AVALUMA_LICENSE_KEY", "")
+avatar_server_url = os.getenv("AVATAR_SERVER_URL", "https://api.avaluma.ai")
+
+
+class Assistant(Agent):
+    def __init__(self) -> None:
+        super().__init__(
+            instructions="""You are a helpful virtual AI assistant. The user is interacting with you via voice, even if you perceive the conversation as text.
+            You eagerly assist users with their questions by providing information from your extensive knowledge.
+            Your responses are concise, to the point, and without any complex formatting or punctuation including emojis, asterisks, or other symbols.
+            You are curious, friendly, and have a sense of humor.""",
+        )
+
+
+async def entrypoint(ctx: JobContext):
+    ctx.log_context_fields = {
+        "room": ctx.room.name,
+    }
+
+    session = AgentSession(
+        stt=inference.STT(model="assemblyai/universal-streaming", language="en"),
+        llm=inference.LLM(model="openai/gpt-4.1-mini"),
+        tts=inference.TTS(
+            model="cartesia/sonic-3", voice="9626c31c-bec5-4cca-baa8-f8ba9e84c8bc"
+        ),
+        turn_detection=MultilingualModel(),
+        vad=ctx.proc.userdata["vad"],
+        preemptive_generation=True,
+    )
+
+    if license_key is None:
+        raise ValueError("AVALUMA_LICENSE_KEY is not set")
+
+    # highlight-start
+    avatar = AvatarSession(
+        license_key=license_key,  # Your License Key
+        avatar_id=avatar_id,  # Avatar identifier (Name of .hvia file)
+        avatar_server_url=avatar_server_url,
+    )
+    # Start the avatar and wait for it to join
+    await avatar.start(agent_session=session, room=ctx.room)
+    # highlight-end
+
+    await session.start(
+        agent=Assistant(),
+        room=ctx.room,
+        room_input_options=RoomInputOptions(
+            noise_cancellation=noise_cancellation.BVC(),
+        ),
+    )
+    await ctx.connect()
+
+
+def prewarm(proc: JobProcess):
+    proc.userdata["vad"] = silero.VAD.load()
+
+
+if __name__ == "__main__":
+    cli.run_app(
+        WorkerOptions(
+            entrypoint,
+            prewarm_fnc=prewarm,
+            agent_name=agent_name,
+        )
+    )
+```
+
+## Wichtige Komponenten erklärt
+
+### AvatarSession
+
+`AvatarSession` ist der Kern der Avaluma-Integration. Du instanziierst sie mit deinem Lizenzschlüssel, der Avatar-ID (passend zum `.hvia`-Dateinamen) und der Avatar-Server-URL:
+
+```python
+avatar = AvatarSession(
+    license_key=license_key,
+    avatar_id=avatar_id,
+    avatar_server_url=avatar_server_url,
+)
+await avatar.start(agent_session=session, room=ctx.room)
+```
+
+Der Aufruf `await avatar.start()` registriert den Avatar als Teilnehmer im LiveKit-Raum und verbindet ihn mit der `AgentSession`, sodass TTS-Audio-Frames zum Rendern an den Avatar-Server weitergeleitet werden. Der Aufruf blockiert, bis der Avatar-Teilnehmer dem Raum vollständig beigetreten ist.
+
+### AgentSession mit LiveKit Inference
+
+Die `AgentSession` konfiguriert die vollständige Sprach-Pipeline über die verwalteten Inference-Endpunkte von LiveKit — für STT, LLM oder TTS sind keine separaten API-Keys erforderlich:
+
+| Parameter | Wert | Zweck |
+|---|---|---|
+| `stt` | `assemblyai/universal-streaming` | Echtzeit-Speech-to-Text |
+| `llm` | `openai/gpt-4.1-mini` | Sprachmodell für Antworten |
+| `tts` | `cartesia/sonic-3` | Text-to-Speech-Synthese |
+| `turn_detection` | `MultilingualModel()` | Erkennt das Sprechende über Sprachen hinweg |
+| `vad` | `silero.VAD` | Sprachaktivitätserkennung (vorgewärmt) |
+| `preemptive_generation` | `True` | Startet die LLM-Generierung vor Abschluss der STT für geringere Latenz |
+
+### Geräuschunterdrückung
+
+Die Unterdrückung von Hintergrundgeräuschen wird auf Raum-Eingabeebene mit `noise_cancellation.BVC()` angewendet:
+
+```python
+room_input_options=RoomInputOptions(
+    noise_cancellation=noise_cancellation.BVC(),
+),
+```
+
+BVC (Background Voice Cancellation) filtert Umgebungsgeräusche aus dem Mikrofon-Feed, bevor das Audio das STT-Modell erreicht, und verbessert so die Transkriptionsgenauigkeit in lauten Umgebungen.
+
+### Prewarm-Funktion
+
+Die `prewarm`-Funktion lädt das Silero-VAD-Modell in den Speicher des Worker-Prozesses, bevor der erste Job eintrifft, und eliminiert so Kaltstart-Latenz:
+
+```python
+def prewarm(proc: JobProcess):
+    proc.userdata["vad"] = silero.VAD.load()
+```
+
+## Einen neuen Agent hinzufügen
+
+Folge diesen Schritten, um einen zusätzlichen Agent neben `agent-1` zu erstellen:
+
+<Steps>
+  <Step title="Neues Agent-Verzeichnis anlegen">
+    Füge ein Verzeichnis unter `agents/` hinzu und lege dein Agent-Skript hinein:
+
+    ```
+    agents/
+    └── 3-my-custom-agent/
+        └── agent-3.py
+    ```
+  </Step>
+
+  <Step title="Eindeutigen Agent-Namen setzen">
+    Setze in deinem neuen Skript `agent_name` auf einen Wert, der innerhalb deines LiveKit-Projekts eindeutig ist:
+
+    ```python agent-3.py
+    agent_name = "agent-3"
+    ```
+  </Step>
+
+  <Step title="Service zur docker-compose.yaml hinzufügen">
+    Mounte dein Skript in den Container und setze `AGENT_NAME` passend zu `agent_name` in deinem Skript:
+
+    ```yaml docker-compose.yaml
+    livekit-agent-3:
+      build: .
+      restart: unless-stopped
+      env_file:
+        - .env.local
+      environment:
+        - AGENT_NAME=agent-3
+      volumes:
+        - livekit_plugin_cache:/root/.cache
+        - ./agents/3-my-custom-agent/agent-3.py:/app/src/agent.py
+    ```
+  </Step>
+
+  <Step title="Neuen Agent starten">
+    ```bash
+    docker compose up livekit-agent-3 -d
+    ```
+  </Step>
+</Steps>
+
+<Warning>
+  Jeder Agent-Service muss einen eindeutigen `AGENT_NAME` haben. Mehrere Agenten mit demselben Namen im selben LiveKit-Projekt zu deployen führt zu Routing-Konflikten — beide Worker konkurrieren um dieselben Jobs.
+</Warning>

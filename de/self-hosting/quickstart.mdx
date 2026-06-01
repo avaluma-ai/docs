@@ -1,0 +1,158 @@
+---
+title: "Erste Schritte mit Avaluma-AI-Avataren (Self-Hosting)"
+sidebarTitle: "Schnellstart"
+description: "Deploye Avatar-Server und LiveKit-Agent mit Docker und verbinde einen Test-Client, um deinen fotorealistischen KI-Avatar in unter 15 Minuten live zu sehen."
+---
+
+Am Ende dieser Anleitung rendert dein Avaluma-Avatar-Server deine `.hvia`-Avatar-Datei auf einer GPU, ein LiveKit-Agent betreibt eine vollständige Sprach-KI-Pipeline (STT → LLM → TTS), und ein verbundener Test-Client lässt dich in Echtzeit mit deinem Avatar sprechen.
+
+## Voraussetzungen
+
+<Note>
+  Stelle vor dem Start sicher, dass du Folgendes hast:
+
+  - **Docker & Docker Compose** auf deinem Server installiert
+  - Eine **NVIDIA-GPU** (CUDA 12, min. 6 GB VRAM) mit installiertem **NVIDIA Container Toolkit**
+  - Einen **Avaluma-Lizenzschlüssel** und mindestens eine **`.hvia`-Avatar-Datei**
+  - Ein **LiveKit-Konto** (Cloud oder selbst gehostet) mit API-Key und Secret
+</Note>
+
+<Steps>
+
+  <Step title="Avatar-Server deployen">
+
+    Klone oder lade das Beispielverzeichnis `avatar-server` herunter und lege deine `.hvia`-Avatar-Dateien dort ab, wo der Container sie findet:
+
+    ```bash
+    mkdir -p avatar-server/assets/avatars
+    cp /pfad/zu/deinem-avatar.hvia avatar-server/assets/avatars/
+    ```
+
+    Öffne `avatar-server/docker-compose.yaml` und setze ein sicheres Passwort für die Utility-API:
+
+    ```yaml
+    environment:
+      - API_SERVER_HOST=api.avaluma.ai   # öffentliche IP oder Domain dieses Servers
+      - API_UTILS_PWD=CHANGE_THIS        # durch ein starkes Passwort ersetzen
+    ```
+
+    Starte den Server:
+
+    ```bash
+    docker compose up -d
+    ```
+
+    Der Avatar-Server ist nun unter **http://localhost:8080** erreichbar. Füge für die Produktion den optionalen Caddy-Reverse-Proxy aus `avatar-server/reverse_proxy/` hinzu, um TLS automatisch zu terminieren.
+
+    <Tip>
+      Der Container nutzt `pull_policy: always`, ein Neustart zieht also automatisch das neueste Avaluma-Image.
+    </Tip>
+
+  </Step>
+
+  <Step title="LiveKit-Agent konfigurieren">
+
+    Klone oder lade das Beispielverzeichnis `livekit-agent` herunter. Kopiere die Umgebungsvorlage:
+
+    ```bash
+    cp .env.example .env.local
+    ```
+
+    Öffne `.env.local` und trage deine Zugangsdaten ein:
+
+    ```env
+    AVALUMA_LICENSE_KEY=""      # Dein Avaluma-Lizenzschlüssel
+    AVATAR_SERVER_URL="https://your-avatar-server.com"
+    # Avaluma Hosted: https://api.avaluma.ai
+
+    LIVEKIT_URL=""              # wss://your-livekit-instance.livekit.cloud
+    LIVEKIT_API_KEY=""          # API-Key aus deinem LiveKit-Projekt
+    LIVEKIT_API_SECRET=""       # API-Secret aus deinem LiveKit-Projekt
+    ```
+
+    <Note>
+      Wenn du den verwalteten Avatar-Server von Avaluma nutzt, setze `AVATAR_SERVER_URL=https://api.avaluma.ai`. Hast du in Schritt 1 deinen eigenen Server deployt, verwende dessen öffentliche URL.
+    </Note>
+
+    Öffne als Nächstes `agents/1-agent-with-livekit-inference/agent-1.py` und setze `avatar_id` auf den Dateinamen deiner `.hvia`-Datei **ohne** die Endung `.hvia`:
+
+    ```python
+    avatar_id = "your-avatar-id"   # z. B. "studio-avatar-v2" für studio-avatar-v2.hvia
+    ```
+
+    Der `AvatarSession`-Block in dieser Datei verbindet die Sprach-Pipeline mit dem Avatar-Server:
+
+    ```python
+    from avaluma_livekit_plugin import AvatarSession
+
+    avatar = AvatarSession(
+        license_key=license_key,       # Dein Lizenzschlüssel
+        avatar_id=avatar_id,           # Avatar-Bezeichner (Name der .hvia-Datei)
+        avatar_server_url=avatar_server_url,
+    )
+    await avatar.start(agent_session=session, room=ctx.room)
+    ```
+
+    Du musst diesen Block nicht ändern — er liest die Werte aus `.env.local` und `avatar_id` automatisch.
+
+  </Step>
+
+  <Step title="Agent starten">
+
+    Starte nur den Konversations-Agent (`agent-1`):
+
+    ```bash
+    docker compose up livekit-agent-1 -d
+    ```
+
+    Um beide Beispiel-Agenten auf einmal zu starten, lasse den Servicenamen weg:
+
+    ```bash
+    docker compose up -d
+    ```
+
+    <Tip>
+      Jeder Agent muss in `docker-compose.yaml` einen eindeutigen `AGENT_NAME` haben, wenn du mehrere Agenten im selben LiveKit-Projekt deployst.
+    </Tip>
+
+  </Step>
+
+  <Step title="Verbindung testen">
+
+    Mit allen drei laufenden Services — Avatar-Server, LiveKit-Server und Agent — verbindest du einen Client mit deinem LiveKit-Raum.
+
+    <Tabs>
+      <Tab title="Avaluma Test-Client">
+        Öffne den [Avaluma Test-Client](https://avaluma.ai/test-client) im Browser. Er funktioniert mit jedem LiveKit-Setup — selbst gehostet oder Cloud. Gib deine LiveKit-Server-URL und Zugangsdaten ein und klicke auf **Connect**, um mit deinem Avatar zu sprechen.
+      </Tab>
+      <Tab title="LiveKit Agent Playground">
+        Öffne das [LiveKit Agent Playground](https://agents-playground.livekit.io). Wähle dein LiveKit-Cloud-Projekt oder gib deine Server-Zugangsdaten ein, trage `agent-1` als **Agent Name** ein und klicke auf **Connect**.
+
+        <Warning>
+          Wenn der Agent nach dem Ändern des Agent-Namens nicht reagiert, lade die Seite neu und verbinde dich erneut.
+        </Warning>
+      </Tab>
+    </Tabs>
+
+    Dein Avatar sollte im Video-Track erscheinen und in Echtzeit auf deine Stimme reagieren.
+
+  </Step>
+
+</Steps>
+
+## Nächste Schritte
+
+<CardGroup cols={2}>
+  <Card title="Architektur" icon="sitemap" href="/de/self-hosting/architecture">
+    Erfahre, wie Avatar-Server und LiveKit-Agent unter der Haube zusammenspielen.
+  </Card>
+  <Card title="Avatar-Server" icon="server" href="/de/self-hosting/avatar-server/overview">
+    Konfiguriere GPU-Ressourcen, betreibe mehrere Avatare gleichzeitig und richte HTTPS ein.
+  </Card>
+  <Card title="LiveKit-Agent" icon="microphone" href="/de/self-hosting/livekit-agent/overview">
+    Tausche verschiedene STT-, LLM- und TTS-Modelle aus und füge eigene Agent-Logik hinzu.
+  </Card>
+  <Card title="Externes Audio" icon="waveform" href="/de/self-hosting/livekit-agent/external-audio">
+    Streame Audio von einem beliebigen externen Dienst direkt zum Avatar — ohne AgentSession.
+  </Card>
+</CardGroup>

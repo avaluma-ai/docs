@@ -1,0 +1,100 @@
+---
+title: "Embed an Avaluma Agent on Your Website"
+sidebarTitle: "Embedding"
+description: "Embed a shared Avaluma agent in any website with an iframe, and customize its behavior and appearance using query parameters."
+---
+
+Every shared agent can be embedded as an `<iframe>` on any website. The avatar then connects directly from your visitor's browser to the agent — no backend required on your side.
+
+## Prerequisites
+
+<Steps>
+  <Step title="Enable embedding">
+    Open the agent in the [dashboard](https://avaluma.ai) and turn on **Allow embedding**. Only shared agents can be embedded.
+  </Step>
+  <Step title="Allow your origin">
+    Under **Allowed origins**, add the address(es) of the page(s) that may run the avatar — for example `https://www.your-domain.com`.
+
+    <Warning>
+      If the embedding page's origin is **not** on the list, the browser blocks the iframe (via `frame-ancestors`) and all [messaging](/en/agents/messaging) commands are rejected. Enter the exact origin (scheme + host + port), without a path.
+    </Warning>
+  </Step>
+  <Step title="Copy the snippet">
+    Copy the ready-made embed code from the dashboard, or build it yourself as described below.
+  </Step>
+</Steps>
+
+## Quickstart
+
+```html
+<iframe
+  src="https://avaluma.ai/agent/AGENT_ID/embed"
+  allow="microphone; autoplay"
+  style="width:100%;height:600px;border:0"
+></iframe>
+```
+
+Replace `AGENT_ID` with your agent's UUID (visible in the dashboard).
+
+<Note>
+  The `allow="microphone; autoplay"` attribute is required: without `microphone` the visitor cannot speak, and without `autoplay` audio playback will not start automatically in some browsers (the "Enable sound" overlay takes over instead).
+</Note>
+
+## Fullscreen variant
+
+For a page the avatar should fill completely:
+
+```html
+<iframe
+  src="https://avaluma.ai/agent/AGENT_ID/embed?mode=fullscreen"
+  allow="microphone; autoplay"
+  allowfullscreen
+  style="width:100%;height:100vh;border:0"
+></iframe>
+```
+
+## Query parameters
+
+All options are appended as query parameters to the `/embed` URL. Invalid values fall back to their defaults automatically.
+
+<ParamField query="mode" type="string" default="inline">
+  Layout. `inline` fills the iframe container, `fullscreen` fills the entire viewport.
+</ParamField>
+
+<ParamField query="mic" type="string" default="open">
+  Microphone mode. `open` keeps the microphone permanently open, `ptt` enables push-to-talk (hold to speak).
+</ParamField>
+
+<ParamField query="border" type="string" default="000000">
+  Background / letterbox color as a 6-digit hex value **without** `#` (e.g. `f5f5f5`).
+</ParamField>
+
+<ParamField query="lang" type="string" default="en">
+  UI language of the controls. `de` or `en`.
+</ParamField>
+
+<ParamField query="hideTextChat" type="boolean" default="false">
+  With `true` the text-chat input is hidden (voice/avatar-only mode).
+</ParamField>
+
+<ParamField query="endCall" type="boolean" default="false">
+  With `true` the "Hang up" button is shown.
+</ParamField>
+
+### Example with multiple options
+
+```html
+<iframe
+  src="https://avaluma.ai/agent/AGENT_ID/embed?mic=ptt&border=f5f5f5&lang=en&hideTextChat=true"
+  allow="microphone; autoplay"
+  style="width:100%;height:600px;border:0"
+></iframe>
+```
+
+## Next
+
+<CardGroup cols={2}>
+  <Card title="Messaging" icon="messages" href="/en/agents/messaging">
+    Control the avatar programmatically from your page and receive events (connection, agent responses) via `postMessage`.
+  </Card>
+</CardGroup>

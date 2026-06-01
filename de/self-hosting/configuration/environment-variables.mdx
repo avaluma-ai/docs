@@ -1,0 +1,70 @@
+---
+title: "Avaluma AI Umgebungsvariablen — Vollständige Referenz"
+sidebarTitle: "Umgebungsvariablen"
+description: "Eine vollständige Referenz jeder Umgebungsvariable, die der Avaluma-AI-Avatar-Server und der LiveKit-Agent verwenden, inklusive Pflichtfeldern und Standardwerten."
+---
+
+Avaluma AI nutzt Umgebungsvariablen, um Zugangsdaten und Service-Endpunkte für Avatar-Server und LiveKit-Agent zu konfigurieren. Setze diese Variablen, bevor du einen der Dienste startest — falsch konfigurierte oder fehlende Werte sind die häufigste Ursache für Startfehler.
+
+## LiveKit-Agent-Variablen
+
+Der LiveKit-Agent liest seine Konfiguration beim Start aus `.env.local`. Alle als **Erforderlich** markierten Variablen müssen vorhanden sein, sonst beendet sich der Agent mit einem Fehler.
+
+| Variable | Erforderlich | Standard | Beschreibung |
+|---|---|---|---|
+| `AVALUMA_LICENSE_KEY` | Ja | — | Dein Avaluma-Lizenzschlüssel von [avaluma.ai](https://avaluma.ai). |
+| `AVATAR_SERVER_URL` | Ja | `https://api.avaluma.ai` | URL des laufenden Avatar-Servers. Bei Self-Hosting durch die URL deines eigenen Servers ersetzen. |
+| `LIVEKIT_URL` | Ja | — | WebSocket-URL deines LiveKit-Servers (z. B. `wss://your-project.livekit.cloud`). |
+| `LIVEKIT_API_KEY` | Ja | — | API-Key für dein LiveKit-Projekt. |
+| `LIVEKIT_API_SECRET` | Ja | — | API-Secret für dein LiveKit-Projekt. |
+| `AGENT_NAME` | Nein | `agent-1` | Eindeutiger Name für diesen Agent-Worker. Setze einen unterschiedlichen Wert je Agent, wenn du mehrere Agenten im selben LiveKit-Projekt betreibst. |
+
+## Avatar-Server-Variablen
+
+Der Avatar-Server liest seine Konfiguration aus dem `environment`-Block in `docker-compose.yaml`. Setze diese Werte, bevor du `docker compose up` ausführst.
+
+| Variable | Erforderlich | Standard | Beschreibung |
+|---|---|---|---|
+| `API_UTILS_PWD` | Ja | — | Passwort für die Utility-API des Avatar-Servers. Wähle einen starken, eindeutigen Wert und halte ihn geheim. |
+| `API_SERVER_HOST` | Nein | — | Öffentliche IP-Adresse oder Domainname des Servers. Der Avatar-Server nutzt diesen Wert, um seine eigene Adresse an verbundene Agenten zu melden. Erforderlich bei Verwendung eines Reverse-Proxys oder beim Exponieren auf einer öffentlichen URL. |
+
+## Variablen setzen
+
+### LiveKit-Agent — `.env.local`
+
+Kopiere `.env.example` nach `.env.local` und trage deine Zugangsdaten ein:
+
+```bash
+cp .env.example .env.local
+```
+
+Bearbeite anschließend `.env.local` mit deinen echten Werten:
+
+```env .env.local
+AVALUMA_LICENSE_KEY="your-license-key"
+AVATAR_SERVER_URL="https://your-avatar-server.com"  # oder https://api.avaluma.ai
+
+LIVEKIT_URL="wss://your-project.livekit.cloud"
+LIVEKIT_API_KEY="your-api-key"
+LIVEKIT_API_SECRET="your-api-secret"
+```
+
+<Note>
+  Der Agent lädt gezielt `.env.local` über `load_dotenv(".env.local")`. Eine Datei namens `.env` wird nicht automatisch berücksichtigt — verwende den richtigen Dateinamen.
+</Note>
+
+### Avatar-Server — `docker-compose.yaml`
+
+Setze die Avatar-Server-Variablen direkt im `environment`-Block von `docker-compose.yaml`:
+
+```yaml docker-compose.yaml
+environment:
+  - API_SERVER_HOST=api.yourdomain.com
+  - API_UTILS_PWD=CHANGE_THIS
+```
+
+Ersetze `api.yourdomain.com` durch die tatsächliche öffentliche Domain oder IP deines Servers und `CHANGE_THIS` durch ein starkes Passwort, bevor du den Server startest.
+
+<Warning>
+  Committe niemals `.env.local` und gib `AVALUMA_LICENSE_KEY`, `LIVEKIT_API_SECRET` oder `API_UTILS_PWD` nicht in Versionskontrolle oder öffentlichen Repositories preis. Füge `.env.local` direkt nach dem Anlegen zu deiner `.gitignore` hinzu.
+</Warning>

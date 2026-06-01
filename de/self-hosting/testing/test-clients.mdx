@@ -1,0 +1,58 @@
+---
+title: "Einen Test-Client mit deinem Avaluma-AI-Avatar-Agenten verbinden"
+sidebarTitle: "Test-Clients"
+description: "Nutze den Avaluma Test-Client oder das LiveKit Agent Playground, um deine Avatar-Pipeline Ende-zu-Ende zu prüfen — wähle den richtigen Client für dein LiveKit-Setup."
+---
+
+Sobald Avatar-Server und LiveKit-Agent laufen, nutze einen von zwei Test-Clients, um die gesamte Pipeline Ende-zu-Ende zu prüfen. Beide Clients öffnen einen LiveKit-Raum, verbinden sich mit deinem Agent und zeigen den Avatar-Video-Stream, sodass du bestätigen kannst, dass Audio, Video und Agent-Logik korrekt funktionieren.
+
+<CardGroup cols={2}>
+  <Card title="Avaluma Test-Client" icon="flask" href="https://avaluma.ai/test-client">
+    Funktioniert mit jedem LiveKit-Setup — Cloud oder selbst gehostet. Gib deine LiveKit-Zugangsdaten direkt im Client ein und verbinde dich sofort.
+  </Card>
+  <Card title="LiveKit Agent Playground" icon="play" href="https://agents-playground.livekit.io">
+    Für LiveKit-Cloud-Projekte. Wähle dein Projekt und gib deinen Agent-Namen ein, um dich ohne manuelle Eingabe von Zugangsdaten zu verbinden.
+  </Card>
+</CardGroup>
+
+## Mit dem Avaluma Test-Client verbinden
+
+Der Avaluma Test-Client funktioniert sowohl mit LiveKit Cloud als auch mit selbst gehosteten LiveKit-Servern und ist damit die flexibelste Option für jedes Deployment.
+
+<Steps>
+  <Step title="Test-Client öffnen">
+    Navigiere im Browser zu [https://avaluma.ai/test-client](https://avaluma.ai/test-client).
+  </Step>
+  <Step title="LiveKit-Zugangsdaten eingeben">
+    Trage deine **LiveKit-URL** (z. B. `wss://your-project.livekit.cloud`), den **API-Key** und das **API-Secret** aus deiner `.env.local` ein.
+  </Step>
+  <Step title="Agent-Namen eingeben">
+    Gib den in deiner `docker-compose.yaml` konfigurierten `AGENT_NAME` ein (z. B. `agent-1`).
+  </Step>
+  <Step title="Auf Connect klicken">
+    Klicke auf **Connect**. Der Avatar-Video-Stream sollte innerhalb weniger Sekunden erscheinen, sobald der Agent dem Raum beitritt und zu rendern beginnt.
+  </Step>
+</Steps>
+
+## Mit dem LiveKit Agent Playground verbinden
+
+Das LiveKit Agent Playground ist verfügbar, wenn du ein LiveKit-Cloud-Projekt nutzt, und bietet eine Ein-Klick-Verbindung über die gespeicherten Zugangsdaten deines Projekts.
+
+<Steps>
+  <Step title="Playground öffnen">
+    Navigiere im Browser zu [https://agents-playground.livekit.io](https://agents-playground.livekit.io).
+  </Step>
+  <Step title="Projekt wählen oder Zugangsdaten eingeben">
+    Wähle dein LiveKit-Cloud-Projekt aus dem Dropdown oder gib Server-URL, API-Key und API-Secret manuell ein.
+  </Step>
+  <Step title="Agent-Namen eingeben">
+    Gib den `AGENT_NAME` aus dem `environment`-Block deiner Agent-`docker-compose.yaml` ein (z. B. `agent-1`).
+  </Step>
+  <Step title="Auf Connect klicken">
+    Klicke auf **Connect**, um einen Raum zu öffnen. Der Agent tritt automatisch bei und der Avatar-Video-Stream beginnt.
+  </Step>
+</Steps>
+
+<Note>
+  Reagiert der Agent nach dem Ändern des Agent-Namens nicht, lade die Seite neu und verbinde dich erneut. Das LiveKit Agent Playground speichert den vorherigen Agent-Namen in der Session und dispatcht möglicherweise erst nach einem Neuladen an den richtigen Worker.
+</Note>

@@ -1,0 +1,119 @@
+---
+title: "Avatar-Server HTTPS: Einen Caddy-Reverse-Proxy konfigurieren"
+sidebarTitle: "HTTPS-Proxy"
+description: "Füge deinem Avatar-Server mit dem Caddy-Reverse-Proxy automatisches TLS hinzu — produktionsreifes HTTPS mit automatischer Zertifikatsverwaltung."
+---
+
+Für Produktions-Deployments solltest du den Avatar-Server über HTTPS bereitstellen, damit Browser und LiveKit-Agenten sicher verbinden können. Avaluma liefert eine Caddy-Reverse-Proxy-Konfiguration mit dem Avatar-Server aus, die TLS-Zertifikate von Let's Encrypt automatisch bezieht und erneuert — keine manuelle Zertifikatsverwaltung nötig. Der Proxy und der Avatar-Server teilen sich ein Docker-Bridge-Netzwerk namens `avaluma-net`, beide Compose-Stacks müssen also gleichzeitig laufen.
+
+## Schritte
+
+<Steps>
+  <Step title="Avatar-Server starten">
+    Stelle sicher, dass der Avatar-Server bereits läuft, bevor du den Proxy startest. Falls du ihn noch nicht eingerichtet hast, folge zuerst der [Setup-Anleitung](/de/self-hosting/avatar-server/setup) und kehre dann hierher zurück.
+
+    Bestätige, dass der Server gesund ist, indem du Folgendes aus dem Verzeichnis `avatar-server/` ausführst:
+
+    ```bash
+    docker compose logs -f
+    ```
+  </Step>
+
+  <Step title="Domain aktualisieren">
+    Öffne `reverse_proxy/Caddyfile` und ersetze `api.avaluma.ai` durch deinen eigenen Domainnamen:
+
+    ```caddyfile
+    your-domain.com {
+        reverse_proxy avaluma-avatar-server:8080
+    }
+    ```
+
+    Caddy leitet allen eingehenden HTTPS-Verkehr auf Port 443 über das gemeinsame Netzwerk `avaluma-net` an den Avatar-Server-Container weiter. Der Containername `avaluma-avatar-server` ist der DNS-Name, über den Caddy den Server erreicht — ändere ihn nur, wenn du auch den Service in `docker-compose.yaml` umbenennst.
+  </Step>
+
+  <Step title="Proxy starten">
+    Starte den Caddy-Container aus dem Verzeichnis `reverse_proxy/`:
+
+    ```bash
+    cd reverse_proxy
+    docker compose up -d
+    ```
+
+    Caddy fordert automatisch ein TLS-Zertifikat für deine Domain an und erneuert es vor Ablauf. Zertifikate werden in einem benannten Docker-Volume (`caddy_data`) gespeichert und überstehen so Container-Neustarts.
+
+    Um zu prüfen, ob der Proxy läuft:
+
+    ```bash
+    docker compose logs -f
+    ```
+  </Step>
+
+  <Step title="Avatar-Server-Konfiguration aktualisieren">
+    Da der Server jetzt über HTTPS erreichbar ist, aktualisiere `API_SERVER_HOST` in der `docker-compose.yaml` des Avatar-Servers auf deine Domain:
+
+    ```yaml
+    environment:
+      - API_SERVER_HOST=your-domain.com
+    ```
+
+    Starte den Avatar-Server neu, um die Änderung anzuwenden:
+
+    ```bash
+    docker compose up -d
+    ```
+  </Step>
+</Steps>
+
+## Vollständige Reverse-Proxy-Referenz
+
+<CodeGroup>
+  ```caddyfile Caddyfile
+  # Change this to your own domain name
+  api.avaluma.ai {
+      reverse_proxy avaluma-avatar-server:8080
+
+      @css {
+          path *.css
+      }
+      header @css Content-Type "text/css; charset=utf-8"
+
+      @js {
+          path *.js
+      }
+      header @js Content-Type "application/javascript; charset=utf-8"
+  }
+  ```
+
+  ```yaml docker-compose.yaml
+  services:
+    caddy-reverse-proxy:
+      image: caddy:latest
+      restart: unless-stopped
+      ports:
+        - "80:80"
+        - "443:443"
+      volumes:
+        - ./Caddyfile:/etc/caddy/Caddyfile
+        - caddy_data:/data # important for storing certificates
+        - caddy_config:/config
+      networks:
+        - avaluma-net
+
+  volumes:
+    caddy_data:
+    caddy_config:
+
+  networks:
+    avaluma-net:
+      name: avaluma-net
+      driver: bridge
+  ```
+</CodeGroup>
+
+<Note>
+  Beide Compose-Dateien müssen dasselbe Docker-Netzwerk verwenden. Die enthaltenen Konfigurationen definieren `avaluma-net` als Bridge-Netzwerk. Benenne dieses Netzwerk nicht um, es sei denn, du passt sowohl `avatar-server/docker-compose.yaml` als auch `reverse_proxy/docker-compose.yaml` entsprechend an.
+</Note>
+
+<Tip>
+  Aktualisiere nach dem Aktivieren von HTTPS die Variable `AVATAR_SERVER_URL` in der `.env.local` deines LiveKit-Agents auf `https://your-domain.com`, damit der Agent über den sicheren Endpunkt verbindet.
+</Tip>

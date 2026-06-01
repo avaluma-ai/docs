@@ -1,0 +1,112 @@
+---
+title: "Avaluma-AI-Sessions, GPU und Agent-Probleme beheben"
+sidebarTitle: "Fehlerbehebung"
+description: "Diagnostiziere und behebe die häufigsten Probleme mit Avaluma-AI-Avatar-Sessions, GPU-Fehlern, Verbindungsproblemen und der LiveKit-Agent-Konfiguration."
+---
+
+Wenn deine Avatar-Session nicht wie erwartet funktioniert, behandelt diese Anleitung die häufigsten Probleme und ihre Lösung. Arbeite das Akkordeon durch, das zu deinem Symptom passt — jedes listet gezielte Prüfungen und Befehle, die du sofort ausführen kannst, um das Problem einzugrenzen.
+
+<Tip>
+  Für alle Services streamt `docker compose logs -f <service-name>` Live-Logs und ist der schnellste Weg, Startprobleme zu diagnostizieren. Führe dies in einem separaten Terminal aus, während du das Problem reproduzierst.
+</Tip>
+
+<Accordion title="Der Avatar-Video-Stream erscheint nicht">
+  Wenn du dich mit deinem Agent verbindest, aber kein Video siehst, prüfe Folgendes:
+
+  - **Prüfe, ob der Avatar-Server läuft.** Führe `docker compose ps` im Verzeichnis `avatar-server/` aus — der Container `avaluma-avatar-server` sollte den Status `Up` zeigen.
+  - **Bestätige, dass deine `.hvia`-Datei vorhanden ist.** Prüfe, ob deine Avatar-Datei unter `assets/avatars/<your-avatar-id>.hvia` existiert und dass der Dateiname (ohne die Endung `.hvia`) exakt zur `avatar_id` in deinem Agent-Skript passt.
+  - **Prüfe `AVATAR_SERVER_URL`.** Öffne `.env.local` und bestätige, dass die URL zur tatsächlichen Adresse passt, unter der dein Avatar-Server erreichbar ist. Eine Abweichung bedeutet, dass der Agent den Server nicht erreichen kann, um eine Render-Session anzufordern.
+  - **Untersuche die Avatar-Server-Logs.** Führe folgenden Befehl aus dem Verzeichnis `avatar-server/` aus, um Fehler beim Start oder während der Session zu prüfen:
+
+  ```bash
+  docker compose logs avaluma-avatar-server
+  ```
+</Accordion>
+
+<Accordion title="Fehler: AVALUMA_LICENSE_KEY is not set">
+  Dieser Fehler bedeutet, dass der Agent gestartet wurde, ohne deinen Lizenzschlüssel zu finden. Prüfe diese häufigen Ursachen:
+
+  - **Bestätige, dass `.env.local` existiert.** Die Datei muss `.env.local` heißen — nicht `.env`, `.env.example` oder ähnlich. Der Agent ruft gezielt `load_dotenv(".env.local")` auf und greift nicht auf andere Dateinamen zurück.
+  - **Kopiere aus der Beispieldatei, falls noch nicht geschehen.** Führe folgenden Befehl aus dem Verzeichnis `livekit-agent/` aus:
+
+  ```bash
+  cp .env.example .env.local
+  ```
+
+  - **Prüfe, ob der Schlüssel gesetzt ist.** Öffne `.env.local` und bestätige, dass `AVALUMA_LICENSE_KEY` einen echten Wert hat — keinen leeren String und keinen Platzhalter.
+</Accordion>
+
+<Accordion title="GPU- / CUDA-Fehler beim Start des Avatar-Servers">
+  Der Avatar-Server benötigt eine korrekt konfigurierte NVIDIA-GPU. Wenn du CUDA-Fehler siehst oder der Container nicht startet, arbeite diese Prüfungen durch:
+
+  - **Installiere das NVIDIA Container Toolkit.** Das Toolkit muss auf dem Host installiert sein, bevor Docker GPU-Zugriff in den Container reichen kann. Folge der [offiziellen Installationsanleitung](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html).
+  - **Prüfe die GPU-Sichtbarkeit auf dem Host.** Führe `nvidia-smi` aus — schlägt es fehl, ist dein NVIDIA-Treiber nicht installiert oder nicht korrekt geladen.
+  - **Bestätige, dass CUDA 12 verfügbar ist.** Führe Folgendes aus und achte auf `CUDA Version: 12.x`:
+
+  ```bash
+  nvidia-smi | grep CUDA
+  ```
+
+  - **Prüfe den verfügbaren VRAM.** Der Avatar-Server benötigt mindestens 6 GB freien VRAM. Führe `nvidia-smi` aus und prüfe die Spalte `Memory-Usage`.
+  - **Prüfe den GPU-Block in `docker-compose.yaml`.** Der Block `deploy.resources.reservations.devices` muss vorhanden sein. Bestätige, dass er so aussieht:
+
+  ```yaml docker-compose.yaml
+  deploy:
+    resources:
+      reservations:
+        devices:
+          - driver: nvidia
+            count: all
+            capabilities: [gpu, compute, utility, graphics]
+  ```
+</Accordion>
+
+<Accordion title="Agent reagiert nicht im LiveKit Playground">
+  Wenn du dich verbindest, der Agent aber dem Raum nie beitritt oder nie antwortet, prüfe Folgendes:
+
+  - **Stimme den Agent-Namen exakt ab.** Der im `environment`-Block der Agent-`docker-compose.yaml` gesetzte `AGENT_NAME` muss identisch mit dem im Playground eingegebenen sein. Groß-/Kleinschreibung und Bindestriche zählen.
+  - **Lade das Playground neu und verbinde erneut.** Das LiveKit Agent Playground speichert den vorherigen Agent-Namen in der Browser-Session. Hast du `AGENT_NAME` geändert, lade die Seite vor dem erneuten Verbinden neu.
+  - **Prüfe die Agent-Logs.** Führe Folgendes aus dem Verzeichnis `livekit-agent/` aus, um Start- und Dispatch-Fehler zu sehen:
+
+  ```bash
+  docker compose logs livekit-agent-1
+  ```
+
+  - **Prüfe deine LiveKit-Zugangsdaten.** Bestätige, dass `LIVEKIT_URL`, `LIVEKIT_API_KEY` und `LIVEKIT_API_SECRET` in `.env.local` korrekt sind und zum im Playground gewählten Projekt passen.
+</Accordion>
+
+<Accordion title="Mehrere Avatar-Sessions überschreiten den VRAM">
+  Wenn du mehr gleichzeitige Avatar-Sessions betreibst, als deine GPU unterstützt, scheitern neue Sessions am Start oder bestehende stürzen ab. Verwalte die VRAM-Nutzung so:
+
+  - **Kalkuliere 2,5 GB pro Session.** Jede aktive Avatar-Render-Session verbraucht etwa 2,5 GB GPU-VRAM.
+  - **Kenne deine Grenzen.** Eine 6-GB-VRAM-GPU unterstützt etwa 2 gleichzeitige Sessions, eine 12-GB-VRAM-GPU etwa 4.
+  - **Stoppe ungenutzte Agent-Container.** Gib VRAM frei, bevor du neue Sessions startest, indem du nicht genutzte Agent-Container stoppst:
+
+  ```bash
+  docker compose stop livekit-agent-2
+  ```
+
+  - **Überwache den VRAM in Echtzeit.** Führe `nvidia-smi` aus, um die aktuelle Speichernutzung aller GPU-Prozesse zu sehen und freien Spielraum zu bestätigen, bevor du weitere Sessions startest.
+</Accordion>
+
+<Accordion title="TLS- / HTTPS-Zertifikatsfehler">
+  Wenn du den enthaltenen Caddy-Reverse-Proxy nutzt und TLS-Zertifikatsfehler siehst, prüfe Folgendes:
+
+  - **Mache deine Domain öffentlich erreichbar.** Caddy nutzt das ACME-Protokoll, um Zertifikate automatisch auszustellen. Dein Server muss aus dem Internet auf **Port 80** (für die HTTP-Challenge) und **Port 443** (für HTTPS-Verkehr) erreichbar sein, bevor Caddy ein Zertifikat erhalten kann.
+  - **Öffne Firewall-Ports.** Stelle sicher, dass deine Host-Firewall und etwaige Cloud-Security-Groups eingehenden TCP-Verkehr auf den Ports 80 und 443 zulassen.
+  - **Stimme die Domain im `Caddyfile` ab.** Die in `reverse_proxy/Caddyfile` deklarierte Domain muss exakt mit dem DNS-`A`-Record übereinstimmen, der auf die öffentliche IP deines Servers zeigt. Jede Abweichung lässt die Zertifikatsausstellung scheitern.
+  - **Prüfe die Caddy-Logs.** Führe Folgendes aus dem Verzeichnis `reverse_proxy/` aus, um die vollständige Ausgabe der Zertifikatsausstellung zu sehen:
+
+  ```bash
+  docker compose logs caddy
+  ```
+</Accordion>
+
+<Accordion title="Externes Audio (agent-2) animiert den Avatar nicht">
+  Wenn du `agent-2` nutzt, um Audio per LiveKit-DataStream direkt an den Avatar zu streamen, der Avatar sich aber nicht animiert, prüfe diese Konfigurationsdetails:
+
+  - **Verwende exakt das DataStream-Topic.** Das Topic muss `lk.audio_stream` sein — jede Abweichung in Schreibweise oder Groß-/Kleinschreibung führt dazu, dass der Empfänger des Avatars den Stream komplett ignoriert.
+  - **Setze die Teilnehmerart auf `"agent"`.** Das Token des sendenden Teilnehmers muss `kind: "agent"` enthalten. Der `DataStreamAudioReceiver` des Avatars verarbeitet nur Streams von Teilnehmern mit Agent-Art.
+  - **Prüfe das Identitäts-Präfix des Avatars.** Die Identität des Avatar-Teilnehmers muss mit `avatar-` beginnen. Der Beispielcode prüft dieses Präfix, um den Avatar zu identifizieren.
+  - **Setze Stream-Attribute als Strings.** Die Attribute `sample_rate` und `num_channels` des DataStreams müssen als String-Werte gesetzt werden, nicht als Integer, damit der Empfänger sie korrekt parst.
+</Accordion>

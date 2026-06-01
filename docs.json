@@ -20,47 +20,49 @@
     "languages": [
       {
         "language": "en",
-        "hidden": true,
-        "tabs": [
+        "groups": [
           {
-            "tab": "Documentation",
-            "groups": [
-              {
-                "group": "Get Started",
-                "pages": [
-                  "introduction",
-                  "quickstart",
-                  "architecture"
-                ]
-              },
+            "group": "Agents",
+            "pages": [
+              "en/agents/overview",
+              "en/agents/embedding",
+              "en/agents/messaging"
+            ]
+          },
+          {
+            "group": "Self-Hosting",
+            "pages": [
+              "en/self-hosting/introduction",
+              "en/self-hosting/quickstart",
+              "en/self-hosting/architecture",
               {
                 "group": "Avatar Server",
                 "pages": [
-                  "avatar-server/overview",
-                  "avatar-server/setup",
-                  "avatar-server/https-proxy"
+                  "en/self-hosting/avatar-server/overview",
+                  "en/self-hosting/avatar-server/setup",
+                  "en/self-hosting/avatar-server/https-proxy"
                 ]
               },
               {
                 "group": "LiveKit Agent",
                 "pages": [
-                  "livekit-agent/overview",
-                  "livekit-agent/conversational-agent",
-                  "livekit-agent/external-audio"
+                  "en/self-hosting/livekit-agent/overview",
+                  "en/self-hosting/livekit-agent/conversational-agent",
+                  "en/self-hosting/livekit-agent/external-audio"
                 ]
               },
               {
                 "group": "Configuration",
                 "pages": [
-                  "configuration/environment-variables",
-                  "configuration/avatar-files"
+                  "en/self-hosting/configuration/environment-variables",
+                  "en/self-hosting/configuration/avatar-files"
                 ]
               },
               {
                 "group": "Testing & Troubleshooting",
                 "pages": [
-                  "testing/test-clients",
-                  "testing/troubleshooting"
+                  "en/self-hosting/testing/test-clients",
+                  "en/self-hosting/testing/troubleshooting"
                 ]
               }
             ]
@@ -73,7 +75,47 @@
           {
             "group": "Agents",
             "pages": [
-              "embedding"
+              "de/agents/overview",
+              "de/agents/embedding",
+              "de/agents/messaging"
+            ]
+          },
+          {
+            "group": "Self-Hosting",
+            "pages": [
+              "de/self-hosting/introduction",
+              "de/self-hosting/quickstart",
+              "de/self-hosting/architecture",
+              {
+                "group": "Avatar-Server",
+                "pages": [
+                  "de/self-hosting/avatar-server/overview",
+                  "de/self-hosting/avatar-server/setup",
+                  "de/self-hosting/avatar-server/https-proxy"
+                ]
+              },
+              {
+                "group": "LiveKit-Agent",
+                "pages": [
+                  "de/self-hosting/livekit-agent/overview",
+                  "de/self-hosting/livekit-agent/conversational-agent",
+                  "de/self-hosting/livekit-agent/external-audio"
+                ]
+              },
+              {
+                "group": "Konfiguration",
+                "pages": [
+                  "de/self-hosting/configuration/environment-variables",
+                  "de/self-hosting/configuration/avatar-files"
+                ]
+              },
+              {
+                "group": "Testen & Fehlerbehebung",
+                "pages": [
+                  "de/self-hosting/testing/test-clients",
+                  "de/self-hosting/testing/troubleshooting"
+                ]
+              }
             ]
           }
         ]

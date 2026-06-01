@@ -1,0 +1,110 @@
+---
+title: "LiveKit-Agent: Eine Sprach-KI-Pipeline mit deinem Avatar verbinden"
+sidebarTitle: "Übersicht"
+description: "Steuere einen Avaluma-Avatar mit einem Python-LiveKit-Agent. Wähle zwischen einer vollständigen Sprach-KI-Pipeline oder direktem externem Audio-Streaming per DataStream."
+---
+
+Der Avaluma-LiveKit-Agent ist ein Python-Worker auf Basis des [livekit-agents](https://docs.livekit.io/agents/)-Frameworks. Er verbindet sich mit einem LiveKit-Raum und steuert einen Avaluma-Avatar, indem er Audio über die `AvatarSession`-API leitet — die Brücke zwischen deiner Sprach-Pipeline und dem Avatar-Server, der die `.hvia`-Datei animiert. Zwei einsatzbereite Agent-Muster sind enthalten, sodass du mit dem Ansatz beginnen kannst, der am besten zu deiner Architektur passt.
+
+## Agent-Muster
+
+<CardGroup cols={2}>
+  <Card
+    title="Konversations-Agent"
+    icon="microphone"
+    href="/de/self-hosting/livekit-agent/conversational-agent"
+  >
+    Vollständige Sprach-KI-Pipeline: STT → LLM → TTS → Avaluma-Avatar. Angetrieben von LiveKit Inference mit AssemblyAI, OpenAI GPT-4.1-mini und Cartesia Sonic-3.
+  </Card>
+  <Card
+    title="Externes Audio"
+    icon="waveform-lines"
+    href="/de/self-hosting/livekit-agent/external-audio"
+  >
+    Streame rohes PCM-Audio direkt zum Avatar per LiveKit-DataStream und umgehe die AgentSession-Pipeline vollständig — ideal für eigene TTS- oder Audioquellen.
+  </Card>
+</CardGroup>
+
+## So funktioniert die AvatarSession
+
+Beide Agenten basieren auf `AvatarSession` aus dem Paket `avaluma-livekit-plugin`. Du instanziierst sie mit deinen Zugangsdaten, rufst `avatar.start()` auf, und sie übernimmt das Beitreten zum Raum als separater Avatar-Teilnehmer sowie das Weiterleiten der Audio-Frames an den Avatar-Server zum Rendern.
+
+```python
+from avaluma_livekit_plugin import AvatarSession
+
+avatar = AvatarSession(
+    license_key=license_key,
+    avatar_id=avatar_id,          # entspricht your-avatar-id.hvia
+    avatar_server_url=avatar_server_url,
+)
+await avatar.start(agent_session=session, room=ctx.room)
+```
+
+## Ein Muster wählen
+
+| | Konversations-Agent | Externes Audio |
+|---|---|---|
+| **Audioquelle** | LiveKit Inference (STT → LLM → TTS) | Beliebiger externer Dienst oder Datei |
+| **AgentSession** | Erforderlich | Optional |
+| **DataStream** | Von `AvatarSession` verwaltet | Explizit (`lk.audio_stream`) |
+| **Am besten für** | Schlüsselfertige Sprachassistenten | Eigenes TTS / vorerzeugtes Audio |
+
+## Abhängigkeiten
+
+Alle Abhängigkeiten sind in `pyproject.toml` deklariert und werden von [uv](https://github.com/astral-sh/uv) verwaltet:
+
+```toml pyproject.toml
+[project]
+name = "avaluma-livekit-agent"
+version = "1.0.0"
+description = "Simple example for LiveKit Agents with Avaluma Avatar"
+requires-python = ">=3.12"
+
+dependencies = [
+    "livekit",
+    "livekit-agents[silero,turn-detector]~=1.2",
+    "livekit-plugins-noise-cancellation~=0.2",
+    "python-dotenv",
+    "avaluma-livekit-plugin @ git+https://github.com/avaluma-ai/avaluma-livekit-plugin.git"
+]
+```
+
+| Paket | Zweck |
+|---|---|
+| `livekit` | LiveKit-RTC-SDK — Raum-, Track- und DataStream-Primitive |
+| `livekit-agents` | Kern-Agent-Framework (enthält `silero` VAD und `turn-detector`) |
+| `livekit-plugins-noise-cancellation` | Unterdrückung von Hintergrundgeräuschen per BVC |
+| `avaluma-livekit-plugin` | `AvatarSession` — Avaluma-Avatar-Integration |
+| `python-dotenv` | Lädt Zugangsdaten aus `.env.local` |
+
+## Voraussetzungen
+
+Stelle vor dem Start eines der Agenten sicher, dass du Folgendes hast:
+
+<CardGroup cols={2}>
+  <Card title="Docker & Docker Compose" icon="docker">
+    Beide Agenten werden mit einer `docker-compose.yaml` für einen konfigurationsfreien lokalen Start ausgeliefert.
+  </Card>
+  <Card title="LiveKit-Konto" icon="server">
+    Ein LiveKit-Cloud-Projekt oder eine selbst gehostete Instanz. Du brauchst URL, API-Key und API-Secret.
+  </Card>
+  <Card title="Avatar-Server" icon="circle-play">
+    Eine laufende `avatar-server`-Instanz oder den gehosteten Endpunkt unter `https://api.avaluma.ai`.
+  </Card>
+  <Card title="Avaluma-Lizenzschlüssel" icon="key">
+    Dein `AVALUMA_LICENSE_KEY` aus dem Avaluma-Dashboard — direkt an `AvatarSession` übergeben.
+  </Card>
+</CardGroup>
+
+## Deinen Agent testen
+
+Sobald Agent und Avatar-Server laufen, verbinde dich mit einem dieser Clients:
+
+| Client | Wann verwenden |
+|---|---|
+| **[Avaluma Test-Client](https://avaluma.ai/test-client)** | Funktioniert mit jedem LiveKit-Setup — selbst gehostet oder Cloud |
+| **[LiveKit Agent Playground](https://agents-playground.livekit.io)** | Verfügbar bei Nutzung eines LiveKit-Cloud-Projekts |
+
+<Tip>
+  Setze im LiveKit Agent Playground das Feld **Agent Name** auf die Umgebungsvariable `AGENT_NAME`, die du konfiguriert hast (z. B. `agent-1`). Reagiert der Agent nach dem Ändern des Namens nicht, lade die Seite neu und verbinde dich erneut.
+</Tip>
