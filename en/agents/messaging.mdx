@@ -1,0 +1,104 @@
+---
+title: "Control an Embedded Avaluma Agent with postMessage"
+sidebarTitle: "Messaging"
+description: "Drive an embedded Avaluma avatar from your own page and react to its events using the browser postMessage API."
+---
+
+An embedded agent runs inside an `<iframe>`, so your page and the avatar live in different browsing contexts. They communicate with the standard [`window.postMessage`](https://developer.mozilla.org/docs/Web/API/Window/postMessage) API: you **send commands** to the iframe to control the avatar, and you **receive events** from the iframe to react to what the avatar is doing.
+
+<Warning>
+  Messaging only works when your page's origin is listed under **Allowed origins** for the agent. Configure this in the [dashboard](https://avaluma.ai) before you go live — see [Embedding](/en/agents/embedding). Messages from or to a non-allowed origin are rejected by the browser.
+</Warning>
+
+## Get a reference to the iframe
+
+Give your embed an `id` so you can target its `contentWindow`:
+
+```html
+<iframe
+  id="avaluma-agent"
+  src="https://avaluma.ai/agent/AGENT_ID/embed"
+  allow="microphone; autoplay"
+  style="width:100%;height:600px;border:0"
+></iframe>
+```
+
+```js
+const frame = document.getElementById("avaluma-agent");
+const AVALUMA_ORIGIN = "https://avaluma.ai";
+```
+
+## Send commands to the avatar
+
+Post a message to the iframe's `contentWindow`. Always pass the Avaluma origin as the second argument so the message is only delivered to the avatar:
+
+```js
+function sendCommand(type, payload = {}) {
+  frame.contentWindow.postMessage({ type, ...payload }, AVALUMA_ORIGIN);
+}
+
+// Examples
+sendCommand("avaluma:connect");                       // start the session
+sendCommand("avaluma:disconnect");                    // end the session
+sendCommand("avaluma:mute");                          // mute the visitor's microphone
+sendCommand("avaluma:unmute");                        // unmute
+sendCommand("avaluma:say", { text: "Hello there!" }); // make the avatar speak a phrase
+```
+
+| Command | Payload | Effect |
+|---|---|---|
+| `avaluma:connect` | — | Connect and start the conversation. |
+| `avaluma:disconnect` | — | End the conversation and disconnect. |
+| `avaluma:mute` / `avaluma:unmute` | — | Toggle the visitor's microphone. |
+| `avaluma:say` | `{ text }` | Make the avatar speak the given text. |
+
+## Receive events from the avatar
+
+Listen for `message` events on `window`. **Always verify `event.origin`** before trusting the data:
+
+```js
+window.addEventListener("message", (event) => {
+  if (event.origin !== AVALUMA_ORIGIN) return;
+
+  const { type, ...data } = event.data ?? {};
+  switch (type) {
+    case "avaluma:connected":
+      console.log("Avatar session started");
+      break;
+    case "avaluma:disconnected":
+      console.log("Avatar session ended");
+      break;
+    case "avaluma:agent_message":
+      console.log("Agent said:", data.text);
+      break;
+    case "avaluma:error":
+      console.error("Avatar error:", data.message);
+      break;
+  }
+});
+```
+
+| Event | Data | Meaning |
+|---|---|---|
+| `avaluma:connected` | — | The avatar joined and the session is live. |
+| `avaluma:disconnected` | — | The session ended. |
+| `avaluma:agent_message` | `{ text }` | The agent produced a (spoken) response. |
+| `avaluma:error` | `{ message }` | Something went wrong (e.g. blocked origin, mic denied). |
+
+<Note>
+  The exact set of available commands and events can depend on your agent's embed version. Treat the embed snippet generated in the dashboard as the source of truth, and use the [browser console](https://developer.mozilla.org/docs/Web/API/Window/postMessage) to inspect the messages your iframe actually emits.
+</Note>
+
+## Security checklist
+
+<Steps>
+  <Step title="Always pass the target origin">
+    Never use `"*"` as the target origin in `postMessage`. Pass `https://avaluma.ai` so commands cannot leak to other frames.
+  </Step>
+  <Step title="Always verify the source origin">
+    In your `message` listener, reject any event whose `event.origin` is not `https://avaluma.ai`.
+  </Step>
+  <Step title="Keep your allowed origins tight">
+    Only add the origins that genuinely host the avatar under **Allowed origins** in the dashboard.
+  </Step>
+</Steps>

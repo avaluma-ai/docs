@@ -1,0 +1,81 @@
+---
+title: "Avaluma Agents: Create and Configure Avatars in the Dashboard"
+sidebarTitle: "Overview"
+description: "Create, configure, and share photorealistic conversational avatars directly from the Avaluma dashboard at avaluma.ai — no infrastructure required."
+---
+
+Avaluma gives you two ways to run a photorealistic conversational avatar. The fastest is to create an **Agent** in the Avaluma dashboard at [avaluma.ai](https://avaluma.ai): you configure the avatar, voice, and behavior in your browser, and Avaluma hosts everything for you. If you need full control over compute and data, you can instead run the pipeline yourself — see [Self-Hosting](/en/self-hosting/introduction).
+
+<CardGroup cols={2}>
+  <Card title="Agents (hosted)" icon="wand-magic-sparkles">
+    Create an agent in the dashboard, share a link, or embed it. Avaluma runs the avatar server and the voice pipeline for you.
+  </Card>
+  <Card title="Self-Hosting" icon="server" href="/en/self-hosting/introduction">
+    Run the Avatar Server and LiveKit Agent on your own hardware for full control over data, models, and compute.
+  </Card>
+</CardGroup>
+
+## What is an Agent?
+
+An Agent is a configured, hosted avatar that lives in your Avaluma account. Each agent bundles everything a live conversation needs:
+
+- A **photorealistic avatar** rendered from an Avaluma `.hvia` model
+- A **voice** for text-to-speech
+- An **AI persona** — the system prompt and behavior that shape its responses
+- **Sharing settings** — a public link and optional embedding on your own website
+
+Once configured, an agent has a stable **Agent ID** (a UUID) that you use to share or embed it.
+
+## Create an agent
+
+<Steps>
+  <Step title="Sign in to the dashboard">
+    Log in at [avaluma.ai](https://avaluma.ai) and open the **Agents** section of your dashboard.
+  </Step>
+  <Step title="Create a new agent">
+    Click **New agent**, give it a name, and select the avatar you want it to use. Your available avatars come from the `.hvia` files issued with your license.
+  </Step>
+  <Step title="Configure voice and persona">
+    Choose a voice for text-to-speech and write the agent's instructions (system prompt). The instructions define the agent's tone, knowledge, and behavior during a conversation.
+  </Step>
+  <Step title="Save and test">
+    Save the agent and start a test conversation from the dashboard to confirm the avatar speaks and responds as expected.
+  </Step>
+</Steps>
+
+## Configure an agent
+
+Open an agent to adjust its configuration at any time. Common settings include:
+
+| Setting | Description |
+|---|---|
+| **Name** | Internal label for the agent in your dashboard. |
+| **Avatar** | The `.hvia` avatar the agent renders. |
+| **Voice** | The text-to-speech voice used for spoken replies. |
+| **Instructions** | The system prompt that shapes the agent's persona and behavior. |
+| **Language** | Default conversation and UI language. |
+| **Sharing** | Whether the agent is reachable via a public link. |
+| **Embedding** | Whether the agent may be embedded via `<iframe>`, and on which origins. |
+
+<Note>
+  Only **shared** agents can be opened via a public link or embedded on a website. Enable sharing before you distribute an agent link.
+</Note>
+
+## Share and embed
+
+Each agent is reachable at a hosted URL based on its Agent ID:
+
+```text
+https://avaluma.ai/agent/AGENT_ID
+```
+
+To put the agent directly on your own site, embed it as an `<iframe>` and control it from your page.
+
+<CardGroup cols={2}>
+  <Card title="Embedding" icon="window" href="/en/agents/embedding">
+    Embed an agent on your website with an `<iframe>` and customize its appearance and behavior via query parameters.
+  </Card>
+  <Card title="Messaging" icon="messages" href="/en/agents/messaging">
+    Control the embedded avatar programmatically and receive events with the `postMessage` API.
+  </Card>
+</CardGroup>

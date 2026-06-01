@@ -1,0 +1,109 @@
+---
+title: "Avatar-Server-Setup: Mit Docker installieren und konfigurieren"
+sidebarTitle: "Setup"
+description: "Deploye den Avaluma-Avatar-Server mit Docker Compose, füge deine .hvia-Avatar-Dateien hinzu und setze die zwei erforderlichen Umgebungsvariablen, um live zu gehen."
+---
+
+Das Einrichten des Avatar-Servers umfasst drei Schritte: deine `.hvia`-Avatar-Dateien ins richtige Verzeichnis legen, einige wenige Umgebungsvariablen in `docker-compose.yaml` konfigurieren und den Container starten. Sobald der Server läuft, kann sich dein LiveKit-Agent verbinden und in Echtzeit Avatare animieren.
+
+## Voraussetzungen
+
+<Note>
+  Stelle vor dem Start sicher, dass du Folgendes hast:
+
+  - [Docker](https://docs.docker.com/get-docker/) und Docker Compose installiert
+  - Eine NVIDIA-GPU mit CUDA 12, OpenGL-Unterstützung und mindestens **6 GB VRAM**
+  - [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html) installiert und konfiguriert
+  - Einen Avaluma-Lizenzschlüssel und mindestens eine `.hvia`-Avatar-Datei
+</Note>
+
+## Schritte
+
+<Steps>
+  <Step title="Avatar-Dateien hinzufügen">
+    Lege deine `.hvia`-Avatar-Dateien in das Verzeichnis `assets/avatars/` innerhalb des Ordners `avatar-server/`:
+
+    ```
+    assets/avatars/
+    └── your-avatar-id.hvia
+    ```
+
+    Der Container mountet dieses Verzeichnis unter `/app/assets/avatars`, jede hier abgelegte Datei steht dem Server also beim nächsten Start sofort zur Verfügung.
+
+    <Tip>
+      Jede `.hvia`-Datei repräsentiert einen Avatar. Du kannst mehrere Dateien hinzufügen, um mehrere Avatare gleichzeitig zu betreiben — die einzige Grenze ist dein verfügbarer VRAM (~2,5 GB pro aktiver Session).
+    </Tip>
+  </Step>
+
+  <Step title="Umgebung konfigurieren">
+    Öffne `docker-compose.yaml` und aktualisiere die Umgebungsvariablen unter dem Service `avaluma-avatar-server`:
+
+    ```yaml
+    environment:
+      - API_SERVER_HOST=api.yourdomain.com  # öffentliche IP oder Domain
+      - API_UTILS_PWD=your-secure-password
+    ```
+
+    Setze `API_SERVER_HOST` auf die öffentliche IP-Adresse oder den Domainnamen, über den Clients den Server erreichen. Wenn du den Server nur auf `localhost` ohne Reverse-Proxy betreibst, kannst du dies für lokale Tests so belassen.
+
+    | Variable | Beschreibung |
+    |---|---|
+    | `API_UTILS_PWD` | Passwort für die Utility-API des Avatar-Servers |
+    | `API_SERVER_HOST` | Öffentliche IP oder Domainname des Servers |
+  </Step>
+
+  <Step title="Server starten">
+    Führe aus dem Verzeichnis `avatar-server/` aus:
+
+    ```bash
+    docker compose up -d
+    ```
+
+    Der Server startet im Hintergrund (detached) und ist unter `http://localhost:8080` erreichbar. Wenn du einen Reverse-Proxy verwendest oder den Server auf einer öffentlichen IP exponierst, stelle sicher, dass `API_SERVER_HOST` zu dieser Adresse passt.
+
+    Um zu prüfen, ob der Container erfolgreich gestartet ist, sieh dir die Logs an:
+
+    ```bash
+    docker compose logs -f
+    ```
+  </Step>
+</Steps>
+
+## Vollständige docker-compose.yaml-Referenz
+
+Hier die komplette `docker-compose.yaml` zur Referenz:
+
+```yaml
+services:
+  avaluma-avatar-server:
+    image: ghcr.io/avaluma-ai/avaluma-avatar-server:latest
+    pull_policy: always # update on restart
+    restart: unless-stopped
+    environment:
+      # change this to the Public IP of the server or domain name when using reverse proxy
+      - API_SERVER_HOST=api.avaluma.ai
+      - API_UTILS_PWD=CHANGE_THIS
+    ports:
+      # not necessary when using reverse proxy
+      - 8080:8080
+    volumes:
+      - ./assets/avatars:/app/assets/avatars # folder for .hvia-files
+    networks:
+      - avaluma-net
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu, compute, utility, graphics]
+
+networks:
+  avaluma-net:
+    name: avaluma-net
+    driver: bridge
+```
+
+<Note>
+  Das Image ist mit `pull_policy: always` konfiguriert, das heißt Docker zieht bei jedem Container-Neustart das neueste Image. Dein Avatar-Server bleibt so ohne manuellen Eingriff automatisch aktuell.
+</Note>

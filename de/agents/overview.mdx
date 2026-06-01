@@ -1,0 +1,81 @@
+---
+title: "Avaluma Agents: Avatare im Dashboard erstellen und konfigurieren"
+sidebarTitle: "Übersicht"
+description: "Erstelle, konfiguriere und teile fotorealistische Konversations-Avatare direkt im Avaluma-Dashboard auf avaluma.ai — ganz ohne eigene Infrastruktur."
+---
+
+Avaluma bietet dir zwei Wege, einen fotorealistischen Konversations-Avatar zu betreiben. Der schnellste ist, einen **Agent** im Avaluma-Dashboard auf [avaluma.ai](https://avaluma.ai) zu erstellen: Du konfigurierst Avatar, Stimme und Verhalten direkt im Browser, und Avaluma hostet alles für dich. Wenn du volle Kontrolle über Rechenleistung und Daten brauchst, kannst du die Pipeline stattdessen selbst betreiben — siehe [Self-Hosting](/de/self-hosting/introduction).
+
+<CardGroup cols={2}>
+  <Card title="Agents (gehostet)" icon="wand-magic-sparkles">
+    Erstelle einen Agent im Dashboard, teile einen Link oder bette ihn ein. Avaluma betreibt Avatar-Server und Sprach-Pipeline für dich.
+  </Card>
+  <Card title="Self-Hosting" icon="server" href="/de/self-hosting/introduction">
+    Betreibe Avatar-Server und LiveKit-Agent auf eigener Hardware — für volle Kontrolle über Daten, Modelle und Rechenleistung.
+  </Card>
+</CardGroup>
+
+## Was ist ein Agent?
+
+Ein Agent ist ein konfigurierter, gehosteter Avatar in deinem Avaluma-Konto. Jeder Agent bündelt alles, was eine Live-Konversation braucht:
+
+- Einen **fotorealistischen Avatar**, gerendert aus einem Avaluma-`.hvia`-Modell
+- Eine **Stimme** für die Sprachausgabe (Text-to-Speech)
+- Eine **KI-Persona** — der System-Prompt und das Verhalten, die seine Antworten prägen
+- **Freigabe-Einstellungen** — ein öffentlicher Link und optionale Einbettung auf deiner eigenen Webseite
+
+Einmal konfiguriert, hat ein Agent eine feste **Agent-ID** (eine UUID), mit der du ihn teilst oder einbettest.
+
+## Einen Agent erstellen
+
+<Steps>
+  <Step title="Im Dashboard anmelden">
+    Melde dich auf [avaluma.ai](https://avaluma.ai) an und öffne den Bereich **Agents** in deinem Dashboard.
+  </Step>
+  <Step title="Neuen Agent anlegen">
+    Klicke auf **Neuer Agent**, gib ihm einen Namen und wähle den gewünschten Avatar aus. Deine verfügbaren Avatare stammen aus den `.hvia`-Dateien, die mit deiner Lizenz ausgestellt wurden.
+  </Step>
+  <Step title="Stimme und Persona konfigurieren">
+    Wähle eine Stimme für die Sprachausgabe und schreibe die Anweisungen des Agenten (System-Prompt). Die Anweisungen bestimmen Ton, Wissen und Verhalten des Agenten während einer Konversation.
+  </Step>
+  <Step title="Speichern und testen">
+    Speichere den Agent und starte ein Testgespräch im Dashboard, um zu prüfen, ob der Avatar spricht und wie erwartet antwortet.
+  </Step>
+</Steps>
+
+## Einen Agent konfigurieren
+
+Öffne einen Agent, um seine Konfiguration jederzeit anzupassen. Häufige Einstellungen sind:
+
+| Einstellung | Beschreibung |
+|---|---|
+| **Name** | Interne Bezeichnung des Agenten in deinem Dashboard. |
+| **Avatar** | Der `.hvia`-Avatar, den der Agent rendert. |
+| **Stimme** | Die Text-to-Speech-Stimme für gesprochene Antworten. |
+| **Anweisungen** | Der System-Prompt, der Persona und Verhalten des Agenten prägt. |
+| **Sprache** | Standardsprache für Konversation und Oberfläche. |
+| **Freigabe** | Ob der Agent über einen öffentlichen Link erreichbar ist. |
+| **Einbettung** | Ob der Agent per `<iframe>` eingebettet werden darf — und auf welchen Origins. |
+
+<Note>
+  Nur **freigegebene** Agenten lassen sich über einen öffentlichen Link öffnen oder auf einer Webseite einbetten. Aktiviere die Freigabe, bevor du einen Agent-Link verteilst.
+</Note>
+
+## Teilen und einbetten
+
+Jeder Agent ist über eine gehostete URL anhand seiner Agent-ID erreichbar:
+
+```text
+https://avaluma.ai/agent/AGENT_ID
+```
+
+Um den Agent direkt auf deiner eigenen Seite anzuzeigen, bette ihn als `<iframe>` ein und steuere ihn von deiner Seite aus.
+
+<CardGroup cols={2}>
+  <Card title="Embedding" icon="window" href="/de/agents/embedding">
+    Bette einen Agent per `<iframe>` in deine Webseite ein und passe Aussehen und Verhalten über Query-Parameter an.
+  </Card>
+  <Card title="Messaging" icon="messages" href="/de/agents/messaging">
+    Steuere den eingebetteten Avatar programmatisch und empfange Events über die `postMessage`-API.
+  </Card>
+</CardGroup>

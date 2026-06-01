@@ -1,0 +1,51 @@
+---
+title: "Avaluma AI selbst hosten: Fotorealistische KI-Avatare"
+sidebarTitle: "Einführung"
+description: "Betreibe die Avaluma-Pipeline selbst: GPU-beschleunigtes Rendering mit dem Avatar-Server und eine LiveKit-Agent-Sprach-KI-Pipeline auf deiner eigenen Hardware."
+---
+
+Beim Self-Hosting betreibst du die Avaluma-Avatar-Pipeline auf deiner eigenen Infrastruktur. Du stellst einen LiveKit-Raum und eine von Avaluma ausgestellte `.hvia`-Avatar-Datei bereit; Avaluma übernimmt das GPU-beschleunigte Rendering, die Lippensynchronisation und das Video-Streaming — deine Nutzer sehen also einen lebensechten sprechenden Avatar, kein statisches Bild und keinen Comic.
+
+<Note>
+  Suchst du den schnellsten Weg, ohne eigene Infrastruktur? Erstelle stattdessen einen gehosteten [Agent](/de/agents/overview) im Dashboard.
+</Note>
+
+## Funktionsweise
+
+Self-Hosting basiert auf zwei zusammenarbeitenden Komponenten, die du unabhängig voneinander betreibst.
+
+**Avatar-Server** läuft auf einer NVIDIA-GPU und ist die Rendering-Engine. Er liest deine `.hvia`-Avatar-Dateien, animiert den Avatar Bild für Bild als Reaktion auf eingehendes Audio und veröffentlicht den resultierenden Video-Track direkt in einem LiveKit-Raum. Du kannst den Avatar-Server selbst hosten oder den verwalteten Endpunkt von Avaluma unter `https://api.avaluma.ai` nutzen.
+
+**LiveKit-Agent** ist eine Python-basierte Sprach-KI-Pipeline, die eine Konversation steuert. Er erfasst Mikrofon-Eingaben, leitet sie durch Speech-to-Text (STT), übergibt das Transkript an ein Large Language Model (LLM), synthetisiert Sprache per Text-to-Speech (TTS) und reicht das Audio dann über das `avaluma-livekit-plugin` an den Avatar-Server weiter. Der Avatar animiert dieses Audio und streamt das Video zurück in den Raum.
+
+## Voraussetzungen
+
+Stelle vor dem Deployment sicher, dass du Folgendes hast:
+
+- Einen **Avaluma-Lizenzschlüssel** — erhältlich auf [avaluma.ai](https://avaluma.ai)
+- Eine oder mehrere **`.hvia`-Avatar-Dateien**, ausgestellt mit deiner Lizenz
+- Ein **LiveKit-Konto** — [LiveKit Cloud](https://livekit.io) oder selbst gehostet
+- Eine **NVIDIA-GPU** mit CUDA-12-Unterstützung, OpenGL und mindestens **6 GB VRAM** (jede gleichzeitige Avatar-Session benötigt ~2,5 GB)
+- **Docker & Docker Compose** auf deinem Server installiert
+- **NVIDIA Container Toolkit** installiert, damit Docker auf die GPU zugreifen kann
+
+<Note>
+  Der Avatar-Server läuft ausschließlich auf der GPU. Ein reiner CPU-Host wird nicht unterstützt. Getestete Architekturen sind Ampere, Ada Lovelace und Blackwell.
+</Note>
+
+## Dokumentation erkunden
+
+<CardGroup cols={2}>
+  <Card title="Schnellstart" icon="rocket" href="/de/self-hosting/quickstart">
+    Setze Avatar-Server und LiveKit-Agent in wenigen Minuten auf und verbinde deinen ersten Client.
+  </Card>
+  <Card title="Architektur" icon="sitemap" href="/de/self-hosting/architecture">
+    Verstehe, wie Avatar-Server und LiveKit-Agent zusammenarbeiten, um deinen Avatar zu rendern und zu streamen.
+  </Card>
+  <Card title="Avatar-Server" icon="server" href="/de/self-hosting/avatar-server/overview">
+    Konfiguriere GPU-Ressourcen, verwalte `.hvia`-Dateien und richte einen HTTPS-Reverse-Proxy für die Produktion ein.
+  </Card>
+  <Card title="LiveKit-Agent" icon="microphone" href="/de/self-hosting/livekit-agent/overview">
+    Passe die STT → LLM → TTS-Pipeline an und verbinde sie mit einem beliebigen LiveKit-Raum.
+  </Card>
+</CardGroup>
