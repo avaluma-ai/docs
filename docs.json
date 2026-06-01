@@ -6,7 +6,10 @@
     "primary": "#1c64ec",
     "light": "#ffffff"
   },
-  "favicon": "https://media.brand.dev/4155d945-6a5e-41de-a5e5-fda12b9f868a.png",
+  "favicon": {
+    "light": "/images/favicon.png",
+    "dark": "/images/favicon.png"
+  },
   "navbar": {
     "primary": {
       "type": "github",
@@ -76,5 +79,10 @@
         ]
       }
     ]
+  },
+  "logo": {
+    "light": "/images/avaluma_logo_for_mail.png",
+    "dark": "/images/avaluma_logo_for_mail.png",
+    "href": "https://avaluma.ai"
   }
 }
