@@ -1,0 +1,75 @@
+{
+  "projectType": "ai-ml",
+  "projectName": "Avaluma AI",
+  "projectDescription": "Avaluma AI lets you embed photorealistic, real-time animated avatars into your applications using a LiveKit-powered voice AI pipeline.",
+  "theme": "luma",
+  "primaryColor": "#1c64ec",
+  "lightColor": "#ffffff",
+  "darkColor": null,
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": [
+              "introduction",
+              "quickstart",
+              "architecture"
+            ]
+          },
+          {
+            "group": "Avatar Server",
+            "pages": [
+              "avatar-server/overview",
+              "avatar-server/setup",
+              "avatar-server/https-proxy"
+            ]
+          },
+          {
+            "group": "LiveKit Agent",
+            "pages": [
+              "livekit-agent/overview",
+              "livekit-agent/conversational-agent",
+              "livekit-agent/external-audio"
+            ]
+          },
+          {
+            "group": "Configuration",
+            "pages": [
+              "configuration/environment-variables",
+              "configuration/avatar-files"
+            ]
+          },
+          {
+            "group": "Testing & Troubleshooting",
+            "pages": [
+              "testing/test-clients",
+              "testing/troubleshooting"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Photorealistic AI avatar rendering with GPU acceleration",
+    "Full voice AI pipeline: STT → LLM → TTS → animated avatar",
+    "LiveKit-native integration via the avaluma-livekit-plugin",
+    "External audio streaming to avatar via LiveKit DataStream",
+    "Multiple simultaneous avatar sessions",
+    "Docker-based deployment with HTTPS reverse proxy support",
+    "Avaluma Hosted API (api.avaluma.ai) or self-hosted avatar server"
+  ],
+  "publicApiSurface": [
+    "AvatarSession(license_key, avatar_id, avatar_server_url)",
+    "AvatarSession.start(agent_session, room)",
+    "DataStream audio topic: lk.audio_stream",
+    "Avatar Server REST API (port 8080)",
+    "API_UTILS_PWD — avatar server utility API password",
+    "AVALUMA_LICENSE_KEY — license key env var",
+    "AVATAR_SERVER_URL — avatar server URL env var",
+    "AGENT_NAME — unique agent worker name env var"
+  ]
+}

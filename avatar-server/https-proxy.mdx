@@ -1,0 +1,119 @@
+---
+title: "Avatar Server HTTPS: Configure a Caddy Reverse Proxy"
+sidebarTitle: "HTTPS Proxy"
+description: "Add automatic TLS to your Avatar Server using the Caddy reverse proxy for production-ready HTTPS with automatic certificate management."
+---
+
+For production deployments, serve the Avatar Server over HTTPS so that browsers and LiveKit agents can connect securely. Avaluma ships a Caddy reverse proxy configuration alongside the Avatar Server that automatically obtains and renews TLS certificates from Let's Encrypt — no manual certificate management required. The proxy and the Avatar Server share a Docker bridge network called `avaluma-net`, so both Compose stacks must be running at the same time.
+
+## Steps
+
+<Steps>
+  <Step title="Start the Avatar Server">
+    Make sure the Avatar Server is already running before you start the proxy. If you have not set it up yet, follow the [Setup guide](/avatar-server/setup) first, then return here.
+
+    Confirm the server is healthy by running the following from the `avatar-server/` directory:
+
+    ```bash
+    docker compose logs -f
+    ```
+  </Step>
+
+  <Step title="Update the Domain">
+    Open `reverse_proxy/Caddyfile` and replace `api.avaluma.ai` with your own domain name:
+
+    ```caddyfile
+    your-domain.com {
+        reverse_proxy avaluma-avatar-server:8080
+    }
+    ```
+
+    Caddy routes all incoming HTTPS traffic on port 443 to the Avatar Server container using the shared `avaluma-net` network. The container name `avaluma-avatar-server` is the DNS name Caddy uses to reach the server — do not change it unless you also rename the service in `docker-compose.yaml`.
+  </Step>
+
+  <Step title="Start the Proxy">
+    From the `reverse_proxy/` directory, start the Caddy container:
+
+    ```bash
+    cd reverse_proxy
+    docker compose up -d
+    ```
+
+    Caddy automatically requests a TLS certificate for your domain and begins renewing it before it expires. Certificates are persisted in a named Docker volume (`caddy_data`) so they survive container restarts.
+
+    To verify the proxy is running:
+
+    ```bash
+    docker compose logs -f
+    ```
+  </Step>
+
+  <Step title="Update the Avatar Server Config">
+    Now that the server is accessible over HTTPS, update `API_SERVER_HOST` in the avatar server's `docker-compose.yaml` to match your domain:
+
+    ```yaml
+    environment:
+      - API_SERVER_HOST=your-domain.com
+    ```
+
+    Restart the Avatar Server to apply the change:
+
+    ```bash
+    docker compose up -d
+    ```
+  </Step>
+</Steps>
+
+## Full Reverse Proxy Reference
+
+<CodeGroup>
+  ```caddyfile Caddyfile
+  # Change this to your own domain name
+  api.avaluma.ai {
+      reverse_proxy avaluma-avatar-server:8080
+
+      @css {
+          path *.css
+      }
+      header @css Content-Type "text/css; charset=utf-8"
+
+      @js {
+          path *.js
+      }
+      header @js Content-Type "application/javascript; charset=utf-8"
+  }
+  ```
+
+  ```yaml docker-compose.yaml
+  services:
+    caddy-reverse-proxy:
+      image: caddy:latest
+      restart: unless-stopped
+      ports:
+        - "80:80"
+        - "443:443"
+      volumes:
+        - ./Caddyfile:/etc/caddy/Caddyfile
+        - caddy_data:/data # important for storing certificates
+        - caddy_config:/config
+      networks:
+        - avaluma-net
+
+  volumes:
+    caddy_data:
+    caddy_config:
+
+  networks:
+    avaluma-net:
+      name: avaluma-net
+      driver: bridge
+  ```
+</CodeGroup>
+
+<Note>
+  Both Compose files must use the same Docker network. The included configurations define `avaluma-net` as a bridge network. Do not rename this network unless you update both `avatar-server/docker-compose.yaml` and `reverse_proxy/docker-compose.yaml` to match.
+</Note>
+
+<Tip>
+  After enabling HTTPS, update the `AVATAR_SERVER_URL` variable in your LiveKit agent's `.env.local` file to `https://your-domain.com` so the agent connects over the secure endpoint.
+</Tip>

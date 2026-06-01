@@ -1,0 +1,70 @@
+---
+title: "Managing .hvia Avatar Files for the Avaluma Avatar Server"
+sidebarTitle: "Avatar Files"
+description: "Learn what .hvia avatar files are, how to obtain them, where to place them on disk, and how GPU VRAM limits affect simultaneous sessions."
+---
+
+Avatar files (`.hvia`) are the source data for each photorealistic avatar. The Avatar Server loads these files from disk at startup and renders them in real time using your GPU. Without at least one valid `.hvia` file, the Avatar Server has no avatar to display and will not produce a video stream.
+
+## What Is a `.hvia` File?
+
+A `.hvia` file is a proprietary Avaluma avatar file that encodes a complete photorealistic avatar model. Each file represents one avatar identity — you need one file per avatar you want to use.
+
+<CardGroup cols={2}>
+  <Card title="One file, one identity" icon="id-card">
+    Each `.hvia` file corresponds to a single avatar. Swap the file to change which avatar the server renders.
+  </Card>
+  <Card title="Obtain from Avaluma" icon="key">
+    You receive `.hvia` files from [avaluma.ai](https://avaluma.ai) together with your license key. Contact Avaluma support to request additional avatar files.
+  </Card>
+</CardGroup>
+
+## Where to Place Avatar Files
+
+Place your `.hvia` files in the `assets/avatars/` directory, located alongside the Avatar Server's `docker-compose.yaml`:
+
+```
+avatar-server/
+└── assets/
+    └── avatars/
+        ├── avatar-one.hvia
+        └── avatar-two.hvia
+```
+
+Docker Compose mounts this directory into the container at `/app/assets/avatars`. The Avatar Server scans that path on startup and makes every file it finds available as a renderable avatar.
+
+## Setting the Avatar ID in Your Agent
+
+The `avatar_id` variable in your agent script must match the `.hvia` filename **without** the `.hvia` extension. For example, if your file is named `avatar-one.hvia`, set:
+
+```python agent.py
+avatar_id = "avatar-one"  # corresponds to avatar-one.hvia
+```
+
+You configure this value in the agent file before building or starting the container:
+
+- **agent-1:** `agents/1-agent-with-livekit-inference/agent-1.py`
+- **agent-2:** `agents/2-agent-with-external-audio/agent-2.py`
+
+## Running Multiple Avatars
+
+You can place multiple `.hvia` files in the `assets/avatars/` directory and run several avatar sessions simultaneously. Keep the following GPU VRAM limits in mind when planning your deployment:
+
+<CardGroup cols={2}>
+  <Card title="~2.5 GB VRAM per session" icon="microchip">
+    Each active avatar session consumes approximately 2.5 GB of GPU VRAM while it is rendering.
+  </Card>
+  <Card title="Scale with your GPU" icon="chart-line">
+    A 6 GB VRAM GPU supports ~2 simultaneous sessions. A 12 GB VRAM GPU supports ~4 sessions.
+  </Card>
+</CardGroup>
+
+Different LiveKit Agents can each specify a different `avatar_id` and connect to the same Avatar Server. The server renders each requested avatar independently, subject to available VRAM.
+
+<Tip>
+  Restart the Avatar Server after adding new `.hvia` files. The server loads avatar files only on startup, so files added while the server is running will not be detected until the next restart.
+</Tip>
+
+<Note>
+  The Avatar Server image is configured with `pull_policy: always`, so running `docker compose restart` both fetches the latest server image **and** reloads your avatar files from disk in a single step.
+</Note>

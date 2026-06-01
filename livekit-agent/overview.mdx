@@ -1,0 +1,110 @@
+---
+title: "LiveKit Agent: Connect a Voice AI Pipeline to Your Avatar"
+sidebarTitle: "Overview"
+description: "Drive an Avaluma avatar with a Python LiveKit Agent. Choose between a full voice AI pipeline or direct external audio streaming via DataStream."
+---
+
+The Avaluma LiveKit Agent is a Python worker built on the [livekit-agents](https://docs.livekit.io/agents/) framework. It connects to a LiveKit room and drives an Avaluma avatar by routing audio through the `AvatarSession` API — the bridge between your voice pipeline and the avatar server that animates the `.hvia` file. Two ready-to-run agent patterns are included so you can start with the approach that best fits your architecture.
+
+## Agent Patterns
+
+<CardGroup cols={2}>
+  <Card
+    title="Conversational Agent"
+    icon="microphone"
+    href="/livekit-agent/conversational-agent"
+  >
+    Full voice AI pipeline: STT → LLM → TTS → Avaluma Avatar. Powered by LiveKit Inference with AssemblyAI, OpenAI GPT-4.1-mini, and Cartesia Sonic-3.
+  </Card>
+  <Card
+    title="External Audio"
+    icon="waveform-lines"
+    href="/livekit-agent/external-audio"
+  >
+    Stream raw PCM audio directly to the avatar via LiveKit DataStream, bypassing the AgentSession pipeline entirely — ideal for custom TTS or audio sources.
+  </Card>
+</CardGroup>
+
+## How the AvatarSession Works
+
+Both agents rely on `AvatarSession` from the `avaluma-livekit-plugin` package. You instantiate it with your credentials, call `avatar.start()`, and it handles joining the room as a separate avatar participant and forwarding audio frames to the avatar server for rendering.
+
+```python
+from avaluma_livekit_plugin import AvatarSession
+
+avatar = AvatarSession(
+    license_key=license_key,
+    avatar_id=avatar_id,          # matches your-avatar-id.hvia
+    avatar_server_url=avatar_server_url,
+)
+await avatar.start(agent_session=session, room=ctx.room)
+```
+
+## Choosing a Pattern
+
+| | Conversational Agent | External Audio |
+|---|---|---|
+| **Audio source** | LiveKit Inference (STT → LLM → TTS) | Any external service or file |
+| **AgentSession** | Required | Optional |
+| **DataStream** | Managed by `AvatarSession` | Explicit (`lk.audio_stream`) |
+| **Best for** | Turnkey voice assistants | Custom TTS / pre-generated audio |
+
+## Dependencies
+
+All dependencies are declared in `pyproject.toml` and managed by [uv](https://github.com/astral-sh/uv):
+
+```toml pyproject.toml
+[project]
+name = "avaluma-livekit-agent"
+version = "1.0.0"
+description = "Simple example for LiveKit Agents with Avaluma Avatar"
+requires-python = ">=3.12"
+
+dependencies = [
+    "livekit",
+    "livekit-agents[silero,turn-detector]~=1.2",
+    "livekit-plugins-noise-cancellation~=0.2",
+    "python-dotenv",
+    "avaluma-livekit-plugin @ git+https://github.com/avaluma-ai/avaluma-livekit-plugin.git"
+]
+```
+
+| Package | Purpose |
+|---|---|
+| `livekit` | LiveKit RTC SDK — room, track, and DataStream primitives |
+| `livekit-agents` | Core agent framework (includes `silero` VAD and `turn-detector`) |
+| `livekit-plugins-noise-cancellation` | Background noise suppression via BVC |
+| `avaluma-livekit-plugin` | `AvatarSession` — Avaluma avatar integration |
+| `python-dotenv` | Loads credentials from `.env.local` |
+
+## Prerequisites
+
+Before running either agent, make sure you have the following:
+
+<CardGroup cols={2}>
+  <Card title="Docker & Docker Compose" icon="docker">
+    Both agents ship with a `docker-compose.yaml` for zero-config local startup.
+  </Card>
+  <Card title="LiveKit Account" icon="server">
+    A LiveKit Cloud project or self-hosted instance. You need the URL, API key, and API secret.
+  </Card>
+  <Card title="Avatar Server" icon="circle-play">
+    A running `avatar-server` instance, or use the hosted endpoint at `https://api.avaluma.ai`.
+  </Card>
+  <Card title="Avaluma License Key" icon="key">
+    Your `AVALUMA_LICENSE_KEY` from the Avaluma dashboard — passed directly to `AvatarSession`.
+  </Card>
+</CardGroup>
+
+## Testing Your Agent
+
+Once your agent and avatar server are running, connect using one of these clients:
+
+| Client | When to use |
+|---|---|
+| **[Avaluma Test Client](https://avaluma.ai/test-client)** | Works with any LiveKit setup — self-hosted or Cloud |
+| **[LiveKit Agent Playground](https://agents-playground.livekit.io)** | Available when using a LiveKit Cloud project |
+
+<Tip>
+  In the LiveKit Agent Playground, set the **Agent Name** field to the `AGENT_NAME` environment variable you configured (e.g. `agent-1`). If the agent doesn't respond after changing the name, reload the page and reconnect.
+</Tip>

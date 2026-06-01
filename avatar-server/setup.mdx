@@ -1,0 +1,109 @@
+---
+title: "Avatar Server Setup: Install and Configure with Docker"
+sidebarTitle: "Setup"
+description: "Deploy the Avaluma Avatar Server with Docker Compose, add your .hvia avatar files, and set the two required environment variables to go live."
+---
+
+Setting up the Avatar Server involves three steps: adding your `.hvia` avatar files to the right directory, configuring a small set of environment variables in `docker-compose.yaml`, and starting the container. Once the server is running, your LiveKit Agent can connect to it and begin animating avatars in real time.
+
+## Prerequisites
+
+<Note>
+  Before you begin, make sure you have the following:
+
+  - [Docker](https://docs.docker.com/get-docker/) and Docker Compose installed
+  - An NVIDIA GPU with CUDA 12, OpenGL support, and at least **6 GB VRAM**
+  - [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html) installed and configured
+  - An Avaluma license key and at least one `.hvia` avatar file
+</Note>
+
+## Steps
+
+<Steps>
+  <Step title="Add Avatar Files">
+    Place your `.hvia` avatar files in the `assets/avatars/` directory inside the `avatar-server/` folder:
+
+    ```
+    assets/avatars/
+    └── your-avatar-id.hvia
+    ```
+
+    The container mounts this directory at `/app/assets/avatars`, so any file you place here is immediately available to the server on next start.
+
+    <Tip>
+      Each `.hvia` file represents one avatar. You can add multiple files to run several avatars simultaneously — the only limit is your available VRAM (~2.5 GB per active session).
+    </Tip>
+  </Step>
+
+  <Step title="Configure the Environment">
+    Open `docker-compose.yaml` and update the environment variables under the `avaluma-avatar-server` service:
+
+    ```yaml
+    environment:
+      - API_SERVER_HOST=api.yourdomain.com  # Public IP or domain
+      - API_UTILS_PWD=your-secure-password
+    ```
+
+    Set `API_SERVER_HOST` to the public IP address or domain name that clients will use to reach the server. If you are running the server only on `localhost` without a reverse proxy, you can leave this as-is for local testing.
+
+    | Variable | Description |
+    |---|---|
+    | `API_UTILS_PWD` | Password for the avatar server utility API |
+    | `API_SERVER_HOST` | Public IP or domain name of the server |
+  </Step>
+
+  <Step title="Start the Server">
+    From the `avatar-server/` directory, run:
+
+    ```bash
+    docker compose up -d
+    ```
+
+    The server starts in detached mode and is available at `http://localhost:8080`. When you use a reverse proxy or expose the server on a public IP, make sure `API_SERVER_HOST` matches that address.
+
+    To check that the container started successfully, inspect the logs:
+
+    ```bash
+    docker compose logs -f
+    ```
+  </Step>
+</Steps>
+
+## Full docker-compose.yaml Reference
+
+Here is the complete `docker-compose.yaml` for reference:
+
+```yaml
+services:
+  avaluma-avatar-server:
+    image: ghcr.io/avaluma-ai/avaluma-avatar-server:latest
+    pull_policy: always # update on restart
+    restart: unless-stopped
+    environment:
+      # change this to the Public IP of the server or domain name when using reverse proxy
+      - API_SERVER_HOST=api.avaluma.ai
+      - API_UTILS_PWD=CHANGE_THIS
+    ports:
+      # not necessary when using reverse proxy
+      - 8080:8080
+    volumes:
+      - ./assets/avatars:/app/assets/avatars # folder for .hvia-files
+    networks:
+      - avaluma-net
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu, compute, utility, graphics]
+
+networks:
+  avaluma-net:
+    name: avaluma-net
+    driver: bridge
+```
+
+<Note>
+  The image is configured with `pull_policy: always`, which means Docker pulls the latest image every time the container restarts. Your Avatar Server stays up to date automatically without any manual intervention.
+</Note>

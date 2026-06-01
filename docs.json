@@ -1,0 +1,80 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "name": "Avaluma AI",
+  "theme": "luma",
+  "colors": {
+    "primary": "#1c64ec",
+    "light": "#ffffff"
+  },
+  "favicon": "https://media.brand.dev/4155d945-6a5e-41de-a5e5-fda12b9f868a.png",
+  "navbar": {
+    "primary": {
+      "type": "github",
+      "href": "https://github.com/avaluma-ai/avaluma-examples"
+    }
+  },
+  "navigation": {
+    "languages": [
+      {
+        "language": "en",
+        "hidden": true,
+        "tabs": [
+          {
+            "tab": "Documentation",
+            "groups": [
+              {
+                "group": "Get Started",
+                "pages": [
+                  "introduction",
+                  "quickstart",
+                  "architecture"
+                ]
+              },
+              {
+                "group": "Avatar Server",
+                "pages": [
+                  "avatar-server/overview",
+                  "avatar-server/setup",
+                  "avatar-server/https-proxy"
+                ]
+              },
+              {
+                "group": "LiveKit Agent",
+                "pages": [
+                  "livekit-agent/overview",
+                  "livekit-agent/conversational-agent",
+                  "livekit-agent/external-audio"
+                ]
+              },
+              {
+                "group": "Configuration",
+                "pages": [
+                  "configuration/environment-variables",
+                  "configuration/avatar-files"
+                ]
+              },
+              {
+                "group": "Testing & Troubleshooting",
+                "pages": [
+                  "testing/test-clients",
+                  "testing/troubleshooting"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "language": "de",
+        "groups": [
+          {
+            "group": "Agents",
+            "pages": [
+              "embedding"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

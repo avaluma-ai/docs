@@ -1,0 +1,59 @@
+---
+title: "Avatar Server Overview: Deploy Photorealistic AI Avatars"
+sidebarTitle: "Overview"
+description: "Run the Avaluma Avatar Server to render .hvia avatars into live video and stream them into LiveKit rooms. Requires an NVIDIA GPU with 6+ GB VRAM."
+---
+
+The Avaluma Avatar Server is a Docker-based service that renders photorealistic AI avatars from `.hvia` files and streams the resulting video directly into a LiveKit room. It handles all GPU-accelerated rendering locally, giving you full control over compute resources and latency. You can run multiple avatar sessions at the same time — each session consumes approximately 2.5 GB of VRAM — making it straightforward to scale up as your needs grow.
+
+## How It Works
+
+The Avatar Server sits at the core of the Avaluma stack. A LiveKit Agent drives the conversational AI pipeline — speech-to-text, language model, and text-to-speech — and sends audio to the Avatar Server. The server animates the avatar in real time and streams the video back into the LiveKit room for participants to see.
+
+## GPU Requirements
+
+<Note>
+  The Avatar Server requires a dedicated NVIDIA GPU. CPU-only environments are not supported.
+
+  | Requirement | Detail |
+  |---|---|
+  | CUDA version | 12 |
+  | Additional capabilities | OpenGL support, graphics drivers |
+  | Minimum VRAM | 6 GB (each avatar session uses ~2.5 GB) |
+  | Tested architectures | Ampere, Ada Lovelace, Blackwell |
+  | NVIDIA Container Toolkit | Required — [installation guide](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html) |
+</Note>
+
+## Deployment Options
+
+You can connect your LiveKit Agent to either the Avaluma-hosted server or your own self-hosted instance:
+
+- **Avaluma Hosted** — point your agent at `api.avaluma.ai` and let Avaluma manage the infrastructure.
+- **Self-Hosted** — run the Docker service on your own hardware for full control over data and compute.
+
+## Directory Structure
+
+The `avatar-server/` directory contains everything you need to get started:
+
+```
+avatar-server/
+├── assets/
+│   └── avatars/          # Place your .hvia avatar files here
+├── reverse_proxy/        # Optional: Caddy HTTPS reverse proxy
+│   ├── Caddyfile
+│   └── docker-compose.yaml
+└── docker-compose.yaml
+```
+
+Place your `.hvia` avatar files in `assets/avatars/`. The `reverse_proxy/` folder contains an optional Caddy configuration for terminating TLS in production.
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Setup" icon="server" href="/avatar-server/setup">
+    Deploy the Avatar Server with Docker, add your avatar files, and configure the environment.
+  </Card>
+  <Card title="HTTPS Proxy" icon="lock" href="/avatar-server/https-proxy">
+    Add automatic TLS to your deployment using the included Caddy reverse proxy.
+  </Card>
+</CardGroup>

@@ -1,0 +1,158 @@
+---
+title: "Get Started with Avaluma AI Avatars"
+sidebarTitle: "Quickstart"
+description: "Deploy the Avatar Server and LiveKit Agent with Docker, then connect a test client to see your photorealistic AI avatar live in under 15 minutes."
+---
+
+By the end of this guide you will have the Avaluma Avatar Server rendering your `.hvia` avatar on a GPU, a LiveKit Agent running a full voice AI pipeline (STT → LLM → TTS), and a connected test client where you can speak to your avatar in real time.
+
+## Prerequisites
+
+<Note>
+  Confirm you have the following before you begin:
+
+  - **Docker & Docker Compose** installed on your server
+  - **NVIDIA GPU** (CUDA 12, min 6 GB VRAM) with the **NVIDIA Container Toolkit** installed
+  - An **Avaluma license key** and at least one **`.hvia` avatar file**
+  - A **LiveKit account** (Cloud or self-hosted) with an API key and secret
+</Note>
+
+<Steps>
+
+  <Step title="Deploy the Avatar Server">
+
+    Clone or download the `avatar-server` example directory, then place your `.hvia` avatar files where the container can find them:
+
+    ```bash
+    mkdir -p avatar-server/assets/avatars
+    cp /path/to/your-avatar.hvia avatar-server/assets/avatars/
+    ```
+
+    Open `avatar-server/docker-compose.yaml` and set a secure password for the utility API:
+
+    ```yaml
+    environment:
+      - API_SERVER_HOST=api.avaluma.ai   # public IP or domain of this server
+      - API_UTILS_PWD=CHANGE_THIS        # replace with a strong password
+    ```
+
+    Start the server:
+
+    ```bash
+    docker compose up -d
+    ```
+
+    The Avatar Server is now available at **http://localhost:8080**. For production, add the optional Caddy reverse proxy included in `avatar-server/reverse_proxy/` to terminate TLS automatically.
+
+    <Tip>
+      The container uses `pull_policy: always`, so restarting it will automatically pull the latest Avaluma image.
+    </Tip>
+
+  </Step>
+
+  <Step title="Configure the LiveKit Agent">
+
+    Clone or download the `livekit-agent` example directory. Copy the environment template:
+
+    ```bash
+    cp .env.example .env.local
+    ```
+
+    Open `.env.local` and fill in your credentials:
+
+    ```env
+    AVALUMA_LICENSE_KEY=""      # Your Avaluma license key
+    AVATAR_SERVER_URL="https://your-avatar-server.com"
+    # Avaluma Hosted: https://api.avaluma.ai
+
+    LIVEKIT_URL=""              # wss://your-livekit-instance.livekit.cloud
+    LIVEKIT_API_KEY=""          # API key from your LiveKit project
+    LIVEKIT_API_SECRET=""       # API secret from your LiveKit project
+    ```
+
+    <Note>
+      If you are using Avaluma's managed Avatar Server, set `AVATAR_SERVER_URL=https://api.avaluma.ai`. If you deployed your own server in Step 1, use its public URL.
+    </Note>
+
+    Next, open `agents/1-agent-with-livekit-inference/agent-1.py` and set `avatar_id` to the filename of your `.hvia` file **without** the `.hvia` extension:
+
+    ```python
+    avatar_id = "your-avatar-id"   # e.g. "studio-avatar-v2" for studio-avatar-v2.hvia
+    ```
+
+    The `AvatarSession` block in that file wires the voice pipeline to the Avatar Server:
+
+    ```python
+    from avaluma_livekit_plugin import AvatarSession
+
+    avatar = AvatarSession(
+        license_key=license_key,       # Your License Key
+        avatar_id=avatar_id,           # Avatar identifier (Name of .hvia file)
+        avatar_server_url=avatar_server_url,
+    )
+    await avatar.start(agent_session=session, room=ctx.room)
+    ```
+
+    You do not need to modify this block — it reads the values you set in `.env.local` and `avatar_id` automatically.
+
+  </Step>
+
+  <Step title="Start the Agent">
+
+    Run only the conversational agent (`agent-1`):
+
+    ```bash
+    docker compose up livekit-agent-1 -d
+    ```
+
+    To start both example agents at once, omit the service name:
+
+    ```bash
+    docker compose up -d
+    ```
+
+    <Tip>
+      Each agent must have a unique `AGENT_NAME` in `docker-compose.yaml` when you deploy multiple agents to the same LiveKit project.
+    </Tip>
+
+  </Step>
+
+  <Step title="Test the Connection">
+
+    With all three services running — Avatar Server, LiveKit server, and the agent — connect a client to your LiveKit room.
+
+    <Tabs>
+      <Tab title="Avaluma Test Client">
+        Open the [Avaluma Test Client](https://avaluma.ai/test-client) in your browser. It works with any LiveKit setup — self-hosted or cloud. Enter your LiveKit server URL and credentials, then click **Connect** to start speaking to your avatar.
+      </Tab>
+      <Tab title="LiveKit Agent Playground">
+        Open the [LiveKit Agent Playground](https://agents-playground.livekit.io). Select your LiveKit Cloud project or enter your server credentials, enter `agent-1` as the **Agent Name**, then click **Connect**.
+
+        <Warning>
+          If the agent does not respond after you change the agent name, reload the page and reconnect.
+        </Warning>
+      </Tab>
+    </Tabs>
+
+    Your avatar should appear in the video track and respond to your voice in real time.
+
+  </Step>
+
+</Steps>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Architecture" icon="sitemap" href="/architecture">
+    Learn how the Avatar Server and LiveKit Agent interact under the hood.
+  </Card>
+  <Card title="Avatar Server" icon="server" href="/avatar-server/overview">
+    Configure GPU resources, run multiple avatars simultaneously, and set up HTTPS.
+  </Card>
+  <Card title="LiveKit Agent" icon="microphone" href="/livekit-agent/overview">
+    Swap in different STT, LLM, and TTS models and add custom agent logic.
+  </Card>
+  <Card title="External Audio" icon="waveform" href="/livekit-agent/overview#external-audio">
+    Stream audio from any external service directly to the avatar without an AgentSession.
+  </Card>
+</CardGroup>

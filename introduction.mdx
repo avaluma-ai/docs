@@ -1,0 +1,47 @@
+---
+title: "Avaluma AI: Photorealistic AI Avatars for Your App"
+sidebarTitle: "Introduction"
+description: "Avaluma AI lets you embed real-time photorealistic animated AI avatars into any application using GPU-accelerated rendering and LiveKit."
+---
+
+Avaluma AI is a platform for embedding real-time photorealistic animated AI avatars directly into your applications. You provide a LiveKit room and an Avaluma-issued `.hvia` avatar file; Avaluma handles GPU-accelerated rendering, lip-sync, and video streaming — so your users see a lifelike avatar speaking, not a static image or a cartoon.
+
+## How It Works
+
+Avaluma AI is built on two cooperating components that you deploy independently.
+
+**Avatar Server** runs on an NVIDIA GPU and is the rendering engine. It reads your `.hvia` avatar files, animates the avatar frame-by-frame in response to incoming audio, and publishes the resulting video track directly into a LiveKit room. You can host the Avatar Server yourself or use Avaluma's managed endpoint at `https://api.avaluma.ai`.
+
+**LiveKit Agent** is a Python-based voice AI pipeline that drives a conversation. It captures microphone input, runs it through Speech-to-Text (STT), passes the transcript to a Large Language Model (LLM), synthesises speech with Text-to-Speech (TTS), and then hands the audio to the Avatar Server via the `avaluma-livekit-plugin`. The avatar animates that audio and streams the video back into the room.
+
+## Prerequisites
+
+Before you deploy, make sure you have the following:
+
+- An **Avaluma license key** — obtain one at [avaluma.ai](https://avaluma.ai)
+- One or more **`.hvia` avatar files** issued with your license
+- A **LiveKit account** — [LiveKit Cloud](https://livekit.io) or self-hosted
+- An **NVIDIA GPU** with CUDA 12 support, OpenGL, and at least **6 GB VRAM** (each simultaneous avatar session uses ~2.5 GB)
+- **Docker & Docker Compose** installed on your server
+- **NVIDIA Container Toolkit** installed so Docker can access the GPU
+
+<Note>
+  The Avatar Server is GPU-only. A CPU-only host is not supported. Tested architectures include Ampere, Ada Lovelace, and Blackwell.
+</Note>
+
+## Explore the Docs
+
+<CardGroup cols={2}>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Deploy the Avatar Server and LiveKit Agent in minutes and connect your first client.
+  </Card>
+  <Card title="Architecture" icon="sitemap" href="/architecture">
+    Understand how the Avatar Server and LiveKit Agent work together to render and stream your avatar.
+  </Card>
+  <Card title="Avatar Server" icon="server" href="/avatar-server/overview">
+    Configure GPU resources, manage `.hvia` files, and set up an HTTPS reverse proxy for production.
+  </Card>
+  <Card title="LiveKit Agent" icon="microphone" href="/livekit-agent/overview">
+    Customise the STT → LLM → TTS pipeline and connect it to any LiveKit room.
+  </Card>
+</CardGroup>

@@ -1,0 +1,61 @@
+---
+title: "Avaluma AI: Photorealistic AI Avatars for Your Applications"
+sidebarTitle: "Home"
+description: "Embed real-time, photorealistic animated avatars in any application using LiveKit. Start your first session in minutes with an Avaluma license key."
+---
+
+Avaluma AI brings photorealistic, real-time animated avatars to your applications. Connect an avatar to a full voice AI pipeline — speech recognition, an LLM, and text-to-speech — and your users get a lifelike conversational experience streamed directly into a LiveKit room.
+
+<CardGroup cols={2}>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Deploy your first avatar session end-to-end in minutes.
+  </Card>
+  <Card title="Architecture" icon="diagram-project" href="/architecture">
+    Understand how the Avatar Server and LiveKit Agent fit together.
+  </Card>
+  <Card title="Avatar Server" icon="server" href="/avatar-server/overview">
+    Host and configure the avatar rendering service.
+  </Card>
+  <Card title="LiveKit Agent" icon="microphone" href="/livekit-agent/overview">
+    Build conversational voice AI agents that drive your avatar.
+  </Card>
+</CardGroup>
+
+## How It Works
+
+Avaluma AI has two components that work together to deliver a live avatar experience:
+
+1. **Avatar Server** — A service that renders `.hvia` avatar files into a live video stream and publishes that stream into a LiveKit room.
+2. **LiveKit Agent** — A Python worker that runs your voice AI pipeline (STT → LLM → TTS) and drives the avatar's audio input, making the avatar speak and react in real time.
+
+<Steps>
+  <Step title="Get your license key and avatar file">
+    Obtain your Avaluma license key and one or more `.hvia` avatar files from [avaluma.ai](https://avaluma.ai).
+  </Step>
+  <Step title="Deploy the Avatar Server">
+    Run the Avatar Server on a compatible machine. Place your `.hvia` files in the avatars folder and start the service.
+  </Step>
+  <Step title="Configure and start a LiveKit Agent">
+    Set your credentials, choose your avatar ID, and start the LiveKit Agent. It connects the voice AI pipeline to your avatar.
+  </Step>
+  <Step title="Connect a client">
+    Open the [Avaluma Test Client](https://avaluma.ai/test-client) or the LiveKit Agent Playground to see your avatar live.
+  </Step>
+</Steps>
+
+## What You Need
+
+<CardGroup cols={2}>
+  <Card title="License Key & Avatar Files" icon="key" href="/configuration/avatar-files">
+    An Avaluma license key and `.hvia` avatar files are required to start a session.
+  </Card>
+  <Card title="LiveKit Account" icon="video" href="/livekit-agent/overview">
+    A LiveKit Cloud project or self-hosted server provides the real-time room infrastructure.
+  </Card>
+  <Card title="Avatar Server Setup" icon="microchip" href="/avatar-server/setup">
+    Review hardware requirements and learn how to set up the Avatar Server.
+  </Card>
+  <Card title="Configuration Reference" icon="gear" href="/configuration/environment-variables">
+    All environment variables and configuration options in one place.
+  </Card>
+</CardGroup>

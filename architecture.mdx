@@ -1,0 +1,91 @@
+---
+title: "How Avaluma AI Works: Architecture Overview"
+sidebarTitle: "Architecture"
+description: "Explore the two-component pipeline that powers Avaluma AI: the GPU-rendered Avatar Server and the LiveKit Agent voice AI pipeline."
+---
+
+Avaluma AI is composed of two independently deployed components — the **Avatar Server** and the **LiveKit Agent** — that communicate through a shared LiveKit room. The Agent handles the conversational intelligence, while the Avatar Server handles GPU rendering. You can run both yourself or use Avaluma's managed Avatar Server at `https://api.avaluma.ai`.
+
+## The Avatar Server
+
+The Avatar Server is the rendering engine of Avaluma AI. It runs inside a Docker container with direct access to an NVIDIA GPU and performs the following work:
+
+- Loads your `.hvia` avatar files from the `assets/avatars/` directory at startup
+- Receives audio from the LiveKit Agent via the `avaluma-livekit-plugin`
+- Renders the photorealistic avatar frame-by-frame, animating lip movement and facial expressions in sync with the audio
+- Publishes the resulting video track back into the LiveKit room, where any connected participant can subscribe to it
+
+**Resource requirements:** Each simultaneous avatar session consumes approximately **2.5 GB of VRAM**. A GPU with 6 GB VRAM can serve two concurrent sessions; scale up your GPU to support more. The server has been tested on Ampere, Ada Lovelace, and Blackwell architectures with CUDA 12.
+
+**Hosting options:**
+
+| Option | URL |
+|---|---|
+| Self-hosted | `http://localhost:8080` (or your domain with the reverse proxy) |
+| Avaluma Managed | `https://api.avaluma.ai` |
+
+<Note>
+  The optional Caddy reverse proxy included in `avatar-server/reverse_proxy/` automatically provisions and renews a TLS certificate for your domain, making the self-hosted option production-ready without extra configuration.
+</Note>
+
+## The LiveKit Agent
+
+The LiveKit Agent runs a full voice AI pipeline inside a Docker container. It listens to microphone audio from participants in the LiveKit room and drives a conversation through the following stages:
+
+```text
+Microphone → STT → LLM → TTS → Avaluma Avatar → Video stream
+             │                         │
+       AssemblyAI              Avatar Server
+       (universal-           (animates .hvia
+        streaming)              avatar file)
+               LLM: OpenAI GPT-4.1-mini
+               TTS: Cartesia Sonic-3
+```
+
+Each stage is pluggable via the `AgentSession` configuration in `agent-1.py`:
+
+- **STT** — AssemblyAI `universal-streaming` model transcribes the participant's speech in real time
+- **LLM** — OpenAI `gpt-4.1-mini` generates a response to the transcript
+- **TTS** — Cartesia `sonic-3` synthesises the response as speech audio
+- **`AvatarSession`** — the `avaluma-livekit-plugin` forwards the TTS audio to the Avatar Server, which animates the avatar and streams the video back into the room
+
+The agent also applies Silero VAD for voice-activity detection, LiveKit BVC for background noise cancellation, and a multilingual end-of-turn detection model to know when the participant has finished speaking.
+
+<Tip>
+  You can swap any stage for a different provider. Refer to the [LiveKit Agents plugin directory](https://docs.livekit.io/agents/plugins/) for compatible STT, LLM, and TTS plugins.
+</Tip>
+
+## External Audio (agent-2 Pattern)
+
+The Avatar Server is not limited to the `AgentSession` pipeline. Any external service that holds a valid LiveKit token can stream audio directly to the avatar over a **LiveKit DataStream** on the topic `lk.audio_stream`. The avatar animates that audio without an Agent or AgentSession involved at all.
+
+```text
+WAV file → DataStream → Avaluma Avatar → Video stream
+(external sender,               │
+ own LiveKit token)      Avatar Server
+```
+
+This pattern is demonstrated in `agent-2` and is useful when you already have a speech synthesis service, a pre-recorded script, or any audio source outside the standard pipeline.
+
+<Info>
+  The external sender only needs a LiveKit token and the DataStream topic `lk.audio_stream` — no Avaluma SDK is required on the sender side.
+</Info>
+
+## Component Summary
+
+| Component | Responsibility | Hosting |
+|---|---|---|
+| Avatar Server | GPU rendering, lip-sync, video streaming | Self-hosted or `api.avaluma.ai` |
+| LiveKit Agent | STT → LLM → TTS voice AI pipeline | Self-hosted Docker container |
+| LiveKit Room | Shared media layer connecting both components | LiveKit Cloud or self-hosted |
+
+## Explore Further
+
+<CardGroup cols={2}>
+  <Card title="Avatar Server" icon="server" href="/avatar-server/overview">
+    Learn how to configure GPU resources, manage avatar files, and enable HTTPS.
+  </Card>
+  <Card title="LiveKit Agent" icon="microphone" href="/livekit-agent/overview">
+    Dive into the voice AI pipeline, environment variables, and the external audio pattern.
+  </Card>
+</CardGroup>
