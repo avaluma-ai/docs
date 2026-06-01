@@ -3,7 +3,7 @@
   "name": "Avaluma AI",
   "theme": "luma",
   "colors": {
-    "primary": "#1c64ec",
+    "primary": "#564A99",
     "light": "#ffffff"
   },
   "favicon": {
@@ -84,5 +84,11 @@
     "light": "/images/avaluma_logo_for_mail.png",
     "dark": "/images/avaluma_logo_for_mail.png",
     "href": "https://avaluma.ai"
+  },
+  "icons": {
+    "library": "lucide"
+  },
+  "fonts": {
+    "family": "Capriola"
   }
 }
