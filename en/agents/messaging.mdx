@@ -64,12 +64,17 @@ sendToAvatar({ type: "avaluma:init" });
 
 // Send text to the agent (requires an active conversation)
 sendToAvatar({ type: "avaluma:sendMessage", text: "Hello!" });
+
+// Mute / re-enable the microphone
+sendToAvatar({ type: "avaluma:setMicrophone", enabled: false });
+sendToAvatar({ type: "avaluma:setMicrophone", enabled: true });
 ```
 
 | Message | Payload | Effect |
 |---|---|---|
 | `avaluma:init` | — | Registers the parent page's origin and completes the handshake. Send on every `ready` beacon. |
 | `avaluma:sendMessage` | `{ text }` | Sends text to the agent — as if the user had typed it into the chat field. Empty messages are ignored. |
+| `avaluma:setMicrophone` | `{ enabled }` | Turns the visitor's microphone on (`true`) or mutes it (`false`). Use this to build your own push-to-talk button on your page, for example. |
 
 <Note>
   A conversation is started by the visitor via "Start conversation" inside the iframe. `avaluma:sendMessage` only takes effect while a conversation is active.
@@ -118,6 +123,10 @@ window.addEventListener("message", (event) => {
 
 ## Full test example
 
+<Tip>
+  The quickest way without writing your own code: the built-in **[embedding test page](https://avaluma.ai/embed-test)** at `avaluma.ai/embed-test`. It embeds an agent from the avaluma.ai domain and visualizes the full bridge (handshake, send text, microphone on/off, event log). Just add `https://avaluma.ai` to the agent's **Allowed origins**.
+</Tip>
+
 A standalone HTML page that embeds the avatar, sends text to it, and shows all events in a small log. Serve it locally with a static server (e.g. `python3 -m http.server 8080`) and add its origin (`http://localhost:8080`) to the agent's **Allowed origins**.
 
 <CodeGroup>
@@ -153,7 +162,7 @@ A standalone HTML page that embeds the avatar, sends text to it, and shows all e
 
   <iframe
     id="avatar"
-    src="https://avaluma.ai/agent/AGENT_ID/embed?mic=ptt"
+    src="https://avaluma.ai/agent/AGENT_ID/embed"
     allow="microphone; autoplay"
   ></iframe>
 

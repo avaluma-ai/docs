@@ -64,12 +64,17 @@ sendToAvatar({ type: "avaluma:init" });
 
 // Text an den Agenten senden (erfordert eine aktive Konversation)
 sendToAvatar({ type: "avaluma:sendMessage", text: "Hallo!" });
+
+// Mikrofon stummschalten / wieder aktivieren
+sendToAvatar({ type: "avaluma:setMicrophone", enabled: false });
+sendToAvatar({ type: "avaluma:setMicrophone", enabled: true });
 ```
 
 | Nachricht | Payload | Wirkung |
 |---|---|---|
 | `avaluma:init` | — | Registriert den Origin der Parent-Seite und schließt den Handshake ab. Auf jeden `ready`-Beacon senden. |
 | `avaluma:sendMessage` | `{ text }` | Sendet Text an den Agenten — als hätte der Nutzer ihn ins Chat-Feld getippt. Leere Nachrichten werden ignoriert. |
+| `avaluma:setMicrophone` | `{ enabled }` | Schaltet das Mikrofon des Besuchers an (`true`) oder stumm (`false`). Damit baust du z. B. einen eigenen Push-to-Talk-Button auf deiner Seite. |
 
 <Note>
   Eine Konversation startet der Besucher selbst über „Gespräch starten" im iframe. `avaluma:sendMessage` wirkt nur, solange eine Konversation aktiv ist.
@@ -118,6 +123,10 @@ window.addEventListener("message", (event) => {
 
 ## Vollständiges Testbeispiel
 
+<Tip>
+  Schnellster Weg ohne eigenen Code: die eingebaute **[Embedding-Testseite](https://avaluma.ai/embed-test)** auf `avaluma.ai/embed-test`. Sie bettet einen Agenten von der avaluma.ai-Domain ein und visualisiert die komplette Brücke (Handshake, Text senden, Mikrofon ein/aus, Event-Log). Trage dafür `https://avaluma.ai` bei den **Erlaubten Origins** des Agenten ein.
+</Tip>
+
 Eine eigenständige HTML-Seite, die den Avatar einbettet, Text an ihn sendet und alle Events in einem kleinen Log anzeigt. Lokal mit einem statischen Server ausliefern (z. B. `python3 -m http.server 8080`) und dessen Origin (`http://localhost:8080`) bei den **Erlaubten Origins** des Agenten eintragen.
 
 <CodeGroup>
@@ -153,7 +162,7 @@ Eine eigenständige HTML-Seite, die den Avatar einbettet, Text an ihn sendet und
 
   <iframe
     id="avatar"
-    src="https://avaluma.ai/agent/AGENT_ID/embed?mic=ptt"
+    src="https://avaluma.ai/agent/AGENT_ID/embed"
     allow="microphone; autoplay"
   ></iframe>
 
