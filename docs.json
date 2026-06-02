@@ -25,13 +25,7 @@
             "group": "Agents",
             "pages": [
               "en/agents/overview",
-              {
-                "group": "Embedding",
-                "pages": [
-                  "en/agents/embedding",
-                  "en/agents/embedding/messaging"
-                ]
-              }
+              "en/agents/embedding"
             ]
           },
           {
@@ -87,13 +81,7 @@
             "group": "Agents",
             "pages": [
               "de/agents/overview",
-              {
-                "group": "Embedding",
-                "pages": [
-                  "de/agents/embedding",
-                  "de/agents/embedding/messaging"
-                ]
-              }
+              "de/agents/embedding"
             ]
           },
           {

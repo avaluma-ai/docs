@@ -16,7 +16,7 @@ Jeder freigegebene Agent lässt sich als `<iframe>` in eine beliebige Webseite e
     Trage unter **Erlaubte Origins** die Adresse(n) der Seite(n) ein, auf denen der Avatar laufen darf — z. B. `https://www.deine-domain.de`.
 
     <Warning>
-      Steht der Origin der einbettenden Seite **nicht** auf der Liste, blockiert der Browser den iframe (über `frame-ancestors`) und alle [Messaging](/de/agents/embedding/messaging)-Befehle werden abgewiesen. Trage exakt den Origin ein (Schema + Host + Port), ohne Pfad.
+      Steht der Origin der einbettenden Seite **nicht** auf der Liste, blockiert der Browser den iframe (über `frame-ancestors`) und alle [Messaging](#messaging)-Befehle werden abgewiesen. Trage exakt den Origin ein (Schema + Host + Port), ohne Pfad.
     </Warning>
   </Step>
   <Step title="Snippet kopieren">
@@ -82,7 +82,7 @@ Alle Optionen werden als Query-Parameter an die `/embed`-URL gehängt. Ungültig
 </ParamField>
 
 <Note>
-  Das Mikrofon ist während eines Gesprächs dauerhaft offen. Möchtest du es von deiner Seite aus stummschalten oder wieder aktivieren (z. B. ein eigener Push-to-Talk-Button), steuere es per `postMessage` — siehe [Messaging](/de/agents/embedding/messaging).
+  Das Mikrofon ist während eines Gesprächs dauerhaft offen. Möchtest du es von deiner Seite aus stummschalten oder wieder aktivieren (z. B. ein eigener Push-to-Talk-Button), steuere es per `postMessage` — siehe [Messaging](#messaging).
 </Note>
 
 ### Beispiel mit mehreren Optionen
@@ -95,10 +95,237 @@ Alle Optionen werden als Query-Parameter an die `/embed`-URL gehängt. Ungültig
 ></iframe>
 ```
 
-## Weiter
+## Messaging
 
-<CardGroup cols={2}>
-  <Card title="Messaging" icon="messages" href="/de/agents/embedding/messaging">
-    Steuere den Avatar programmatisch von deiner Seite aus und empfange Events (Verbindung, Agent-Antworten) per `postMessage`.
-  </Card>
-</CardGroup>
+Über das reine Einbetten hinaus kannst du den Avatar programmatisch steuern und auf sein Verhalten reagieren. Ein eingebetteter Agent läuft in einem `<iframe>` — deine Seite und der Avatar leben also in unterschiedlichen Browser-Kontexten. Sie kommunizieren über die standardisierte [`window.postMessage`](https://developer.mozilla.org/docs/Web/API/Window/postMessage)-API: Du **sendest Nachrichten** an den iframe und **empfängst Events** vom iframe.
+
+Alle Nachrichten tragen das Präfix `avaluma:`, damit fremde Messages (z. B. von Drittanbieter-Skripten) sicher ignoriert werden.
+
+<Warning>
+  Messaging funktioniert nur, wenn der Origin deiner Seite unter **Erlaubte Origins** des Agenten eingetragen ist (siehe [Voraussetzungen](#voraussetzungen) oben). Nachrichten von oder an einen nicht erlaubten Origin werden vom Browser abgewiesen.
+</Warning>
+
+### Referenz auf den iframe holen
+
+Gib deinem Embed eine `id`, damit du sein `contentWindow` ansprechen kannst:
+
+```html
+<iframe
+  id="avaluma-agent"
+  src="https://avaluma.ai/agent/AGENT_ID/embed"
+  allow="microphone; autoplay"
+  style="width:100%;height:600px;border:0"
+></iframe>
+```
+
+```js
+const frame = document.getElementById("avaluma-agent");
+const AVALUMA_ORIGIN = "https://avaluma.ai";
+```
+
+### Ablauf (Handshake)
+
+Die Brücke meldet sich bei jedem (Re-)Mount mit einem `ready`-Beacon. Die Parent-Seite bestätigt mit `init` und registriert damit ihren Origin als Ziel für ausgehende Events.
+
+<Steps>
+  <Step title="ready empfangen">
+    Sobald die Brücke im iframe bereit ist, sendet sie `{ type: "avaluma:ready" }`.
+  </Step>
+  <Step title="init zurücksenden">
+    Die Parent-Seite antwortet mit `{ type: "avaluma:init" }`. Erst dadurch kennt die Brücke den Ziel-Origin und kann Events zustellen.
+  </Step>
+  <Step title="senden & empfangen">
+    Ab jetzt kann die Seite `sendMessage` schicken und empfängt `connected`, `agentMessage` und `disconnected`.
+  </Step>
+</Steps>
+
+<Tip>
+  Reagiere immer auf **jeden** `ready`-Beacon mit `init`. Nach „Auflegen" und erneutem Verbinden startet die Brücke neu und sendet erneut `ready` — durch das wiederholte `init` laufen die Events nahtlos weiter.
+</Tip>
+
+### Nachrichten an den Avatar senden
+
+Sende eine Nachricht an das `contentWindow` des iframes. Übergib immer den Avaluma-Origin als zweites Argument, damit die Nachricht nur an den Avatar zugestellt wird:
+
+```js
+function sendToAvatar(message) {
+  frame.contentWindow.postMessage(message, AVALUMA_ORIGIN);
+}
+
+// Handshake abschließen (auf jeden ready-Beacon antworten)
+sendToAvatar({ type: "avaluma:init" });
+
+// Text an den Agenten senden (erfordert eine aktive Konversation)
+sendToAvatar({ type: "avaluma:sendMessage", text: "Hallo!" });
+
+// Mikrofon stummschalten / wieder aktivieren
+sendToAvatar({ type: "avaluma:setMicrophone", enabled: false });
+sendToAvatar({ type: "avaluma:setMicrophone", enabled: true });
+```
+
+| Nachricht | Payload | Wirkung |
+|---|---|---|
+| `avaluma:init` | — | Registriert den Origin der Parent-Seite und schließt den Handshake ab. Auf jeden `ready`-Beacon senden. |
+| `avaluma:sendMessage` | `{ text }` | Sendet Text an den Agenten — als hätte der Nutzer ihn ins Chat-Feld getippt. Leere Nachrichten werden ignoriert. |
+| `avaluma:setMicrophone` | `{ enabled }` | Schaltet das Mikrofon des Besuchers an (`true`) oder stumm (`false`). Damit baust du z. B. einen eigenen Push-to-Talk-Button auf deiner Seite auf. |
+
+<Note>
+  Eine Konversation startet der Besucher selbst über „Gespräch starten" im iframe. `avaluma:sendMessage` wirkt nur, solange eine Konversation aktiv ist.
+</Note>
+
+### Events vom Avatar empfangen
+
+Lausche auf `message`-Events am `window`. **Prüfe immer `event.origin`**, bevor du den Daten vertraust:
+
+```js
+window.addEventListener("message", (event) => {
+  if (event.origin !== AVALUMA_ORIGIN) return;
+
+  const data = event.data;
+  if (!data || typeof data.type !== "string") return;
+
+  switch (data.type) {
+    case "avaluma:ready":
+      // Brücke ist bereit → Handshake bestätigen
+      sendToAvatar({ type: "avaluma:init" });
+      break;
+    case "avaluma:connected":
+      console.log("Konversation gestartet");
+      break;
+    case "avaluma:disconnected":
+      console.log("Konversation beendet");
+      break;
+    case "avaluma:agentMessage":
+      // Gestreamt: gleiche id, wachsender text; final === true am Ende
+      if (data.final) console.log("Agent:", data.text);
+      break;
+  }
+});
+```
+
+| Event | Daten | Bedeutung |
+|---|---|---|
+| `avaluma:ready` | — | Die Brücke ist bereit. Bei jedem (Re-)Mount gesendet — mit `init` beantworten. |
+| `avaluma:connected` | — | Eine Konversation wurde aufgebaut (Avatar verbunden). |
+| `avaluma:disconnected` | — | Die Konversation wurde beendet. |
+| `avaluma:agentMessage` | `{ id, text, final }` | Eine Nachricht des Agenten. Transkripte werden gestreamt — derselbe `id`-Wert wird mit wachsendem `text` mehrfach gesendet. |
+
+<Accordion title="Wie wird „final&quot; bestimmt?">
+  Getippte Chat-Nachrichten sind sofort `final: true`. Gestreamte Sprach-Transkripte gelten als fertig, sobald sich der Text rund 1 Sekunde nicht mehr ändert — dann folgt genau ein abschließendes `final: true`-Event mit dem kompletten Text. Mehrere Events mit gleicher `id` gehören zur selben Nachricht; nutze die `id`, um die Anzeige zu aktualisieren statt anzuhängen. Wer nur das Endergebnis braucht, filtert auf `final === true`.
+</Accordion>
+
+### Vollständiges Testbeispiel
+
+<Tip>
+  Schnellster Weg ohne eigenen Code: die eingebaute **[Embedding-Testseite](https://avaluma.ai/embed-test)** auf `avaluma.ai/embed-test`. Sie bettet einen Agenten von der avaluma.ai-Domain ein und visualisiert die komplette Brücke (Handshake, Text senden, Mikrofon ein/aus, Event-Log). Trage dafür `https://avaluma.ai` bei den **Erlaubten Origins** des Agenten ein.
+</Tip>
+
+Eine eigenständige HTML-Seite, die den Avatar einbettet, Text an ihn sendet und alle Events in einem kleinen Log anzeigt. Lokal mit einem statischen Server ausliefern (z. B. `python3 -m http.server 8080`) und dessen Origin (`http://localhost:8080`) bei den **Erlaubten Origins** des Agenten eintragen.
+
+<CodeGroup>
+
+```html test.html
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Avaluma Embed-Test</title>
+  <style>
+    body { margin: 0; min-height: 100vh; font-family: system-ui, sans-serif;
+           background: #0f172a; color: #f8fafc; padding: 1rem; box-sizing: border-box; }
+    h1 { font-size: 2rem; }
+    .row { display: flex; gap: 0.5rem; margin: 0.75rem 0; }
+    input { flex: 1; padding: 0.5rem; border-radius: 6px; border: 0; }
+    button { padding: 0.5rem 1rem; border-radius: 6px; border: 0;
+             background: #554998; color: #fff; cursor: pointer; }
+    #log { background: #1e293b; border-radius: 8px; padding: 0.75rem; height: 140px;
+           overflow: auto; font-family: monospace; font-size: 12px; white-space: pre-wrap; }
+    iframe { width: 100%; height: 600px; border: 0; margin-top: 1rem; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <h1>Avaluma Embed-Test</h1>
+
+  <div class="row">
+    <input id="text" type="text" placeholder="Nachricht an den Avatar…" />
+    <button id="send">An Avatar senden</button>
+  </div>
+  <div id="log"></div>
+
+  <iframe
+    id="avatar"
+    src="https://avaluma.ai/agent/AGENT_ID/embed"
+    allow="microphone; autoplay"
+  ></iframe>
+
+  <script>
+    const AVALUMA_ORIGIN = "https://avaluma.ai";
+    const iframe = document.getElementById("avatar");
+    const logEl = document.getElementById("log");
+    const input = document.getElementById("text");
+
+    function log(msg) {
+      logEl.textContent += msg + "\n";
+      logEl.scrollTop = logEl.scrollHeight;
+    }
+
+    function sendToAvatar(message) {
+      iframe.contentWindow.postMessage(message, AVALUMA_ORIGIN);
+    }
+
+    // Events des iframes entgegennehmen. Die Brücke sendet bei jedem (Re-)Mount
+    // einen ready-Beacon; darauf registrieren wir unseren Origin per init.
+    window.addEventListener("message", (event) => {
+      if (event.origin !== AVALUMA_ORIGIN) return;
+      const data = event.data;
+      if (!data || typeof data.type !== "string" || !data.type.startsWith("avaluma:")) return;
+      log("← " + JSON.stringify(data));
+
+      if (data.type === "avaluma:ready") {
+        log("→ init (Origin registrieren)");
+        sendToAvatar({ type: "avaluma:init" });
+      }
+
+      // Nur die fertige Agent-Antwort auswerten:
+      if (data.type === "avaluma:agentMessage" && data.final) {
+        // z. B. hier in deine eigene UI schreiben:
+        // showAgentReply(data.text);
+      }
+    });
+
+    // Text an den Agenten senden (Gespräch muss im iframe gestartet sein).
+    document.getElementById("send").addEventListener("click", () => {
+      const text = input.value.trim();
+      if (!text) return;
+      log("→ sendMessage: " + text);
+      sendToAvatar({ type: "avaluma:sendMessage", text });
+      input.value = "";
+    });
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") document.getElementById("send").click();
+    });
+  </script>
+</body>
+</html>
+```
+
+</CodeGroup>
+
+<Warning>
+  Ersetze `AGENT_ID` durch die UUID deines Agenten. Damit das Senden funktioniert, muss der Origin der Testseite bei den **Erlaubten Origins** des Agenten eingetragen sein.
+</Warning>
+
+### Sicherheits-Checkliste
+
+<Steps>
+  <Step title="Immer den Ziel-Origin angeben">
+    Verwende niemals `"*"` als Ziel-Origin in `postMessage`. Gib `https://avaluma.ai` an, damit Nachrichten nicht an andere Frames gelangen können.
+  </Step>
+  <Step title="Immer den Quell-Origin prüfen">
+    Weise in deinem `message`-Listener jedes Event ab, dessen `event.origin` nicht `https://avaluma.ai` ist.
+  </Step>
+  <Step title="Erlaubte Origins eng halten">
+    Trage unter **Erlaubte Origins** im Dashboard nur die Origins ein, die den Avatar tatsächlich hosten.
+  </Step>
+</Steps>
