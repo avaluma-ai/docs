@@ -40,6 +40,10 @@ Ersetze `AGENT_ID` durch die UUID deines Agenten (im Dashboard sichtbar).
   Das Attribut `allow="microphone; autoplay"` ist erforderlich: Ohne `microphone` kann der Besucher nicht sprechen, ohne `autoplay` startet die Audiowiedergabe in manchen Browsern nicht automatisch (es greift dann das „Ton aktivieren"-Overlay).
 </Note>
 
+<Tip>
+  Du willst nicht erst eine eigene Seite aufsetzen? Nutze die eingebaute **[Embedding-Testseite](https://avaluma.ai/embed-test)** auf `avaluma.ai/embed-test`: Agent-UUID eintragen, einbetten und die postMessage-Brücke (Handshake, Text senden, Mikrofon ein/aus, Event-Log) direkt ausprobieren. Trage dafür einmalig `https://avaluma.ai` bei den **Erlaubten Origins** des Agenten ein.
+</Tip>
+
 ## Vollbild-Variante
 
 Für eine Seite, die der Avatar komplett ausfüllen soll:
@@ -61,10 +65,6 @@ Alle Optionen werden als Query-Parameter an die `/embed`-URL gehängt. Ungültig
   Layout. `inline` füllt den iframe-Container, `fullscreen` den gesamten Viewport.
 </ParamField>
 
-<ParamField query="mic" type="string" default="open">
-  Mikrofon-Modus. `open` lässt das Mikrofon dauerhaft offen, `ptt` aktiviert Push-to-Talk (zum Sprechen halten).
-</ParamField>
-
 <ParamField query="border" type="string" default="000000">
   Hintergrund-/Letterbox-Farbe als 6-stelliger Hex-Wert **ohne** `#` (z. B. `f5f5f5`).
 </ParamField>
@@ -81,11 +81,15 @@ Alle Optionen werden als Query-Parameter an die `/embed`-URL gehängt. Ungültig
   Mit `true` wird der „Auflegen"-Button eingeblendet.
 </ParamField>
 
+<Note>
+  Das Mikrofon ist während eines Gesprächs dauerhaft offen. Möchtest du es von deiner Seite aus stummschalten oder wieder aktivieren (z. B. ein eigener Push-to-Talk-Button), steuere es per `postMessage` — siehe [Messaging](/de/agents/messaging).
+</Note>
+
 ### Beispiel mit mehreren Optionen
 
 ```html
 <iframe
-  src="https://avaluma.ai/agent/AGENT_ID/embed?mic=ptt&border=f5f5f5&lang=en&hideTextChat=true"
+  src="https://avaluma.ai/agent/AGENT_ID/embed?border=f5f5f5&lang=en&hideTextChat=true"
   allow="microphone; autoplay"
   style="width:100%;height:600px;border:0"
 ></iframe>
