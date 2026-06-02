@@ -1,0 +1,118 @@
+---
+title: "Connect this documentation to your AI assistant via MCP"
+sidebarTitle: "Connect via MCP"
+description: "Query the Avaluma documentation directly from Claude Code, OpenAI Codex, Gemini CLI, and Google Antigravity using the hosted Model Context Protocol (MCP) server."
+---
+
+This documentation is automatically available as a [Model Context Protocol (MCP)](https://modelcontextprotocol.io) server. Once you connect your AI coding assistant to it, the assistant can **search and read these docs on demand** — so its answers about Avaluma stay grounded in the current documentation instead of guessing.
+
+## The MCP endpoint
+
+The hosted MCP server is served from the documentation domain with `/mcp` appended:
+
+```text
+https://docs.avaluma.ai/mcp
+```
+
+There is nothing to deploy or maintain — Mintlify hosts the server and keeps it in sync with the live docs. It exposes read-only **search** and **navigation** tools over every published page.
+
+<Note>
+  The hosted MCP server is included in Mintlify's free plan and is generated automatically for every documentation site — no extra configuration on our side.
+</Note>
+
+## Connect your assistant
+
+All four clients connect over the same remote HTTP endpoint. Pick your tool below.
+
+<Tabs>
+  <Tab title="Claude Code">
+    Add the server with the Claude Code CLI:
+
+    ```bash
+    claude mcp add --transport http avaluma-docs https://docs.avaluma.ai/mcp
+    ```
+
+    Then check it is connected:
+
+    ```bash
+    claude mcp list
+    ```
+
+    The `avaluma-docs` tools become available in your next Claude Code session.
+  </Tab>
+
+  <Tab title="OpenAI Codex">
+    Add the server with the Codex CLI:
+
+    ```bash
+    codex mcp add avaluma-docs --url https://docs.avaluma.ai/mcp
+    ```
+
+    This writes the server to `~/.codex/config.toml`. The equivalent manual entry is:
+
+    ```toml ~/.codex/config.toml
+    [mcp_servers.avaluma-docs]
+    url = "https://docs.avaluma.ai/mcp"
+    ```
+
+    <Note>
+      The exact `codex mcp add` flags can change between Codex versions. If the command differs in your version, add the `[mcp_servers.avaluma-docs]` block to `~/.codex/config.toml` directly.
+    </Note>
+  </Tab>
+
+  <Tab title="Gemini CLI">
+    Add the server under `mcpServers` in `~/.gemini/settings.json`. For a remote HTTP server, use the `httpUrl` field:
+
+    ```json ~/.gemini/settings.json
+    {
+      "mcpServers": {
+        "avaluma-docs": {
+          "httpUrl": "https://docs.avaluma.ai/mcp"
+        }
+      }
+    }
+    ```
+
+    Restart the Gemini CLI so it picks up the new server.
+  </Tab>
+
+  <Tab title="Google Antigravity">
+    Add the server under `mcpServers` in `~/.gemini/config/mcp_config.json`. Antigravity uses the `serverUrl` field for remote servers, and the file is shared between the Antigravity CLI and IDE:
+
+    ```json ~/.gemini/config/mcp_config.json
+    {
+      "mcpServers": {
+        "avaluma-docs": {
+          "serverUrl": "https://docs.avaluma.ai/mcp"
+        }
+      }
+    }
+    ```
+
+    <Note>
+      Use `serverUrl` (not the older `httpUrl`), keep the JSON comment-free, and reload Antigravity afterwards.
+    </Note>
+  </Tab>
+</Tabs>
+
+## Verify it works
+
+After connecting, ask your assistant a question that can only be answered from these docs, for example:
+
+> Using the Avaluma docs MCP server, how do I mute the microphone of an embedded avatar?
+
+If the connection works, the assistant calls the docs search tool and answers with content from the [Messaging](/en/agents/embedding/messaging) page.
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="The assistant doesn't see the new tools">
+    Restart the client after adding the server — most assistants only load MCP servers at startup. For Claude Code, run `claude mcp list` to confirm the server status is `connected`.
+  </Accordion>
+  <Accordion title="Connection or transport errors">
+    Make sure you used the HTTP transport (`--transport http` / `httpUrl` / `serverUrl`) and the exact URL `https://docs.avaluma.ai/mcp`. SSE- or stdio-style entries will not work against the hosted endpoint.
+  </Accordion>
+  <Accordion title="JSON config won't load">
+    Validate the JSON — a trailing comma or an inline comment will stop Gemini CLI and Antigravity from reading the file. Antigravity in particular does not allow comments in `mcp_config.json`.
+  </Accordion>
+</AccordionGroup>

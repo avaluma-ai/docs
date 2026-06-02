@@ -1,0 +1,118 @@
+---
+title: "Diese Dokumentation per MCP mit deinem KI-Assistenten verbinden"
+sidebarTitle: "Per MCP verbinden"
+description: "Frage die Avaluma-Dokumentation direkt aus Claude Code, OpenAI Codex, Gemini CLI und Google Antigravity ab — über den gehosteten Model-Context-Protocol-Server (MCP)."
+---
+
+Diese Dokumentation steht automatisch als [Model-Context-Protocol-Server (MCP)](https://modelcontextprotocol.io) bereit. Sobald du deinen KI-Assistenten damit verbindest, kann er **diese Doku bei Bedarf durchsuchen und lesen** — seine Antworten zu Avaluma bleiben so an der aktuellen Dokumentation verankert, statt geraten zu werden.
+
+## Der MCP-Endpoint
+
+Der gehostete MCP-Server läuft unter der Doku-Domain mit angehängtem `/mcp`:
+
+```text
+https://docs.avaluma.ai/mcp
+```
+
+Es gibt nichts zu deployen oder zu warten — Mintlify hostet den Server und hält ihn mit der Live-Doku synchron. Er stellt schreibgeschützte **Such-** und **Navigations-Tools** über alle veröffentlichten Seiten bereit.
+
+<Note>
+  Der gehostete MCP-Server ist im kostenlosen Mintlify-Plan enthalten und wird für jede Doku-Site automatisch erzeugt — auf unserer Seite ist keine zusätzliche Konfiguration nötig.
+</Note>
+
+## Assistenten verbinden
+
+Alle vier Clients verbinden sich über denselben Remote-HTTP-Endpoint. Wähle unten dein Tool.
+
+<Tabs>
+  <Tab title="Claude Code">
+    Server per Claude-Code-CLI hinzufügen:
+
+    ```bash
+    claude mcp add --transport http avaluma-docs https://docs.avaluma.ai/mcp
+    ```
+
+    Anschließend prüfen, ob er verbunden ist:
+
+    ```bash
+    claude mcp list
+    ```
+
+    Die `avaluma-docs`-Tools stehen in deiner nächsten Claude-Code-Sitzung zur Verfügung.
+  </Tab>
+
+  <Tab title="OpenAI Codex">
+    Server per Codex-CLI hinzufügen:
+
+    ```bash
+    codex mcp add avaluma-docs --url https://docs.avaluma.ai/mcp
+    ```
+
+    Das schreibt den Server in `~/.codex/config.toml`. Der gleichwertige manuelle Eintrag lautet:
+
+    ```toml ~/.codex/config.toml
+    [mcp_servers.avaluma-docs]
+    url = "https://docs.avaluma.ai/mcp"
+    ```
+
+    <Note>
+      Die genauen `codex mcp add`-Flags können sich zwischen Codex-Versionen ändern. Weicht der Befehl in deiner Version ab, trage den Block `[mcp_servers.avaluma-docs]` direkt in `~/.codex/config.toml` ein.
+    </Note>
+  </Tab>
+
+  <Tab title="Gemini CLI">
+    Server unter `mcpServers` in `~/.gemini/settings.json` eintragen. Für einen Remote-HTTP-Server nutzt du das Feld `httpUrl`:
+
+    ```json ~/.gemini/settings.json
+    {
+      "mcpServers": {
+        "avaluma-docs": {
+          "httpUrl": "https://docs.avaluma.ai/mcp"
+        }
+      }
+    }
+    ```
+
+    Starte die Gemini CLI neu, damit der neue Server geladen wird.
+  </Tab>
+
+  <Tab title="Google Antigravity">
+    Server unter `mcpServers` in `~/.gemini/config/mcp_config.json` eintragen. Antigravity nutzt für Remote-Server das Feld `serverUrl`; die Datei wird zwischen Antigravity-CLI und -IDE geteilt:
+
+    ```json ~/.gemini/config/mcp_config.json
+    {
+      "mcpServers": {
+        "avaluma-docs": {
+          "serverUrl": "https://docs.avaluma.ai/mcp"
+        }
+      }
+    }
+    ```
+
+    <Note>
+      Verwende `serverUrl` (nicht das ältere `httpUrl`), halte das JSON kommentarfrei und lade Antigravity anschließend neu.
+    </Note>
+  </Tab>
+</Tabs>
+
+## Funktion prüfen
+
+Stelle nach dem Verbinden eine Frage, die sich nur aus dieser Doku beantworten lässt, zum Beispiel:
+
+> Wie schalte ich über den Avaluma-Docs-MCP-Server das Mikrofon eines eingebetteten Avatars stumm?
+
+Funktioniert die Verbindung, ruft der Assistent das Doku-Such-Tool auf und antwortet mit Inhalten von der [Messaging](/de/agents/embedding/messaging)-Seite.
+
+## Fehlerbehebung
+
+<AccordionGroup>
+  <Accordion title="Der Assistent sieht die neuen Tools nicht">
+    Starte den Client nach dem Hinzufügen neu — die meisten Assistenten laden MCP-Server nur beim Start. Bei Claude Code prüfst du mit `claude mcp list`, ob der Server-Status `connected` ist.
+  </Accordion>
+  <Accordion title="Verbindungs- oder Transport-Fehler">
+    Stelle sicher, dass du den HTTP-Transport verwendet hast (`--transport http` / `httpUrl` / `serverUrl`) und exakt die URL `https://docs.avaluma.ai/mcp`. SSE- oder stdio-artige Einträge funktionieren mit dem gehosteten Endpoint nicht.
+  </Accordion>
+  <Accordion title="JSON-Konfiguration lädt nicht">
+    Validiere das JSON — ein nachgestelltes Komma oder ein Inline-Kommentar verhindert, dass Gemini CLI und Antigravity die Datei lesen. Antigravity erlaubt insbesondere keine Kommentare in `mcp_config.json`.
+  </Accordion>
+</AccordionGroup>

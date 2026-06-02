@@ -16,7 +16,7 @@ Every shared agent can be embedded as an `<iframe>` on any website. The avatar t
     Under **Allowed origins**, add the address(es) of the page(s) that may run the avatar — for example `https://www.your-domain.com`.
 
     <Warning>
-      If the embedding page's origin is **not** on the list, the browser blocks the iframe (via `frame-ancestors`) and all [messaging](/en/agents/messaging) commands are rejected. Enter the exact origin (scheme + host + port), without a path.
+      If the embedding page's origin is **not** on the list, the browser blocks the iframe (via `frame-ancestors`) and all [messaging](/en/agents/embedding/messaging) commands are rejected. Enter the exact origin (scheme + host + port), without a path.
     </Warning>
   </Step>
   <Step title="Copy the snippet">
@@ -82,7 +82,7 @@ All options are appended as query parameters to the `/embed` URL. Invalid values
 </ParamField>
 
 <Note>
-  The microphone stays open for the duration of a conversation. If you want to mute or re-enable it from your page (e.g. your own push-to-talk button), control it via `postMessage` — see [Messaging](/en/agents/messaging).
+  The microphone stays open for the duration of a conversation. If you want to mute or re-enable it from your page (e.g. your own push-to-talk button), control it via `postMessage` — see [Messaging](/en/agents/embedding/messaging).
 </Note>
 
 ### Example with multiple options
@@ -98,7 +98,7 @@ All options are appended as query parameters to the `/embed` URL. Invalid values
 ## Next
 
 <CardGroup cols={2}>
-  <Card title="Messaging" icon="messages" href="/en/agents/messaging">
+  <Card title="Messaging" icon="messages" href="/en/agents/embedding/messaging">
     Control the avatar programmatically from your page and receive events (connection, agent responses) via `postMessage`.
   </Card>
 </CardGroup>

@@ -25,8 +25,13 @@
             "group": "Agents",
             "pages": [
               "en/agents/overview",
-              "en/agents/embedding",
-              "en/agents/messaging"
+              {
+                "group": "Embedding",
+                "pages": [
+                  "en/agents/embedding",
+                  "en/agents/embedding/messaging"
+                ]
+              }
             ]
           },
           {
@@ -66,6 +71,12 @@
                 ]
               }
             ]
+          },
+          {
+            "group": "Docs as MCP",
+            "pages": [
+              "en/mcp/connect"
+            ]
           }
         ]
       },
@@ -76,8 +87,13 @@
             "group": "Agents",
             "pages": [
               "de/agents/overview",
-              "de/agents/embedding",
-              "de/agents/messaging"
+              {
+                "group": "Embedding",
+                "pages": [
+                  "de/agents/embedding",
+                  "de/agents/embedding/messaging"
+                ]
+              }
             ]
           },
           {
@@ -116,6 +132,12 @@
                   "de/self-hosting/testing/troubleshooting"
                 ]
               }
+            ]
+          },
+          {
+            "group": "Doku als MCP",
+            "pages": [
+              "de/mcp/connect"
             ]
           }
         ]

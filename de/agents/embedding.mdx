@@ -16,7 +16,7 @@ Jeder freigegebene Agent lässt sich als `<iframe>` in eine beliebige Webseite e
     Trage unter **Erlaubte Origins** die Adresse(n) der Seite(n) ein, auf denen der Avatar laufen darf — z. B. `https://www.deine-domain.de`.
 
     <Warning>
-      Steht der Origin der einbettenden Seite **nicht** auf der Liste, blockiert der Browser den iframe (über `frame-ancestors`) und alle [Messaging](/de/agents/messaging)-Befehle werden abgewiesen. Trage exakt den Origin ein (Schema + Host + Port), ohne Pfad.
+      Steht der Origin der einbettenden Seite **nicht** auf der Liste, blockiert der Browser den iframe (über `frame-ancestors`) und alle [Messaging](/de/agents/embedding/messaging)-Befehle werden abgewiesen. Trage exakt den Origin ein (Schema + Host + Port), ohne Pfad.
     </Warning>
   </Step>
   <Step title="Snippet kopieren">
@@ -82,7 +82,7 @@ Alle Optionen werden als Query-Parameter an die `/embed`-URL gehängt. Ungültig
 </ParamField>
 
 <Note>
-  Das Mikrofon ist während eines Gesprächs dauerhaft offen. Möchtest du es von deiner Seite aus stummschalten oder wieder aktivieren (z. B. ein eigener Push-to-Talk-Button), steuere es per `postMessage` — siehe [Messaging](/de/agents/messaging).
+  Das Mikrofon ist während eines Gesprächs dauerhaft offen. Möchtest du es von deiner Seite aus stummschalten oder wieder aktivieren (z. B. ein eigener Push-to-Talk-Button), steuere es per `postMessage` — siehe [Messaging](/de/agents/embedding/messaging).
 </Note>
 
 ### Beispiel mit mehreren Optionen
@@ -98,7 +98,7 @@ Alle Optionen werden als Query-Parameter an die `/embed`-URL gehängt. Ungültig
 ## Weiter
 
 <CardGroup cols={2}>
-  <Card title="Messaging" icon="messages" href="/de/agents/messaging">
+  <Card title="Messaging" icon="messages" href="/de/agents/embedding/messaging">
     Steuere den Avatar programmatisch von deiner Seite aus und empfange Events (Verbindung, Agent-Antworten) per `postMessage`.
   </Card>
 </CardGroup>
