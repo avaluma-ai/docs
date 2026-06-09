@@ -25,7 +25,8 @@
             "group": "Agents",
             "pages": [
               "en/agents/overview",
-              "en/agents/embedding"
+              "en/agents/embedding",
+              "en/agents/kiosk"
             ]
           },
           {
@@ -81,7 +82,8 @@
             "group": "Agents",
             "pages": [
               "de/agents/overview",
-              "de/agents/embedding"
+              "de/agents/embedding",
+              "de/agents/kiosk"
             ]
           },
           {

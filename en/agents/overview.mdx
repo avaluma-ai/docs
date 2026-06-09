@@ -56,6 +56,7 @@ Open an agent to adjust its configuration at any time. Common settings include:
 | **Language** | Default conversation and UI language. |
 | **Sharing** | Whether the agent is reachable via a public link. |
 | **Embedding** | Whether the agent may be embedded via `<iframe>`, and on which origins. |
+| **Kiosk** | Whether the agent is reachable as a standalone fullscreen page (kiosk). |
 
 <Note>
   Only **shared** agents can be opened via a public link or embedded on a website. Enable sharing before you distribute an agent link.
@@ -77,5 +78,8 @@ To put the agent directly on your own site, embed it as an `<iframe>` and contro
   </Card>
   <Card title="Messaging" icon="messages" href="/en/agents/embedding#messaging">
     Control the embedded avatar programmatically and receive events with the `postMessage` API.
+  </Card>
+  <Card title="Kiosk mode" icon="monitor" href="/en/agents/kiosk">
+    Run the agent fullscreen on an unattended display — with a screen wake lock and idle auto-reset.
   </Card>
 </CardGroup>

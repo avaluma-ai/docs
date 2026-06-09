@@ -1,0 +1,77 @@
+---
+title: "Einen Avaluma-Agent als Vollbild-Kiosk betreiben"
+sidebarTitle: "Kiosk-Modus"
+description: "Betreibe einen freigegebenen Avaluma-Agent im Vollbild auf einem unbeaufsichtigten Display — Aufsteller, Empfangsbildschirm oder Messestand — mit Display-Wachhalter und Auto-Reset bei Inaktivität."
+---
+
+Der Kiosk-Modus öffnet einen Agenten als **eigenständige Vollbild-Seite** — ohne iframe, ohne umgebende Webseite. Er ist für unbeaufsichtigte Displays gemacht, etwa einen Aufsteller, einen Empfangsbildschirm oder einen Messestand: Der Avatar füllt den ganzen Bildschirm, das Display bleibt wach, und nachdem ein Besucher das Gespräch verlässt, setzt es sich für den nächsten von selbst zurück.
+
+<Note>
+  Der Kiosk-Modus ist eine **eigene Freigabe**, unabhängig von der Website-Einbettung. Ein Agent kann als Kiosk verfügbar sein, ohne auf anderen Seiten einbettbar zu sein — und umgekehrt. Anders als beim Einbetten gibt es beim Kiosk keine Liste erlaubter Origins — die einzige Hürde ist der Kiosk-Schalter. Aktiviere ihn daher nur für Agenten, die als öffentliche Vollbild-Seite erreichbar sein sollen.
+</Note>
+
+## Voraussetzungen
+
+<Steps>
+  <Step title="Kiosk-Modus aktivieren">
+    Öffne den Agenten im [Dashboard](https://avaluma.ai), gehe zum Tab **Bereitstellung** und aktiviere im Abschnitt **Kiosk-URL** den Schalter **Kiosk-Modus aktivieren**. Nur freigegebene Agenten können als Kiosk laufen.
+  </Step>
+  <Step title="Kiosk-URL holen">
+    Kopiere die fertige URL aus dem Dashboard oder scanne den QR-Code mit dem Gerät. Du kannst die URL auch wie unten beschrieben selbst zusammenbauen.
+  </Step>
+  <Step title="Zum Startbildschirm hinzufügen">
+    Öffne die URL auf dem Gerät im Browser und füge sie zum Startbildschirm hinzu. Vom Startbildschirm gestartet läuft sie als echte Vollbild-Web-App, ohne Browser-Bedienelemente.
+  </Step>
+</Steps>
+
+## Schnellstart
+
+```text
+https://avaluma.ai/agent/AGENT_ID/kiosk
+```
+
+Ersetze `AGENT_ID` durch die UUID deines Agenten (im Dashboard sichtbar). Öffne die URL direkt im Browser des Geräts — es gibt keinen iframe und keinen Einbettungs-Code zum Einfügen.
+
+## Query-Parameter
+
+Alle Optionen werden als Query-Parameter an die `/kiosk`-URL gehängt. Ungültige Werte fallen automatisch auf den Standard zurück.
+
+<ParamField query="mic" type="string" default="open">
+  Mikrofon-Modus. `open` hält das Mikrofon während des ganzen Gesprächs offen; `ptt` aktiviert einen Push-to-Talk-Button, den der Besucher zum Sprechen hält.
+</ParamField>
+
+<ParamField query="lang" type="string" default="de">
+  UI-Sprache der Bedienelemente. `de` oder `en`.
+</ParamField>
+
+<ParamField query="endCall" type="boolean" default="true">
+  Ob der „Auflegen"-Button angezeigt wird. Im Kiosk-Modus ist er **standardmäßig an**, damit ein Besucher das Gespräch beenden kann; mit `endCall=false` wird er ausgeblendet.
+</ParamField>
+
+<ParamField query="idle" type="number" default="0">
+  Auto-Reset-Zeit in **Sekunden**. Nach dieser Inaktivität — während der Agent auf eine Eingabe wartet — endet das Gespräch und der Start-Screen kehrt für den nächsten Besucher zurück. `0` deaktiviert den Auto-Reset.
+</ParamField>
+
+<Note>
+  Die Parameter `border` und `hideTextChat` aus dem [Embedding](/de/agents/embedding#query-parameter) funktionieren hier ebenfalls (Hintergrundfarbe und Ausblenden der Text-Chat-Eingabe).
+</Note>
+
+### Beispiel mit mehreren Optionen
+
+```text
+https://avaluma.ai/agent/AGENT_ID/kiosk?mic=ptt&lang=en&idle=60
+```
+
+Push-to-Talk, englische Oberfläche und ein Reset zum Start-Screen nach 60 Sekunden Inaktivität.
+
+## Vollbild auf dem Gerät
+
+Für echtes Vollbild ohne Adressleiste fügst du die Kiosk-URL zum Startbildschirm des Geräts hinzu und startest sie von dort. Nutze dafür das Teilen-Menü des Browsers (z. B. „Zum Startbildschirm hinzufügen") — die Seite ist als eigenständige Web-App konfiguriert und öffnet sich daher ohne Bedienelemente.
+
+## Auto-Reset bei Inaktivität
+
+Mit gesetztem `idle`-Parameter erholt sich ein unbeaufsichtigter Kiosk von selbst: Verlässt ein Besucher das Gespräch, beendet der Agent die Sitzung nach der konfigurierten Inaktivität und kehrt zum Start-Screen zurück — bereit für die nächste Person. Der Timer läuft nur, während der Agent auf eine Eingabe wartet — er unterbricht den Agenten nie beim Sprechen oder Denken, und jede Berührung setzt ihn zurück.
+
+## Display-Wachhalter (Wake-Lock)
+
+Solange eine Kiosk-Seite geöffnet ist, fordert sie einen Screen-Wake-Lock an, damit das Display im Betrieb nicht abdunkelt oder sich sperrt. Der Lock wird automatisch erneut angefordert, nachdem das Gerät kurz geschlafen hat oder die Seite wieder in den Vordergrund kommt. In Browsern ohne Wake-Lock-Unterstützung funktioniert der Kiosk trotzdem — der Bildschirm folgt dann einfach den normalen Energiespareinstellungen des Geräts.

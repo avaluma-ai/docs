@@ -56,6 +56,7 @@ Einmal konfiguriert, hat ein Agent eine feste **Agent-ID** (eine UUID), mit der 
 | **Sprache** | Standardsprache für Konversation und Oberfläche. |
 | **Freigabe** | Ob der Agent über einen öffentlichen Link erreichbar ist. |
 | **Einbettung** | Ob der Agent per `<iframe>` eingebettet werden darf — und auf welchen Origins. |
+| **Kiosk** | Ob der Agent als eigenständige Vollbild-Seite (Kiosk) erreichbar ist. |
 
 <Note>
   Nur **freigegebene** Agenten lassen sich über einen öffentlichen Link öffnen oder auf einer Webseite einbetten. Aktiviere die Freigabe, bevor du einen Agent-Link verteilst.
@@ -77,5 +78,8 @@ Um den Agent direkt auf deiner eigenen Seite anzuzeigen, bette ihn als `<iframe>
   </Card>
   <Card title="Messaging" icon="messages" href="/de/agents/embedding#messaging">
     Steuere den eingebetteten Avatar programmatisch und empfange Events über die `postMessage`-API.
+  </Card>
+  <Card title="Kiosk-Modus" icon="monitor" href="/de/agents/kiosk">
+    Betreibe den Agenten im Vollbild auf einem unbeaufsichtigten Display — mit Wake-Lock und Auto-Reset.
   </Card>
 </CardGroup>

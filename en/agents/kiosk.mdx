@@ -1,0 +1,77 @@
+---
+title: "Run an Avaluma Agent as a Fullscreen Kiosk"
+sidebarTitle: "Kiosk mode"
+description: "Run a shared Avaluma agent fullscreen on an unattended display — kiosk stand, reception screen, or trade-show booth — with a screen wake lock and idle auto-reset."
+---
+
+Kiosk mode opens an agent as a **standalone, fullscreen page** — no iframe, no surrounding website. It is built for unattended displays such as a kiosk stand, a reception screen, or a trade-show booth: the avatar fills the entire screen, the display stays awake, and after a visitor leaves the conversation resets itself for the next one.
+
+<Note>
+  Kiosk mode is a **separate opt-in** from website embedding. An agent can be available as a kiosk without being embeddable on other sites, and vice versa. Unlike embedding, kiosk mode has no allowed-origins list — the only gate is the kiosk toggle, so only enable it for agents you want reachable as a public fullscreen page.
+</Note>
+
+## Prerequisites
+
+<Steps>
+  <Step title="Enable kiosk mode">
+    Open the agent in the [dashboard](https://avaluma.ai), go to the **Deployment** tab, and turn on **Enable kiosk mode** in the **Kiosk URL** section. Only shared agents can run as a kiosk.
+  </Step>
+  <Step title="Get the kiosk URL">
+    Copy the ready-made URL from the dashboard, or scan the QR code with the device. You can also build the URL yourself as described below.
+  </Step>
+  <Step title="Add it to the home screen">
+    On the device, open the URL in the browser and add it to the home screen. Launched from the home screen it runs as a true fullscreen web app, without browser chrome.
+  </Step>
+</Steps>
+
+## Quickstart
+
+```text
+https://avaluma.ai/agent/AGENT_ID/kiosk
+```
+
+Replace `AGENT_ID` with your agent's UUID (visible in the dashboard). Open the URL directly in the device's browser — there is no iframe and no embed code to paste.
+
+## Query parameters
+
+All options are appended as query parameters to the `/kiosk` URL. Invalid values fall back to their defaults automatically.
+
+<ParamField query="mic" type="string" default="open">
+  Microphone mode. `open` keeps the microphone on for the whole conversation; `ptt` enables a push-to-talk button the visitor holds to speak.
+</ParamField>
+
+<ParamField query="lang" type="string" default="de">
+  UI language of the controls. `de` or `en`.
+</ParamField>
+
+<ParamField query="endCall" type="boolean" default="true">
+  Whether the "Hang up" button is shown. In kiosk mode it is **on by default** so a visitor can end the conversation; set `endCall=false` to hide it.
+</ParamField>
+
+<ParamField query="idle" type="number" default="0">
+  Auto-reset timeout in **seconds**. After this much inactivity while the agent is waiting for input, the conversation ends and the start screen returns for the next visitor. `0` disables the auto-reset.
+</ParamField>
+
+<Note>
+  The `border` and `hideTextChat` parameters from [Embedding](/en/agents/embedding#query-parameters) work here too (background color and hiding the text-chat input).
+</Note>
+
+### Example with multiple options
+
+```text
+https://avaluma.ai/agent/AGENT_ID/kiosk?mic=ptt&lang=en&idle=60
+```
+
+Push-to-talk, English UI, and a reset to the start screen after 60 seconds of inactivity.
+
+## Fullscreen on the device
+
+For a true fullscreen experience without an address bar, add the kiosk URL to the device's home screen and launch it from there. Use the browser's share menu (for example "Add to Home Screen") — the page is configured as a standalone web app, so it opens chrome-free.
+
+## Idle auto-reset
+
+With the `idle` parameter set, an unattended kiosk recovers on its own: if a visitor walks away mid-conversation, the agent ends the session after the configured idle time and returns to the start screen, ready for the next person. The timer only runs while the agent is waiting for input — it never interrupts the agent while it is speaking or thinking, and any touch resets it.
+
+## Screen wake lock
+
+While a kiosk page is open, it requests a screen wake lock so the display does not dim or lock itself during operation. The lock is re-acquired automatically after the device briefly sleeps or the page returns to the foreground. On browsers without wake-lock support the kiosk still works — the screen simply follows the device's normal sleep settings.
