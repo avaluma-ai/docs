@@ -44,6 +44,12 @@ Replace `AGENT_ID` with your agent's UUID (visible in the dashboard).
   Don't want to set up your own page first? Use the built-in **[embedding test page](https://avaluma.ai/embed-test)** at `avaluma.ai/embed-test`: enter an agent UUID, embed it, and try the postMessage bridge (handshake, send text, microphone on/off, event log) right away. Just add `https://avaluma.ai` to the agent's **Allowed origins** once.
 </Tip>
 
+## Start screen preview
+
+Before the visitor clicks "Start conversation", the real avatar is not yet connected — no session is established and nothing is spoken. If the agent's **avatar** has a preview video configured, the start screen plays it as a **silent, seamless loop** (back and forth) until the visitor starts. Without a configured video, the start screen stays a solid color (see `border`).
+
+The preview video is configured on the avatar and automatically applies to every agent that uses that avatar — you don't need to change your embed code. We recommend a small **MP4** already exported as a boomerang (forward + reverse).
+
 ## Fullscreen displays
 
 Embedding always renders the avatar **inline**, inside the iframe container you place on your page. For a standalone, fullscreen display — for example an unattended kiosk stand — use the dedicated **[Kiosk mode](/en/agents/kiosk)** instead of an iframe. It opens directly as a top-level page (no iframe) and adds a screen wake lock, an idle auto-reset, and a home-screen web app for true fullscreen.
@@ -54,6 +60,10 @@ All options are appended as query parameters to the `/embed` URL. Invalid values
 
 <ParamField query="border" type="string" default="000000">
   Background / letterbox color as a 6-digit hex value **without** `#` (e.g. `f5f5f5`).
+</ParamField>
+
+<ParamField query="fit" type="string" default="contain">
+  How the avatar preview and live stream are displayed inside the iframe. `contain` shows the full image (possibly with thin bars in the `border` color); `cover` fills the area and crops the edges. Applies to both the start-screen video and the running avatar.
 </ParamField>
 
 <ParamField query="lang" type="string" default="en">
