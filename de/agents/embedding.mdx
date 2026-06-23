@@ -62,6 +62,10 @@ Alle Optionen werden als Query-Parameter an die `/embed`-URL gehängt. Ungültig
   Hintergrund-/Letterbox-Farbe als 6-stelliger Hex-Wert **ohne** `#` (z. B. `f5f5f5`).
 </ParamField>
 
+<ParamField query="fit" type="string" default="contain">
+  Darstellung von Avatar-Vorschau und Live-Stream im iframe. `contain` zeigt das vollständige Bild (ggf. mit schmalen Rändern in der `border`-Farbe); `cover` füllt die Fläche formatfüllend aus und beschneidet die Ränder. Gilt für das Startbildschirm-Video und den laufenden Avatar gleichermaßen.
+</ParamField>
+
 <ParamField query="lang" type="string" default="de">
   UI-Sprache der Bedienelemente. `de` oder `en`.
 </ParamField>

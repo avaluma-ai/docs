@@ -62,6 +62,10 @@ All options are appended as query parameters to the `/embed` URL. Invalid values
   Background / letterbox color as a 6-digit hex value **without** `#` (e.g. `f5f5f5`).
 </ParamField>
 
+<ParamField query="fit" type="string" default="contain">
+  How the avatar preview and live stream are displayed inside the iframe. `contain` shows the full image (possibly with thin bars in the `border` color); `cover` fills the area and crops the edges. Applies to both the start-screen video and the running avatar.
+</ParamField>
+
 <ParamField query="lang" type="string" default="en">
   UI language of the controls. `de` or `en`.
 </ParamField>
