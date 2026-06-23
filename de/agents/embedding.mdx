@@ -44,6 +44,12 @@ Ersetze `AGENT_ID` durch die UUID deines Agenten (im Dashboard sichtbar).
   Du willst nicht erst eine eigene Seite aufsetzen? Nutze die eingebaute **[Embedding-Testseite](https://avaluma.ai/embed-test)** auf `avaluma.ai/embed-test`: Agent-UUID eintragen, einbetten und die postMessage-Brücke (Handshake, Text senden, Mikrofon ein/aus, Event-Log) direkt ausprobieren. Trage dafür einmalig `https://avaluma.ai` bei den **Erlaubten Origins** des Agenten ein.
 </Tip>
 
+## Startbildschirm-Vorschau
+
+Bevor der Besucher „Gespräch starten" klickt, ist der echte Avatar noch nicht verbunden — es wird also keine Session aufgebaut und nichts gesprochen. Hat der **Avatar** des Agenten ein Vorschauvideo hinterlegt, zeigt der Startbildschirm dieses Video als **stumme Endlosschleife** (vor und zurück), bis der Besucher startet. Ohne hinterlegtes Video bleibt der Startbildschirm einfarbig (siehe `border`).
+
+Das Vorschauvideo wird am Avatar konfiguriert und gilt automatisch für jeden Agenten, der diesen Avatar nutzt — du musst dafür nichts am Einbettungs-Code ändern. Empfohlen ist ein kleines, bereits als Boomerang (vor + zurück) exportiertes **MP4**.
+
 ## Vollbild-Displays
 
 Die Einbettung rendert den Avatar immer **inline**, innerhalb des iframe-Containers, den du auf deiner Seite platzierst. Für ein eigenständiges Vollbild-Display — etwa einen unbeaufsichtigten Aufsteller — nutze statt eines iframes den dedizierten **[Kiosk-Modus](/de/agents/kiosk)**. Er wird direkt als Top-Level-Seite geöffnet (kein iframe) und ergänzt einen Display-Wachhalter (Wake-Lock), einen Auto-Reset bei Inaktivität und eine Startbildschirm-Web-App für echtes Vollbild.
