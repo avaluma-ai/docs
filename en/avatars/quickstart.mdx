@@ -1,0 +1,129 @@
+---
+title: "Connect an avatar to your LiveKit agent"
+sidebarTitle: "Quickstart"
+description: "Connect a photorealistic Avaluma avatar to your LiveKit agent – via the hosted Avatar Server, in under 30 minutes."
+---
+
+By the end of this guide your existing LiveKit agent will run a full voice AI pipeline (STT → LLM → TTS) with an attached Avaluma avatar. You'll use the hosted Avatar Server (`api.avaluma.ai`) – no GPU infrastructure of your own required. Prefer to self-host? The optional path is at the end.
+
+<Steps>
+
+  <Step title="Create a LiveKit agent">
+
+    We recommend LiveKit's **Voice AI Quickstart Guide** to set up your first LiveKit agent with Python `>=3.11`. If you already have a LiveKit agent on Python `>=3.11`, you can use that instead.
+
+    <Note>
+      Node.js agents are **not** supported.
+    </Note>
+
+    Make sure you can **talk to your LiveKit agent** in the LiveKit Playground before you continue and attach the avatar.
+
+    <CardGroup cols={2}>
+      <Card title="Voice AI Quickstart Guide" icon="livekit" href="https://docs.livekit.io/agents/start/voice-ai/">
+        LiveKit's guide for your first voice agent.
+      </Card>
+      <Card title="LiveKit Playground" icon="play" href="https://agents-playground.livekit.io">
+        Test your agent right in the browser.
+      </Card>
+    </CardGroup>
+
+  </Step>
+
+  <Step title="Install the Avaluma plugin">
+
+    Install the Avaluma LiveKit plugin in your agent's Python environment.
+
+    <Tip>
+      LiveKit's `agent-starter-python` repository uses `uv`.
+    </Tip>
+
+    <CodeGroup>
+
+    ```bash pip
+    pip install git+https://github.com/avaluma-ai/avaluma-livekit-plugin.git
+    ```
+
+    ```bash uv
+    uv pip install git+https://github.com/avaluma-ai/avaluma-livekit-plugin.git
+    ```
+
+    ```bash poetry
+    poetry add git+https://github.com/avaluma-ai/avaluma-livekit-plugin.git
+    ```
+
+    ```bash conda
+    pip install git+https://github.com/avaluma-ai/avaluma-livekit-plugin.git
+    ```
+
+    </CodeGroup>
+
+  </Step>
+
+  <Step title="Add the avatar to your agent">
+
+    Add the following import at the top of your LiveKit agent's Python file. In LiveKit's `agent-starter-python` repo the file is called `agent.py`.
+
+    ```python
+    from avaluma_livekit_plugin import AvatarSession
+    ```
+
+    In the same file, find `await session.start` and insert the following avatar setup block **right before it**:
+
+    ```python
+    # Avatar
+    avatar = AvatarSession(
+        license_key="YOUR_AVALUMA_KEY",
+        avatar_id="260218-Avaluma_Avatar_Kadda_v5",  # Avatar identifier without .hvia ("string" -> test stream)
+        avatar_server_url="https://api.avaluma.ai",
+    )
+    # Start the avatar and wait for it to join
+    await avatar.start(room=ctx.room, agent_session=session)
+    ```
+
+    Finally, adjust the `AvatarSession` arguments – in particular the `license_key`.
+
+    <Note>
+      You can create a license key in the [login area](https://avaluma.ai/login).
+    </Note>
+
+  </Step>
+
+  <Step title="Test the avatar & agent in the LiveKit Playground">
+
+    Start your agent as usual and test it directly in the **LiveKit Agents Playground**. This is the fastest and easiest way to see agent and avatar in action.
+
+    Your avatar should appear in the video track and respond to your voice in real time.
+
+    For integration into web and mobile apps, LiveKit provides SDKs and example projects – from React and JavaScript to Swift and Android.
+
+    <CardGroup cols={2}>
+      <Card title="LiveKit Playground" icon="play" href="https://agents-playground.livekit.io">
+        Test agent and avatar right in the browser.
+      </Card>
+      <Card title="LiveKit Frontend Docs" icon="code" href="https://docs.livekit.io/frontends/">
+        SDKs & examples for web, iOS, Android and more.
+      </Card>
+    </CardGroup>
+
+  </Step>
+
+</Steps>
+
+## Self-hosting (optional)
+
+You can also run the Avaluma Avatar Server yourself with Docker – fully on-prem, with no dependency on `api.avaluma.ai`. To do so, point `avatar_server_url` at your own container instead of `https://api.avaluma.ai`.
+
+<Card title="Self-hosting quickstart" icon="server" href="/en/self-hosting/quickstart">
+  Deploy the Avatar Server and LiveKit agent yourself with Docker – step by step.
+</Card>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Embed your agent" icon="code" href="/en/agents/embedding">
+    Embed your avatar as a widget on your own website.
+  </Card>
+  <Card title="Help & examples" icon="github" href="https://github.com/avaluma-ai/avaluma-examples">
+    Example projects in the Examples repo. Questions? Email us at dev@avaluma.ai.
+  </Card>
+</CardGroup>

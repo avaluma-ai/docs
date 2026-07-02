@@ -30,6 +30,12 @@
             ]
           },
           {
+            "group": "Avatars",
+            "pages": [
+              "en/avatars/quickstart"
+            ]
+          },
+          {
             "group": "Self-Hosting",
             "pages": [
               "en/self-hosting/introduction",
@@ -84,6 +90,12 @@
               "de/agents/overview",
               "de/agents/embedding",
               "de/agents/kiosk"
+            ]
+          },
+          {
+            "group": "Avatare",
+            "pages": [
+              "de/avatars/quickstart"
             ]
           },
           {
