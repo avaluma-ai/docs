@@ -155,7 +155,7 @@ sendToAvatar({ type: "avaluma:init" });
 // Send text to the agent (requires an active conversation)
 sendToAvatar({ type: "avaluma:sendMessage", text: "Hello!" });
 
-// Mute / re-enable the microphone
+// Turn the microphone off / back on
 sendToAvatar({ type: "avaluma:setMicrophone", enabled: false });
 sendToAvatar({ type: "avaluma:setMicrophone", enabled: true });
 
@@ -167,7 +167,7 @@ sendToAvatar({ type: "avaluma:disconnect" });
 |---|---|---|
 | `avaluma:init` | — | Registers the parent page's origin and completes the handshake. Send on every `ready` beacon. |
 | `avaluma:sendMessage` | `{ text }` | Sends text to the agent — as if the user had typed it into the chat field. Empty messages are ignored. |
-| `avaluma:setMicrophone` | `{ enabled }` | Turns the visitor's microphone on (`true`) or mutes it (`false`). Use this to build your own push-to-talk button on your page, for example. |
+| `avaluma:setMicrophone` | `{ enabled }` | Turns the visitor's microphone on (`true`) or off (`false`). Turning it off fully releases the microphone — the device's microphone indicator turns off, and re-enabling takes a brief moment. Use this to build your own push-to-talk button on your page, for example. |
 | `avaluma:disconnect` | — | Ends the running conversation immediately — as if the visitor had clicked "hang up". The avatar disconnects and the bridge then emits `avaluma:disconnected`. Useful when you close or minimize the iframe yourself, so the session doesn't keep running in the background. Does nothing if no conversation is active. |
 
 <Note>

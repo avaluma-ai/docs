@@ -37,7 +37,7 @@ Replace `AGENT_ID` with your agent's UUID (visible in the dashboard). Open the U
 All options are appended as query parameters to the `/kiosk` URL. Invalid values fall back to their defaults automatically.
 
 <ParamField query="mic" type="string" default="open">
-  Microphone mode. `open` keeps the microphone on for the whole conversation; `ptt` enables a push-to-talk button the visitor holds to speak.
+  Microphone mode. `open` keeps the microphone on for the whole conversation; `ptt` enables a push-to-talk button the visitor holds to speak. In PTT mode the microphone is fully released between presses — the device's microphone indicator turns off, and on iPads/iPhones the agent plays at full media volume instead of the quieter "call" volume.
 </ParamField>
 
 <ParamField query="lang" type="string" default="de">
@@ -63,6 +63,10 @@ https://avaluma.ai/agent/AGENT_ID/kiosk?mic=ptt&lang=en&idle=60
 ```
 
 Push-to-talk, English UI, and a reset to the start screen after 60 seconds of inactivity.
+
+<Note>
+  **Microphone unavailable?** If the agent cannot access the microphone — for example because the browser was not granted access or another application is holding the microphone — the page now shows a notice, and the push-to-talk button does not light up while held. In that case, check the page's microphone permission in the browser settings and close applications that use the microphone exclusively.
+</Note>
 
 ## Fullscreen on the device
 
