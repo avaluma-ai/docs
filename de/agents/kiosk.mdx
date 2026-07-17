@@ -37,7 +37,7 @@ Ersetze `AGENT_ID` durch die UUID deines Agenten (im Dashboard sichtbar). Öffne
 Alle Optionen werden als Query-Parameter an die `/kiosk`-URL gehängt. Ungültige Werte fallen automatisch auf den Standard zurück.
 
 <ParamField query="mic" type="string" default="open">
-  Mikrofon-Modus. `open` hält das Mikrofon während des ganzen Gesprächs offen; `ptt` aktiviert einen Push-to-Talk-Button, den der Besucher zum Sprechen hält. Im PTT-Modus wird das Mikrofon zwischen den Drücken vollständig freigegeben — der Mikrofon-Indikator des Geräts erlischt, und auf iPads/iPhones spielt der Agent in voller Medienlautstärke statt in der leiseren „Anruf"-Lautstärke.
+  Mikrofon-Modus. `open` nimmt während des ganzen Gesprächs auf; `ptt` aktiviert einen Push-to-Talk-Button, über den der Besucher nur beim Halten spricht. In beiden Modi bleibt das Mikrofon geräteseitig geöffnet — der Mikrofon-Indikator bleibt an — damit die Audiowiedergabe durchgehend in voller Lautstärke läuft, auch auf iPad/iPhone (statt in der leiseren „Anruf"-Lautstärke). Siehe [Ton & Lautstärke](#ton--lautstärke).
 </ParamField>
 
 <ParamField query="lang" type="string" default="de">
@@ -66,6 +66,24 @@ Push-to-Talk, englische Oberfläche und ein Reset zum Start-Screen nach 60 Sekun
 
 <Note>
   **Mikrofon nicht verfügbar?** Kann der Agent nicht auf das Mikrofon zugreifen — etwa weil der Browser den Zugriff nicht erlaubt bekommen hat oder eine andere Anwendung das Mikrofon belegt — zeigt die Seite jetzt einen entsprechenden Hinweis an, und der Push-to-Talk-Button leuchtet beim Halten nicht auf. Prüfe in dem Fall die Mikrofon-Berechtigung der Seite in den Browser-Einstellungen und schließe Anwendungen, die das Mikrofon exklusiv verwenden.
+</Note>
+
+## Ton & Lautstärke
+
+Damit der Agent auf einem Aufsteller gut hörbar ist, optimiert der Kiosk die Wiedergabe automatisch — je nach Gerät gibt es aber ein paar Stellschrauben.
+
+- **iPad/iPhone:** Der Ton läuft automatisch in voller Lautstärke, in beiden Mikrofon-Modi.
+- **Android:** Der Kiosk schaltet die Ausgabe automatisch auf den lauten **Systemlautsprecher** („Speakerphone") statt auf die leise Ohrmuschel.
+
+### Audio-Einstellungen (Zahnrad)
+
+Oben rechts blendet ein **Zahnrad-Symbol** ein kleines Einstell-Panel ein. Dort kannst du:
+
+- die **Audioverarbeitung** anpassen — Echo-Unterdrückung, Rauschunterdrückung, Auto-Pegel und Stimmisolation (standardmäßig alle aktiv),
+- das **Audio-Gerät** wählen. Auf Android erscheinen hier die Routing-Optionen des Systems, etwa „Speakerphone" (lauter Lautsprecher) und „Headset earpiece" (leise Ohrmuschel). Ist der Ton auf einem Android-Gerät zu leise, wähle hier **„Speakerphone"**.
+
+<Note>
+  **Android: Anruf-Lautstärke.** Sobald der Ton läuft, zeigt Android neben dem Lautstärkeregler ein kleines **Telefonsymbol** — die Lautstärke-Taste regelt dann die (getrennte) Anruf-Lautstärke, nicht die Medien-Lautstärke. Dreh sie am Gerät einmalig auf Maximum, damit der Kiosk laut genug ist.
 </Note>
 
 ## Vollbild auf dem Gerät

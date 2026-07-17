@@ -92,6 +92,10 @@ Alle Optionen werden als Query-Parameter an die `/embed`-URL gehängt. Ungültig
 ></iframe>
 ```
 
+## Ton & Lautstärke
+
+Wie im Kiosk optimiert der eingebettete Agent die Wiedergabe automatisch: Auf iPad/iPhone läuft der Ton in voller Lautstärke, auf Android schaltet er auf den lauten Systemlautsprecher. Über ein **Zahnrad-Symbol** oben rechts im iframe lassen sich Audioverarbeitung und Ausgabe-Gerät anpassen — die Details stehen im Kiosk-Abschnitt [Ton & Lautstärke](/de/agents/kiosk#ton--lautstärke).
+
 ## Messaging
 
 Über das reine Einbetten hinaus kannst du den Avatar programmatisch steuern und auf sein Verhalten reagieren. Ein eingebetteter Agent läuft in einem `<iframe>` — deine Seite und der Avatar leben also in unterschiedlichen Browser-Kontexten. Sie kommunizieren über die standardisierte [`window.postMessage`](https://developer.mozilla.org/docs/Web/API/Window/postMessage)-API: Du **sendest Nachrichten** an den iframe und **empfängst Events** vom iframe.
@@ -167,7 +171,7 @@ sendToAvatar({ type: "avaluma:disconnect" });
 |---|---|---|
 | `avaluma:init` | — | Registriert den Origin der Parent-Seite und schließt den Handshake ab. Auf jeden `ready`-Beacon senden. |
 | `avaluma:sendMessage` | `{ text }` | Sendet Text an den Agenten — als hätte der Nutzer ihn ins Chat-Feld getippt. Leere Nachrichten werden ignoriert. |
-| `avaluma:setMicrophone` | `{ enabled }` | Schaltet das Mikrofon des Besuchers an (`true`) oder aus (`false`). Beim Ausschalten wird das Mikrofon vollständig freigegeben — der Mikrofon-Indikator des Geräts erlischt, das Wiedereinschalten braucht dafür einen kurzen Moment. Damit baust du z. B. einen eigenen Push-to-Talk-Button auf deiner Seite auf. |
+| `avaluma:setMicrophone` | `{ enabled }` | Schaltet das Mikrofon des Besuchers an (`true`) oder aus (`false`). Beim Ausschalten wird das Mikrofon nur stummgeschaltet, bleibt aber geräteseitig geöffnet — der Mikrofon-Indikator bleibt an, das Wiedereinschalten wirkt dadurch sofort. Damit baust du z. B. einen eigenen Push-to-Talk-Button auf deiner Seite auf. |
 | `avaluma:disconnect` | — | Beendet die laufende Konversation sofort — als hätte der Besucher auf „Auflegen" geklickt. Der Avatar trennt sich und die Brücke meldet anschließend `avaluma:disconnected`. Nützlich, wenn du das iframe selbst schließt oder minimierst, damit die Session nicht im Hintergrund weiterläuft. Ohne aktive Konversation passiert nichts. |
 
 <Note>

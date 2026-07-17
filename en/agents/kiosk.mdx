@@ -37,7 +37,7 @@ Replace `AGENT_ID` with your agent's UUID (visible in the dashboard). Open the U
 All options are appended as query parameters to the `/kiosk` URL. Invalid values fall back to their defaults automatically.
 
 <ParamField query="mic" type="string" default="open">
-  Microphone mode. `open` keeps the microphone on for the whole conversation; `ptt` enables a push-to-talk button the visitor holds to speak. In PTT mode the microphone is fully released between presses — the device's microphone indicator turns off, and on iPads/iPhones the agent plays at full media volume instead of the quieter "call" volume.
+  Microphone mode. `open` records for the whole conversation; `ptt` enables a push-to-talk button the visitor holds to speak. In both modes the microphone stays open at the device level — the microphone indicator stays on — so audio playback stays at full volume throughout, including on iPad/iPhone (instead of the quieter "call" volume). See [Sound & volume](#sound--volume).
 </ParamField>
 
 <ParamField query="lang" type="string" default="de">
@@ -66,6 +66,24 @@ Push-to-talk, English UI, and a reset to the start screen after 60 seconds of in
 
 <Note>
   **Microphone unavailable?** If the agent cannot access the microphone — for example because the browser was not granted access or another application is holding the microphone — the page now shows a notice, and the push-to-talk button does not light up while held. In that case, check the page's microphone permission in the browser settings and close applications that use the microphone exclusively.
+</Note>
+
+## Sound & volume
+
+So the agent is clearly audible on a stand, the kiosk optimizes playback automatically — but depending on the device there are a few adjustments.
+
+- **iPad/iPhone:** Audio plays at full volume automatically, in both microphone modes.
+- **Android:** The kiosk automatically routes output to the loud **system speaker** ("Speakerphone") instead of the quiet earpiece.
+
+### Audio settings (gear)
+
+A **gear icon** in the top right opens a small settings panel. There you can:
+
+- adjust the **audio processing** — echo cancellation, noise suppression, auto gain, and voice isolation (all on by default),
+- choose the **audio device**. On Android the system's routing options appear here, such as "Speakerphone" (loud speaker) and "Headset earpiece" (quiet earpiece). If audio is too quiet on an Android device, select **"Speakerphone"** here.
+
+<Note>
+  **Android: call volume.** As soon as audio is playing, Android shows a small **phone icon** next to the volume slider — the volume button then controls the (separate) call volume, not the media volume. Turn it up to maximum on the device once so the kiosk is loud enough.
 </Note>
 
 ## Fullscreen on the device
