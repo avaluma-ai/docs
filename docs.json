@@ -30,6 +30,12 @@
             ]
           },
           {
+            "group": "Pricing & Billing",
+            "pages": [
+              "en/billing/plans"
+            ]
+          },
+          {
             "group": "Avatars",
             "pages": [
               "en/avatars/quickstart"
@@ -90,6 +96,12 @@
               "de/agents/overview",
               "de/agents/embedding",
               "de/agents/kiosk"
+            ]
+          },
+          {
+            "group": "Preise & Abrechnung",
+            "pages": [
+              "de/billing/plans"
             ]
           },
           {
