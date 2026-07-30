@@ -1,46 +1,79 @@
 ---
 title: "Preise & Abrechnung"
 sidebarTitle: "Preise & Abrechnung"
-description: "Die Avaluma-Pläne Free, Starter und Pro im Überblick — wie du einen kostenpflichtigen Plan buchst und was nach der Zahlung passiert."
+description: "Die Avaluma-Pläne im Überblick — wie viele Agenten und Gesprächsminuten enthalten sind, wie du einen kostenpflichtigen Plan buchst und was nach der Zahlung passiert."
 ---
 
-Avaluma bietet drei Pläne. Du startest kostenlos mit **Free** und buchst bei Bedarf
-**Starter** oder **Pro** direkt aus dem Browser. Die Zahlungsabwicklung übernimmt
-unser Zahlungsdienstleister **Polar**.
+Du startest kostenlos mit **Free** und wechselst bei Bedarf direkt aus dem Browser
+in einen größeren Plan. Die Zahlungsabwicklung übernimmt unser
+Zahlungsdienstleister **Polar**.
 
 ## Die Pläne
 
-| Plan | Preis | Für wen |
-|---|---|---|
-| **Free** | €0 – für immer | Zum Ausprobieren des Agent Builders. Kein Server, keine Kreditkarte nötig. |
-| **Starter** | €49 / Monat | Wachsende Teams — mehr Agenten, Gesprächsminuten und eigenes Branding. |
-| **Pro** | €199 / Monat | Unternehmen — unbegrenzte Agenten, Team-Zugriff und Priority Support. |
+| Plan | Preis | Agenten | Gesprächsminuten / Monat |
+|---|---|---|---|
+| **Free** | €0 – für immer | 1 | 30 |
+| **Starter** | €13 / Monat | 2 | 50 |
+| **Team** | €54 / Monat | 3 | 250 |
+| **Business** | €329 / Monat | 5 | 2.000 |
+| **Scale** | €1.099 / Monat | 10 | 5.000 |
+| **Enterprise** | individuell | unbegrenzt | individuell |
 
-Die genauen Leistungen jedes Plans findest du in der Preis-Sektion auf
+Die vollständigen Leistungen jedes Plans findest du in der Preis-Sektion auf
 [avaluma.ai](https://avaluma.ai/#pricing).
+
+## Wie viele Agenten kann ich anlegen?
+
+Jeder Plan erlaubt eine feste Anzahl gleichzeitig bestehender Agenten (siehe
+Tabelle oben). Ist das Kontingent ausgeschöpft, ist der Button **Neuer Agent**
+im Studio deaktiviert; daneben steht, wie viele Agenten du von wie vielen nutzt.
+
+Das Limit gilt für **alle** Wege, auf denen ein neuer Agent entsteht:
+
+- **Neuer Agent** über den Button oder die Seite `/studio/agents/new`
+- **Duplizieren** eines bestehenden Agenten
+- **Übertragen** eines Agenten an dich — ist dein Kontingent voll, schlägt die
+  Übertragung mit einem Hinweis beim Absender fehl
+
+<Note>
+  **Bestandsschutz:** Bestehende Agenten bleiben immer erhalten — auch dann, wenn
+  du mehr Agenten besitzt, als dein aktueller Plan vorsieht (z. B. nach einer
+  Herabstufung). Es wird nichts gelöscht und nichts abgeschaltet; nur das Anlegen
+  **weiterer** Agenten ist gesperrt, bis du wieder unter dem Limit liegst oder in
+  einen größeren Plan wechselst.
+</Note>
+
+Um mehr Agenten anzulegen, wechsle unter
+[Studio → Plan](https://avaluma.ai/studio/plan) in einen größeren Plan — oder
+lösche einen Agenten, den du nicht mehr brauchst.
 
 ## Nutzung im Blick
 
 Im [Studio](https://avaluma.ai/studio/agents) siehst du auf der **Agenten**-Seite
 jederzeit deinen Verbrauch:
 
-- Ein Balken oben zeigt die **verbrauchten Gesprächsminuten des laufenden Monats**
-  im Verhältnis zu deinem Tarif-Limit (z. B. `16 / 30 Min.` im Free-Plan).
+- Ein Balken zeigt die **verbrauchten Gesprächsminuten des laufenden
+  Abrechnungszeitraums** im Verhältnis zu deinem Tarif-Limit (z. B. `16 / 30 Min.`
+  im Free-Plan).
+- Ein zweiter Balken zeigt die **Anzahl deiner Agenten** im Verhältnis zum
+  Agenten-Kontingent deines Plans (z. B. `1 / 1 Agenten`).
 - Jede Agenten-Kachel weist zusätzlich aus, wie viele Minuten **dieser Agent** im
-  aktuellen Monat genutzt wurde.
+  aktuellen Zeitraum genutzt wurde.
 
 <Note>
-  Die Anzeige dient aktuell nur der Orientierung — Gespräche werden auch dann
-  fortgeführt, wenn das Limit erreicht ist. Der Zähler setzt zum Monatsbeginn
-  automatisch zurück.
+  Die Minuten-Anzeige dient aktuell nur der Orientierung — Gespräche werden auch
+  dann fortgeführt, wenn das Limit erreicht ist. Der Zähler setzt zum Beginn des
+  neuen Abrechnungszeitraums automatisch zurück. Das **Agenten-Limit** wird
+  dagegen durchgesetzt.
 </Note>
 
 ## Einen kostenpflichtigen Plan buchen
 
 <Steps>
   <Step title="Plan auswählen">
-    Klicke in der Preis-Sektion auf [avaluma.ai](https://avaluma.ai/#pricing) bei
-    **Starter** oder **Pro** auf den Buchen-Button.
+    Öffne [Studio → Plan](https://avaluma.ai/studio/plan) oder die Preis-Sektion
+    auf [avaluma.ai](https://avaluma.ai/#pricing) und klicke beim gewünschten Plan
+    auf den Buchen-Button.
   </Step>
   <Step title="Anmelden oder registrieren">
     Ein kostenpflichtiger Plan ist immer an dein Avaluma-Konto gekoppelt. Bist du
