@@ -65,7 +65,7 @@ https://avaluma.ai/agent/AGENT_ID/kiosk?mic=ptt&lang=en&idle=60
 Push-to-Talk, englische Oberfläche und ein Reset zum Start-Screen nach 60 Sekunden Inaktivität.
 
 <Note>
-  **Mikrofon nicht verfügbar?** Kann der Agent nicht auf das Mikrofon zugreifen — etwa weil der Browser den Zugriff nicht erlaubt bekommen hat oder eine andere Anwendung das Mikrofon belegt — zeigt die Seite jetzt einen entsprechenden Hinweis an, und der Push-to-Talk-Button leuchtet beim Halten nicht auf. Prüfe in dem Fall die Mikrofon-Berechtigung der Seite in den Browser-Einstellungen und schließe Anwendungen, die das Mikrofon exklusiv verwenden.
+  **Mikrofon nicht verfügbar?** Kann der Agent nicht auf das Mikrofon zugreifen, blendet der Kiosk einen Hinweis mit der konkreten Ursache ein — Zugriff nicht erteilt, Gerät von einer anderen App belegt oder kein Mikrofon gefunden — samt technischem Fehlercode. Darunter liegt der Button **„Mikrofon aktivieren"**: Ein Tipp darauf fordert den Zugriff erneut an, sodass der Browser seine Abfrage anzeigt. Das Gespräch selbst läuft weiter, der Text-Chat bleibt nutzbar, und der Push-to-Talk-Button leuchtet beim Halten nicht auf, solange kein Mikrofon aktiv ist.
 </Note>
 
 ## Ton & Lautstärke
@@ -93,6 +93,20 @@ Für echtes Vollbild ohne Adressleiste fügst du die Kiosk-URL zum Startbildschi
 ## Auto-Reset bei Inaktivität
 
 Mit gesetztem `idle`-Parameter erholt sich ein unbeaufsichtigter Kiosk von selbst: Verlässt ein Besucher das Gespräch, beendet der Agent die Sitzung nach der konfigurierten Inaktivität und kehrt zum Start-Screen zurück — bereit für die nächste Person. Der Timer läuft nur, während der Agent auf eine Eingabe wartet — er unterbricht den Agenten nie beim Sprechen oder Denken, und jede Berührung setzt ihn zurück.
+
+### Mikrofon nach längeren Pausen (iPad/iPhone)
+
+Safari behandelt den Mikrofonzugriff nicht als dauerhafte Berechtigung, sondern als Freigabe für die gerade laufende Aufnahme. Endet ein Gespräch — etwa durch den Auto-Reset — und ruht das Gerät danach längere Zeit, verwirft Safari die Freigabe. Beim nächsten Start fragt der Browser deshalb erneut nach; wird die Abfrage nicht bestätigt, erscheint der Hinweis mit dem Button **„Mikrofon aktivieren"**.
+
+Für einen unbeaufsichtigten Aufsteller empfiehlt sich daher:
+
+- **Mikrofon dauerhaft erlauben:** In den Website-Einstellungen von Safari (Menü in der Adressleiste → *Website-Einstellungen*) die Berechtigung **Mikrofon** für die Kiosk-Domain auf **Erlauben** setzen. Dann entfällt die wiederholte Abfrage.
+- **Auto-Sperre auf „Nie"** stellen (*Einstellungen → Anzeige & Helligkeit → Automatische Sperre*), damit das Gerät nicht in den Ruhezustand geht.
+- **Geführten Zugriff** aktivieren, damit der Kiosk nicht versehentlich verlassen wird.
+
+<Note>
+  Wird der Kiosk **vom Startbildschirm** als Web-App betrieben (siehe [Vollbild auf dem Gerät](#vollbild-auf-dem-gerät)), verwaltet iOS deren Berechtigungen getrennt von Safari. Die Mikrofon-Freigabe muss dort einmal separat erteilt werden.
+</Note>
 
 ## Display-Wachhalter (Wake-Lock)
 

@@ -65,7 +65,7 @@ https://avaluma.ai/agent/AGENT_ID/kiosk?mic=ptt&lang=en&idle=60
 Push-to-talk, English UI, and a reset to the start screen after 60 seconds of inactivity.
 
 <Note>
-  **Microphone unavailable?** If the agent cannot access the microphone — for example because the browser was not granted access or another application is holding the microphone — the page now shows a notice, and the push-to-talk button does not light up while held. In that case, check the page's microphone permission in the browser settings and close applications that use the microphone exclusively.
+  **Microphone unavailable?** If the agent cannot access the microphone, the kiosk shows a notice with the specific cause — access not granted, device held by another app, or no microphone found — along with the technical error code. Below it sits an **"Enable microphone"** button: tapping it requests access again so the browser shows its prompt. The conversation itself keeps running, text chat stays usable, and the push-to-talk button does not light up while held as long as no microphone is active.
 </Note>
 
 ## Sound & volume
@@ -93,6 +93,20 @@ For a true fullscreen experience without an address bar, add the kiosk URL to th
 ## Idle auto-reset
 
 With the `idle` parameter set, an unattended kiosk recovers on its own: if a visitor walks away mid-conversation, the agent ends the session after the configured idle time and returns to the start screen, ready for the next person. The timer only runs while the agent is waiting for input — it never interrupts the agent while it is speaking or thinking, and any touch resets it.
+
+### Microphone after longer breaks (iPad/iPhone)
+
+Safari does not treat microphone access as a permanent permission, but as a grant for the capture currently running. Once a conversation ends — for example through the auto-reset — and the device then sits idle for a while, Safari discards the grant. On the next start the browser therefore asks again; if the prompt is not confirmed, the notice with the **"Enable microphone"** button appears.
+
+For an unattended stand we therefore recommend:
+
+- **Allow the microphone permanently:** in Safari's website settings (menu in the address bar → *Website Settings*), set the **Microphone** permission for the kiosk domain to **Allow**. That removes the repeated prompt.
+- **Set Auto-Lock to "Never"** (*Settings → Display & Brightness → Auto-Lock*) so the device does not go to sleep.
+- **Enable Guided Access** so the kiosk cannot be left by accident.
+
+<Note>
+  If the kiosk runs as a web app **from the home screen** (see [Fullscreen on the device](#fullscreen-on-the-device)), iOS manages its permissions separately from Safari. The microphone grant has to be given there once, separately.
+</Note>
 
 ## Screen wake lock
 
