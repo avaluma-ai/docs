@@ -49,7 +49,7 @@ All options are appended as query parameters to the `/kiosk` URL. Invalid values
 </ParamField>
 
 <ParamField query="idle" type="number" default="0">
-  Auto-reset timeout in **seconds**. After this much inactivity while the agent is waiting for input, the conversation ends and the start screen returns for the next visitor. `0` disables the auto-reset.
+  Auto-reset timeout in **seconds**. After this much inactivity while the agent is waiting for input, the conversation ends and the start screen returns for the next visitor. Both touching the screen and the visitor speaking count as activity. `0` disables the auto-reset.
 </ParamField>
 
 <Note>
@@ -92,7 +92,19 @@ For a true fullscreen experience without an address bar, add the kiosk URL to th
 
 ## Idle auto-reset
 
-With the `idle` parameter set, an unattended kiosk recovers on its own: if a visitor walks away mid-conversation, the agent ends the session after the configured idle time and returns to the start screen, ready for the next person. The timer only runs while the agent is waiting for input — it never interrupts the agent while it is speaking or thinking, and any touch resets it.
+With the `idle` parameter set, an unattended kiosk recovers on its own: if a visitor walks away mid-conversation, the agent ends the session after the configured idle time and returns to the start screen, ready for the next person.
+
+Anything that actually happens in the conversation counts as activity:
+
+- any **touch** of the screen,
+- **the visitor speaking** — this matters most in `mic=open` mode, where there is no push-to-talk button to touch: even a long, uninterrupted utterance keeps the conversation alive,
+- **the agent speaking** — a detailed answer is never cut off, even if it takes longer than the configured idle time.
+
+The timer therefore only starts once both sides fall silent.
+
+<Note>
+  **Background noise.** So that a kiosk in a loud environment — a trade show, for example — does not stay awake indefinitely, mere noise on the microphone only counts for so long: if speech recognition produces no text alongside it, the kiosk returns to the start screen after at most three times the configured idle time.
+</Note>
 
 ### Microphone after longer breaks (iPad/iPhone)
 

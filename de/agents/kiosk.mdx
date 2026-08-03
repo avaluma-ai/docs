@@ -49,7 +49,7 @@ Alle Optionen werden als Query-Parameter an die `/kiosk`-URL gehängt. Ungültig
 </ParamField>
 
 <ParamField query="idle" type="number" default="0">
-  Auto-Reset-Zeit in **Sekunden**. Nach dieser Inaktivität — während der Agent auf eine Eingabe wartet — endet das Gespräch und der Start-Screen kehrt für den nächsten Besucher zurück. `0` deaktiviert den Auto-Reset.
+  Auto-Reset-Zeit in **Sekunden**. Nach dieser Inaktivität — während der Agent auf eine Eingabe wartet — endet das Gespräch und der Start-Screen kehrt für den nächsten Besucher zurück. Als Aktivität zählen sowohl Berührungen des Bildschirms als auch das Sprechen des Besuchers. `0` deaktiviert den Auto-Reset.
 </ParamField>
 
 <Note>
@@ -92,7 +92,19 @@ Für echtes Vollbild ohne Adressleiste fügst du die Kiosk-URL zum Startbildschi
 
 ## Auto-Reset bei Inaktivität
 
-Mit gesetztem `idle`-Parameter erholt sich ein unbeaufsichtigter Kiosk von selbst: Verlässt ein Besucher das Gespräch, beendet der Agent die Sitzung nach der konfigurierten Inaktivität und kehrt zum Start-Screen zurück — bereit für die nächste Person. Der Timer läuft nur, während der Agent auf eine Eingabe wartet — er unterbricht den Agenten nie beim Sprechen oder Denken, und jede Berührung setzt ihn zurück.
+Mit gesetztem `idle`-Parameter erholt sich ein unbeaufsichtigter Kiosk von selbst: Verlässt ein Besucher das Gespräch, beendet der Agent die Sitzung nach der konfigurierten Inaktivität und kehrt zum Start-Screen zurück — bereit für die nächste Person.
+
+Als Aktivität zählt alles, was im Gespräch tatsächlich passiert:
+
+- jede **Berührung** des Bildschirms,
+- **der Besucher spricht** — wichtig im Modus `mic=open`, in dem es keinen Push-to-Talk-Button gibt, den man berühren könnte: Auch ein langer Redebeitrag ohne jede Berührung hält das Gespräch am Leben,
+- **der Agent spricht** — eine ausführliche Antwort wird nie abgeschnitten, auch wenn sie länger dauert als die eingestellte Zeit.
+
+Der Timer beginnt also erst zu laufen, wenn beide Seiten schweigen.
+
+<Note>
+  **Hintergrundgeräusche.** Damit ein Kiosk in lauter Umgebung — etwa auf einer Messe — nicht dauerhaft „wach" bleibt, zählt bloßer Geräuschpegel am Mikrofon nur begrenzt: Liefert die Spracherkennung dazu keinen Text, kehrt der Kiosk spätestens nach dem Dreifachen der eingestellten Zeit zum Start-Screen zurück.
+</Note>
 
 ### Mikrofon nach längeren Pausen (iPad/iPhone)
 
