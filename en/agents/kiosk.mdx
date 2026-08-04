@@ -108,7 +108,7 @@ The timer therefore only starts once both sides fall silent.
 
 ### Microphone after longer breaks (iPad/iPhone)
 
-Safari does not treat microphone access as a permanent permission, but as a grant for the capture currently running. Once a conversation ends — for example through the auto-reset — and the device then sits idle for a while, Safari discards the grant. On the next start the browser therefore asks again; if the prompt is not confirmed, the notice with the **"Enable microphone"** button appears.
+Safari does not treat microphone access as a permanent permission, but as a grant for the capture currently running. Once a conversation ends — for example through the auto-reset — and the device then sits idle for a while, Safari discards the grant. On the next start the browser therefore asks again; if the prompt is not confirmed, the notice with the **"Enable microphone"** button appears. That button requests access again inside a fresh tap — the only context in which Safari shows the prompt at all.
 
 For an unattended stand we therefore recommend:
 
@@ -118,6 +118,18 @@ For an unattended stand we therefore recommend:
 
 <Note>
   If the kiosk runs as a web app **from the home screen** (see [Fullscreen on the device](#fullscreen-on-the-device)), iOS manages its permissions separately from Safari. The microphone grant has to be given there once, separately.
+</Note>
+
+## After sleep and connection loss
+
+A stand runs unattended — it has to recover on its own, with nobody there to step in.
+
+**The device was asleep.** If the kiosk page spent more than a minute in the background — the iPad locked itself, someone switched apps — the kiosk ends any conversation still running when it wakes up and shows the start screen again. That is deliberate: the previous visitor is long gone, and iOS only re-issues the microphone grant inside a fresh tap. Tapping the start button therefore reliably yields a working microphone, whereas a conversation carried on silently would stay mute. Briefly switching away — under a minute — interrupts nothing.
+
+**The connection dropped.** If the kiosk loses its connection to the agent mid-conversation (Wi-Fi gone, network change), it first tries to restore it quietly. If that fails, the notice **"Connection lost"** appears with a **"Restart"** button that leads back to the start screen. If nobody responds, the kiosk returns there by itself after half a minute.
+
+<Note>
+  A dropped connection looks deceptively like a microphone problem — the conversation goes quiet — but it isn't one: the microphone works, there is simply nothing left to transmit it over. That is why it gets its own notice; asking for microphone access would not help here.
 </Note>
 
 ## Screen wake lock

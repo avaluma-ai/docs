@@ -108,7 +108,7 @@ Der Timer beginnt also erst zu laufen, wenn beide Seiten schweigen.
 
 ### Mikrofon nach längeren Pausen (iPad/iPhone)
 
-Safari behandelt den Mikrofonzugriff nicht als dauerhafte Berechtigung, sondern als Freigabe für die gerade laufende Aufnahme. Endet ein Gespräch — etwa durch den Auto-Reset — und ruht das Gerät danach längere Zeit, verwirft Safari die Freigabe. Beim nächsten Start fragt der Browser deshalb erneut nach; wird die Abfrage nicht bestätigt, erscheint der Hinweis mit dem Button **„Mikrofon aktivieren"**.
+Safari behandelt den Mikrofonzugriff nicht als dauerhafte Berechtigung, sondern als Freigabe für die gerade laufende Aufnahme. Endet ein Gespräch — etwa durch den Auto-Reset — und ruht das Gerät danach längere Zeit, verwirft Safari die Freigabe. Beim nächsten Start fragt der Browser deshalb erneut nach; wird die Abfrage nicht bestätigt, erscheint der Hinweis mit dem Button **„Mikrofon aktivieren"**. Der Button fordert den Zugriff in einer frischen Berührung erneut an — nur darin zeigt Safari die Abfrage überhaupt an.
 
 Für einen unbeaufsichtigten Aufsteller empfiehlt sich daher:
 
@@ -118,6 +118,18 @@ Für einen unbeaufsichtigten Aufsteller empfiehlt sich daher:
 
 <Note>
   Wird der Kiosk **vom Startbildschirm** als Web-App betrieben (siehe [Vollbild auf dem Gerät](#vollbild-auf-dem-gerät)), verwaltet iOS deren Berechtigungen getrennt von Safari. Die Mikrofon-Freigabe muss dort einmal separat erteilt werden.
+</Note>
+
+## Nach Ruhezustand und Verbindungsabbruch
+
+Ein Aufsteller steht ohne Betreuung — er muss sich auch dann fangen, wenn niemand da ist, der eingreift.
+
+**Das Gerät war im Ruhezustand.** War die Kiosk-Seite länger als eine Minute im Hintergrund — das iPad hat sich gesperrt, jemand hat die App gewechselt —, beendet der Kiosk beim Aufwachen ein noch laufendes Gespräch und zeigt wieder den Start-Screen. Das ist Absicht: Der Besucher von vorhin ist längst weg, und iOS erteilt die Mikrofon-Freigabe nur in einer frischen Berührung neu. Ein Tippen auf den Start-Button liefert deshalb verlässlich ein funktionierendes Mikrofon, während ein stillschweigend weitergeführtes Gespräch stumm bliebe. Kurzes Wegdrücken — unter einer Minute — unterbricht dagegen nichts.
+
+**Die Verbindung ist abgebrochen.** Verliert der Kiosk mitten im Gespräch die Verbindung zum Agenten (WLAN weg, Netzwechsel), versucht er zunächst still, sie wiederherzustellen. Gelingt das nicht, erscheint der Hinweis **„Verbindung unterbrochen"** mit dem Button **„Neu starten"**, der zurück zum Start-Screen führt. Reagiert niemand darauf, geht der Kiosk nach einer halben Minute von selbst dorthin zurück.
+
+<Note>
+  Ein Verbindungsabbruch sieht einem Mikrofonproblem zum Verwechseln ähnlich — das Gespräch verstummt —, ist aber keins: Das Mikrofon arbeitet, es lässt sich nur nichts mehr übertragen. Deshalb bekommt er einen eigenen Hinweis; die Aufforderung, den Mikrofonzugriff zu erlauben, würde hier nicht weiterhelfen.
 </Note>
 
 ## Display-Wachhalter (Wake-Lock)
