@@ -112,9 +112,32 @@ Safari does not treat microphone access as a permanent permission, but as a gran
 
 For an unattended stand we therefore recommend:
 
-- **Allow the microphone permanently:** in Safari's website settings (menu in the address bar → *Website Settings*), set the **Microphone** permission for the kiosk domain to **Allow**. That removes the repeated prompt.
+- **Allow the microphone permanently:** with the permission set to **Allow** instead of **Ask**, the repeated prompt goes away. There are two ways to do this (see below).
 - **Set Auto-Lock to "Never"** (*Settings → Display & Brightness → Auto-Lock*) so the device does not go to sleep.
 - **Enable Guided Access** so the kiosk cannot be left by accident.
+
+#### Allowing the microphone permanently
+
+<Tabs>
+  <Tab title="For the kiosk domain only">
+    1. Open the kiosk URL in Safari.
+    2. Tap the page menu in the address bar — depending on the iOS version, the **"aA"** icon or the icon to the left of the address.
+    3. Choose **Website Settings** and set **Microphone** to **Allow**.
+
+    This is the recommended option: the grant applies to the kiosk domain only, and every other website keeps asking.
+  </Tab>
+  <Tab title="As the default for all websites">
+    **Settings → Apps → Safari → Settings for Websites → Microphone → Allow**
+
+    On iOS/iPadOS 17 and earlier, Safari sits at the top level of Settings (*Settings → Safari*); only from iOS 18 onwards is it inside the **Apps** section.
+
+    This default applies to **every** website the device opens — only sensible on an iPad used exclusively as a kiosk.
+  </Tab>
+</Tabs>
+
+<Note>
+  The exact menu labels differ slightly between iOS versions ("Website Settings" vs. "Settings for Website"). The choice is **Ask**, **Deny**, or **Allow** in every version.
+</Note>
 
 <Note>
   If the kiosk runs as a web app **from the home screen** (see [Fullscreen on the device](#fullscreen-on-the-device)), iOS manages its permissions separately from Safari. The microphone grant has to be given there once, separately.

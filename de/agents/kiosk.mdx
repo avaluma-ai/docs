@@ -112,9 +112,32 @@ Safari behandelt den Mikrofonzugriff nicht als dauerhafte Berechtigung, sondern 
 
 Für einen unbeaufsichtigten Aufsteller empfiehlt sich daher:
 
-- **Mikrofon dauerhaft erlauben:** In den Website-Einstellungen von Safari (Menü in der Adressleiste → *Website-Einstellungen*) die Berechtigung **Mikrofon** für die Kiosk-Domain auf **Erlauben** setzen. Dann entfällt die wiederholte Abfrage.
+- **Mikrofon dauerhaft erlauben:** Steht die Berechtigung auf **Erlauben** statt auf **Fragen**, entfällt die wiederholte Abfrage. Dafür gibt es zwei Wege (siehe unten).
 - **Auto-Sperre auf „Nie"** stellen (*Einstellungen → Anzeige & Helligkeit → Automatische Sperre*), damit das Gerät nicht in den Ruhezustand geht.
 - **Geführten Zugriff** aktivieren, damit der Kiosk nicht versehentlich verlassen wird.
+
+#### Mikrofon dauerhaft erlauben
+
+<Tabs>
+  <Tab title="Nur für die Kiosk-Domain">
+    1. Kiosk-URL in Safari öffnen.
+    2. In der Adressleiste das Seitenmenü antippen — je nach iOS-Version das Symbol **„aA"** oder das Symbol links neben der Adresse.
+    3. **Website-Einstellungen** wählen und **Mikrofon** auf **Erlauben** setzen.
+
+    Das ist die empfohlene Variante: Die Freigabe gilt nur für die Kiosk-Domain, alle anderen Websites fragen weiterhin nach.
+  </Tab>
+  <Tab title="Als Vorgabe für alle Websites">
+    **Einstellungen → Apps → Safari → Einstellungen für Websites → Mikrofon → Erlauben**
+
+    Auf iOS/iPadOS 17 und älter liegt Safari direkt in der obersten Ebene der Einstellungen (*Einstellungen → Safari*), erst ab iOS 18 im Bereich **Apps**.
+
+    Diese Vorgabe gilt für **jede** Website, die das Gerät öffnet — sinnvoll nur auf einem iPad, das ausschließlich als Kiosk läuft.
+  </Tab>
+</Tabs>
+
+<Note>
+  Die Bezeichnungen der Menüpunkte unterscheiden sich je nach iOS-Version leicht („Website-Einstellungen" bzw. „Einstellungen für Website"). Die Auswahl lautet in allen Versionen **Fragen**, **Verweigern** oder **Erlauben**.
+</Note>
 
 <Note>
   Wird der Kiosk **vom Startbildschirm** als Web-App betrieben (siehe [Vollbild auf dem Gerät](#vollbild-auf-dem-gerät)), verwaltet iOS deren Berechtigungen getrennt von Safari. Die Mikrofon-Freigabe muss dort einmal separat erteilt werden.
