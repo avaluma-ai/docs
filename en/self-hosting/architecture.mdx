@@ -11,7 +11,7 @@ Avaluma AI is composed of two independently deployed components — the **Avatar
 The Avatar Server is the rendering engine of Avaluma AI. It runs inside a Docker container with direct access to an NVIDIA GPU and performs the following work:
 
 - Loads your `.hvia` avatar files from the `assets/avatars/` directory at startup
-- Receives audio from the LiveKit Agent via the `avaluma-livekit-plugin`
+- Receives audio from the LiveKit Agent via the `livekit-plugins-avaluma` plugin
 - Renders the photorealistic avatar frame-by-frame, animating lip movement and facial expressions in sync with the audio
 - Publishes the resulting video track back into the LiveKit room, where any connected participant can subscribe to it
 
@@ -47,7 +47,7 @@ Each stage is pluggable via the `AgentSession` configuration in `agent-1.py`:
 - **STT** — AssemblyAI `universal-streaming` model transcribes the participant's speech in real time
 - **LLM** — OpenAI `gpt-4.1-mini` generates a response to the transcript
 - **TTS** — Cartesia `sonic-3` synthesises the response as speech audio
-- **`AvatarSession`** — the `avaluma-livekit-plugin` forwards the TTS audio to the Avatar Server, which animates the avatar and streams the video back into the room
+- **`AvatarSession`** — the `livekit-plugins-avaluma` plugin forwards the TTS audio to the Avatar Server, which animates the avatar and streams the video back into the room
 
 The agent also applies Silero VAD for voice-activity detection, LiveKit BVC for background noise cancellation, and a multilingual end-of-turn detection model to know when the participant has finished speaking.
 

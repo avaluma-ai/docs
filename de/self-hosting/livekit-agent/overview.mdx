@@ -27,10 +27,10 @@ Der Avaluma-LiveKit-Agent ist ein Python-Worker auf Basis des [livekit-agents](h
 
 ## So funktioniert die AvatarSession
 
-Beide Agenten basieren auf `AvatarSession` aus dem Paket `avaluma-livekit-plugin`. Du instanziierst sie mit deinen Zugangsdaten, rufst `avatar.start()` auf, und sie übernimmt das Beitreten zum Raum als separater Avatar-Teilnehmer sowie das Weiterleiten der Audio-Frames an den Avatar-Server zum Rendern.
+Beide Agenten basieren auf `AvatarSession` aus dem Paket `livekit-plugins-avaluma`. Du instanziierst sie mit deinen Zugangsdaten, rufst `avatar.start()` auf, und sie übernimmt das Beitreten zum Raum als separater Avatar-Teilnehmer sowie das Weiterleiten der Audio-Frames an den Avatar-Server zum Rendern.
 
 ```python
-from avaluma_livekit_plugin import AvatarSession
+from livekit.plugins.avaluma import AvatarSession
 
 avatar = AvatarSession(
     license_key=license_key,
@@ -65,7 +65,7 @@ dependencies = [
     "livekit-agents[silero,turn-detector]~=1.2",
     "livekit-plugins-noise-cancellation~=0.2",
     "python-dotenv",
-    "avaluma-livekit-plugin @ git+https://github.com/avaluma-ai/avaluma-livekit-plugin.git"
+    "livekit-plugins-avaluma @ git+https://github.com/avaluma-ai/avaluma-livekit-plugin.git"
 ]
 ```
 
@@ -74,7 +74,7 @@ dependencies = [
 | `livekit` | LiveKit-RTC-SDK — Raum-, Track- und DataStream-Primitive |
 | `livekit-agents` | Kern-Agent-Framework (enthält `silero` VAD und `turn-detector`) |
 | `livekit-plugins-noise-cancellation` | Unterdrückung von Hintergrundgeräuschen per BVC |
-| `avaluma-livekit-plugin` | `AvatarSession` — Avaluma-Avatar-Integration |
+| `livekit-plugins-avaluma` | `AvatarSession` — Avaluma-Avatar-Integration |
 | `python-dotenv` | Lädt Zugangsdaten aus `.env.local` |
 
 ## Voraussetzungen

@@ -19,6 +19,31 @@ The LiveKit Agent reads its configuration from `.env.local` at startup. All vari
 | `LIVEKIT_API_SECRET` | Yes | — | API secret for your LiveKit project. |
 | `AGENT_NAME` | No | `agent-1` | Unique name for this agent worker. Set a distinct value for each agent when running multiple agents inside the same LiveKit project. |
 
+## Plugin Variables
+
+The variables above are read by the **agent script** (via `os.getenv`) and passed explicitly to `AvatarSession(...)`. The `livekit-plugins-avaluma` plugin also has its own fallback variables: if you omit the corresponding constructor argument, it falls back to these.
+
+| Variable | Fallback for | Default | Description |
+|---|---|---|---|
+| `AVALUMA_API_KEY` | `license_key` | — | Your Avaluma license key. |
+| `AVALUMA_AVATAR_ID` | `avatar_id` | — | Avatar identifier (name of the `.hvia` file without the extension). |
+| `AVALUMA_API_URL` | `avatar_server_url` | `https://api.avaluma.ai` | URL of the Avatar Server. |
+
+This lets you create the `AvatarSession` without any arguments at all:
+
+```python
+from livekit.plugins.avaluma import AvatarSession
+
+# Reads AVALUMA_API_KEY, AVALUMA_AVATAR_ID and AVALUMA_API_URL from the environment
+avatar = AvatarSession()
+```
+
+In addition, `avatar.start()` falls back to `LIVEKIT_URL`, `LIVEKIT_API_KEY` and `LIVEKIT_API_SECRET` for the LiveKit connection when you don't pass them as arguments.
+
+<Note>
+  If neither the argument nor the environment variable is set for `license_key` or `avatar_id`, the plugin raises an `AvalumaException` when the `AvatarSession` is created.
+</Note>
+
 ## Avatar Server Variables
 
 The Avatar Server reads its configuration from the `environment` block in `docker-compose.yaml`. Set these values before running `docker compose up`.
