@@ -64,7 +64,7 @@ Am Ende dieser Anleitung läuft dein bestehender LiveKit-Agent mit einer vollst�
     Füge den folgenden Import oben in der Python-Datei deines LiveKit-Agenten hinzu. Im `agent-starter-python`-Repo von LiveKit heißt die Datei `agent.py`.
 
     ```python
-    from avaluma_livekit_plugin import AvatarSession
+    from livekit.plugins.avaluma import AvatarSession
     ```
 
     Suche in derselben Datei nach `await session.start` und füge **direkt davor** den folgenden Avatar-Setup-Block ein:
