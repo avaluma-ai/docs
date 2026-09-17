@@ -52,6 +52,7 @@ Einmal konfiguriert, hat ein Agent eine feste **Agent-ID** (eine UUID), mit der 
 | **Name** | Interne Bezeichnung des Agenten in deinem Dashboard. |
 | **Avatar** | Der `.hvia`-Avatar, den der Agent rendert. |
 | **Stimme** | Die Text-to-Speech-Stimme für gesprochene Antworten. |
+| **Modell** | Das ElevenLabs-Sprachmodell, mit dem die Stimme erzeugt wird — siehe [Sprachmodell wählen](#sprachmodell-w%C3%A4hlen). |
 | **Anweisungen** | Der System-Prompt, der Persona und Verhalten des Agenten prägt. |
 | **Sprache** | Standardsprache für Konversation und Oberfläche. |
 | **Freigabe** | Ob der Agent über einen öffentlichen Link erreichbar ist. |
@@ -61,6 +62,33 @@ Einmal konfiguriert, hat ein Agent eine feste **Agent-ID** (eine UUID), mit der 
 <Note>
   Nur **freigegebene** Agenten lassen sich über einen öffentlichen Link öffnen oder auf einer Webseite einbetten. Aktiviere die Freigabe, bevor du einen Agent-Link verteilst.
 </Note>
+
+### Sprachmodell wählen
+
+Unter **Stimme** lässt sich zusätzlich das ElevenLabs-Modell wählen, das die
+Sprachausgabe erzeugt. Alle angebotenen Modelle sind für Echtzeit-Gespräche
+geeignet und funktionieren mit eigenen Instant-Voice-Clones (Voice ID).
+
+| Modell | Latenz | Sprachen | Wann sinnvoll |
+|---|---|---|---|
+| **Flash v2.5** (Standard) | ~75 ms | 32 | Voreinstellung für neue Agenten — schnellste Antwortzeit. |
+| **v3 Conversational** | ~280 ms | 70+ | Ausdrucksstärker und emotionaler, bei etwas höherer Latenz. |
+| **Flash v2** | ~75 ms | nur Englisch | Rein englische Agenten. |
+| **Multilingual v2** | höher | 29 | Höchste Klangqualität, wenn Latenz zweitrangig ist. |
+| **Turbo v2.5** | ~250 ms | 32 | Das Modell bestehender Agenten. Gleiche Stimme wie Flash v2.5, nur langsamer; ElevenLabs empfiehlt den Wechsel. |
+
+<Note>
+  **v3 Conversational** unterstützt weder **Speed** noch **Similarity Boost**,
+  und **Stability** akzeptiert dort nur die drei Presets `0` (Creative),
+  `0.5` (Natural) und `1` (Robust). Die Felder passen sich automatisch an,
+  sobald du das Modell wählst: die beiden nicht unterstützten verschwinden, und
+  ein abweichender Stability-Wert wird auf das nächste Preset gerundet.
+</Note>
+
+Neue Agenten starten mit **Flash v2.5**. Bestehende Agenten laufen unverändert
+auf **Turbo v2.5** weiter, bis du das Modell selbst umstellst — ein Wechsel auf
+Flash v2.5 ändert dabei nicht, wie die Stimme klingt, sondern nur, wie schnell
+sie antwortet.
 
 ## Agenten verwalten
 
