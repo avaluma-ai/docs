@@ -58,6 +58,9 @@ All options are appended as query parameters to the `/kiosk` URL. Invalid values
 <ParamField query="speakerphone" type="string" default="auto">
   Diagnostic switch for audio output on Android. By default (`auto`) the loud system speaker is selected as soon as the microphone is turned on — audio is loud from the first second, with no dropout while the connection is set up. With `late` the switch happens only after the connection is established (the previous behaviour), which costs one to two seconds without audio or microphone. Intended for comparison only. No effect on iOS or desktop, where the browser offers no such switch. The speaker cannot be turned off — playback would be too quiet on mobile devices.
 </ParamField>
+<ParamField query="audiodebug" type="string" default="off">
+  With `on`, shows a small diagnostic panel in the top left: the level of the agent's signal, the active audio device, the state of audio output, and the browser identifier. Intended for troubleshooting directly on the device, without attaching it to developer tools. A button copies the values to the clipboard. Remove the switch after testing — the panel covers part of the picture.
+</ParamField>
 
 <Note>
   The `border` and `hideTextChat` parameters from [Embedding](/en/agents/embedding#query-parameters) work here too (background color and hiding the text-chat input).
@@ -82,15 +85,23 @@ So the agent is clearly audible on a stand, the kiosk optimizes playback automat
 - **iPad/iPhone:** Audio plays at full volume automatically, in both microphone modes.
 - **Android:** The kiosk automatically routes output to the loud **system speaker** ("Speakerphone") instead of the quiet earpiece.
 
+### Volume (speaker icon)
+
+A **speaker icon** sits in the top right, to the left of the gear. Tapping it opens a control with **Louder** and **Quieter** — it acts directly on the agent's playback, independently of the device volume. The chosen level is remembered per device and browser and applies to the next conversation too.
+
+<Note>
+  **When you need it.** On some Android devices playback stays quiet even though "Speakerphone" is selected and the call volume is already at maximum. The cause is Android's audio routing, not the kiosk — the same situation can also be resolved there by switching to "Headset earpiece" and back to "Speakerphone". The volume control is the more direct route and works on every device.
+</Note>
+
 ### Audio settings (gear)
 
-A **gear icon** in the top right opens a small settings panel. There you can:
+Next to it, a **gear icon** opens a small settings panel. There you can:
 
 - adjust the **audio processing** — echo cancellation, noise suppression, auto gain, and voice isolation (all on by default),
 - choose the **audio device**. On Android the system's routing options appear here, such as "Speakerphone" (loud speaker) and "Headset earpiece" (quiet earpiece). If audio is too quiet on an Android device, select **"Speakerphone"** here.
 
 <Note>
-  **Android: call volume.** As soon as audio is playing, Android shows a small **phone icon** next to the volume slider — the volume button then controls the (separate) call volume, not the media volume. Turn it up to maximum on the device once so the kiosk is loud enough.
+  **Android: call volume.** As soon as audio is playing, Android shows a small **phone icon** next to the volume slider — the volume button then controls the (separate) call volume, not the media volume. Turn it up to maximum on the device once so the kiosk is loud enough. If that is not enough, use the **volume control** in the top right: it works in addition to, and independently of, the system volume.
 </Note>
 
 ## Fullscreen on the device

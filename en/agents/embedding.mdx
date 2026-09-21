@@ -84,6 +84,9 @@ All options are appended as query parameters to the `/embed` URL. Invalid values
 <ParamField query="speakerphone" type="string" default="auto">
   Diagnostic switch for audio output on Android. By default (`auto`) the loud system speaker is selected as soon as the microphone is turned on — audio is loud from the first second, with no dropout while the connection is set up. With `late` the switch happens only after the connection is established (the previous behaviour), which costs one to two seconds without audio or microphone. Intended for comparison only. No effect on iOS or desktop, where the browser offers no such switch. The speaker cannot be turned off — playback would be too quiet on mobile devices.
 </ParamField>
+<ParamField query="audiodebug" type="string" default="off">
+  With `on`, shows a small diagnostic panel in the top left: the level of the agent's signal, the active audio device, the state of audio output, and the browser identifier. Intended for troubleshooting directly on the device, without attaching it to developer tools. A button copies the values to the clipboard. Remove the switch after testing — the panel covers part of the picture.
+</ParamField>
 
 <Note>
   The microphone stays open for the duration of a conversation. If you want to mute or re-enable it from your page (e.g. your own push-to-talk button), control it via `postMessage` — see [Messaging](#messaging).
@@ -101,7 +104,7 @@ All options are appended as query parameters to the `/embed` URL. Invalid values
 
 ## Sound & volume
 
-Like the kiosk, the embedded agent optimizes playback automatically: on iPad/iPhone audio plays at full volume, on Android it routes to the loud system speaker. A **gear icon** in the top right of the iframe lets you adjust the audio processing and output device — see the kiosk [Sound & volume](/en/agents/kiosk#sound--volume) section for details.
+Like the kiosk, the embedded agent optimizes playback automatically: on iPad/iPhone audio plays at full volume, on Android it routes to the loud system speaker. Two icons sit in the top right of the iframe: a **speaker icon** for the agent's volume (independent of the device volume, and remembered between conversations) and a **gear icon** for audio processing and output device. See the kiosk [Sound & volume](/en/agents/kiosk#sound--volume) section for details.
 
 ## Messaging
 

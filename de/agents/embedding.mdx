@@ -84,6 +84,9 @@ Alle Optionen werden als Query-Parameter an die `/embed`-URL gehängt. Ungültig
 <ParamField query="speakerphone" type="string" default="auto">
   Diagnose-Schalter für die Tonausgabe auf Android. Standardmäßig (`auto`) wird der laute Systemlautsprecher bereits beim Einschalten des Mikrofons gewählt — der Ton ist damit von der ersten Sekunde an laut, ohne Aussetzer beim Verbindungsaufbau. Mit `late` wird erst nach dem Verbindungsaufbau umgeschaltet (das frühere Verhalten); das kostet ein bis zwei Sekunden ohne Ton und Mikrofon. Nur zum Vergleichen gedacht. Auf iOS und am Desktop ohne Wirkung, dort bietet der Browser keine solche Umschaltung an. Der Lautsprecher lässt sich **nicht** abschalten — auf Mobilgeräten wäre die Wiedergabe sonst zu leise.
 </ParamField>
+<ParamField query="audiodebug" type="string" default="off">
+  Blendet mit `on` ein kleines Diagnose-Feld oben links ein: Pegel des Agent-Signals, aktives Audio-Gerät, Zustand der Audio-Ausgabe und Browser-Kennung. Gedacht für die Fehlersuche direkt am Gerät, ohne es an Entwicklerwerkzeuge anzuschließen. Ein Knopf kopiert die Werte in die Zwischenablage. Nach dem Test wieder entfernen — das Feld verdeckt einen Teil des Bildes.
+</ParamField>
 
 <Note>
   Das Mikrofon ist während eines Gesprächs dauerhaft offen. Möchtest du es von deiner Seite aus stummschalten oder wieder aktivieren (z. B. ein eigener Push-to-Talk-Button), steuere es per `postMessage` — siehe [Messaging](#messaging).
@@ -101,7 +104,7 @@ Alle Optionen werden als Query-Parameter an die `/embed`-URL gehängt. Ungültig
 
 ## Ton & Lautstärke
 
-Wie im Kiosk optimiert der eingebettete Agent die Wiedergabe automatisch: Auf iPad/iPhone läuft der Ton in voller Lautstärke, auf Android schaltet er auf den lauten Systemlautsprecher. Über ein **Zahnrad-Symbol** oben rechts im iframe lassen sich Audioverarbeitung und Ausgabe-Gerät anpassen — die Details stehen im Kiosk-Abschnitt [Ton & Lautstärke](/de/agents/kiosk#ton--lautstärke).
+Wie im Kiosk optimiert der eingebettete Agent die Wiedergabe automatisch: Auf iPad/iPhone läuft der Ton in voller Lautstärke, auf Android schaltet er auf den lauten Systemlautsprecher. Oben rechts im iframe sitzen zwei Symbole: ein **Lautsprecher-Symbol** für die Lautstärke des Agenten (unabhängig von der Gerätelautstärke, die Einstellung wird gemerkt) und ein **Zahnrad-Symbol** für Audioverarbeitung und Ausgabe-Gerät. Die Details stehen im Kiosk-Abschnitt [Ton & Lautstärke](/de/agents/kiosk#ton--lautstärke).
 
 ## Messaging
 

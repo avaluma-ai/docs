@@ -58,6 +58,9 @@ Alle Optionen werden als Query-Parameter an die `/kiosk`-URL gehängt. Ungültig
 <ParamField query="speakerphone" type="string" default="auto">
   Diagnose-Schalter für die Tonausgabe auf Android. Standardmäßig (`auto`) wird der laute Systemlautsprecher bereits beim Einschalten des Mikrofons gewählt — der Ton ist damit von der ersten Sekunde an laut, ohne Aussetzer beim Verbindungsaufbau. Mit `late` wird erst nach dem Verbindungsaufbau umgeschaltet (das frühere Verhalten); das kostet ein bis zwei Sekunden ohne Ton und Mikrofon. Nur zum Vergleichen gedacht. Auf iOS und am Desktop ohne Wirkung, dort bietet der Browser keine solche Umschaltung an. Der Lautsprecher lässt sich **nicht** abschalten — auf Mobilgeräten wäre die Wiedergabe sonst zu leise.
 </ParamField>
+<ParamField query="audiodebug" type="string" default="off">
+  Blendet mit `on` ein kleines Diagnose-Feld oben links ein: Pegel des Agent-Signals, aktives Audio-Gerät, Zustand der Audio-Ausgabe und Browser-Kennung. Gedacht für die Fehlersuche direkt am Gerät, ohne es an Entwicklerwerkzeuge anzuschließen. Ein Knopf kopiert die Werte in die Zwischenablage. Nach dem Test wieder entfernen — das Feld verdeckt einen Teil des Bildes.
+</ParamField>
 
 <Note>
   Die Parameter `border` und `hideTextChat` aus dem [Embedding](/de/agents/embedding#query-parameter) funktionieren hier ebenfalls (Hintergrundfarbe und Ausblenden der Text-Chat-Eingabe).
@@ -82,15 +85,23 @@ Damit der Agent auf einem Aufsteller gut hörbar ist, optimiert der Kiosk die Wi
 - **iPad/iPhone:** Der Ton läuft automatisch in voller Lautstärke, in beiden Mikrofon-Modi.
 - **Android:** Der Kiosk schaltet die Ausgabe automatisch auf den lauten **Systemlautsprecher** („Speakerphone") statt auf die leise Ohrmuschel.
 
+### Lautstärke (Lautsprecher-Symbol)
+
+Oben rechts, links neben dem Zahnrad, sitzt ein **Lautsprecher-Symbol**. Ein Tippen öffnet einen Regler mit **Lauter** und **Leiser** — er wirkt direkt auf die Wiedergabe des Agenten, unabhängig von der Lautstärke des Geräts. Die gewählte Stufe wird pro Gerät und Browser gemerkt und gilt auch für das nächste Gespräch.
+
+<Note>
+  **Wann du ihn brauchst.** Auf manchen Android-Geräten bleibt die Wiedergabe leise, obwohl „Speakerphone" ausgewählt ist und die Anruf-Lautstärke bereits am Anschlag steht. Ursache ist das Audio-Routing von Android, nicht der Kiosk — dieselbe Situation lässt sich dort auch durch einen Wechsel auf „Headset earpiece" und zurück auf „Speakerphone" auflösen. Der Lautstärke-Regler ist der direktere Weg und funktioniert auf allen Geräten.
+</Note>
+
 ### Audio-Einstellungen (Zahnrad)
 
-Oben rechts blendet ein **Zahnrad-Symbol** ein kleines Einstell-Panel ein. Dort kannst du:
+Rechts daneben blendet ein **Zahnrad-Symbol** ein kleines Einstell-Panel ein. Dort kannst du:
 
 - die **Audioverarbeitung** anpassen — Echo-Unterdrückung, Rauschunterdrückung, Auto-Pegel und Stimmisolation (standardmäßig alle aktiv),
 - das **Audio-Gerät** wählen. Auf Android erscheinen hier die Routing-Optionen des Systems, etwa „Speakerphone" (lauter Lautsprecher) und „Headset earpiece" (leise Ohrmuschel). Ist der Ton auf einem Android-Gerät zu leise, wähle hier **„Speakerphone"**.
 
 <Note>
-  **Android: Anruf-Lautstärke.** Sobald der Ton läuft, zeigt Android neben dem Lautstärkeregler ein kleines **Telefonsymbol** — die Lautstärke-Taste regelt dann die (getrennte) Anruf-Lautstärke, nicht die Medien-Lautstärke. Dreh sie am Gerät einmalig auf Maximum, damit der Kiosk laut genug ist.
+  **Android: Anruf-Lautstärke.** Sobald der Ton läuft, zeigt Android neben dem Lautstärkeregler ein kleines **Telefonsymbol** — die Lautstärke-Taste regelt dann die (getrennte) Anruf-Lautstärke, nicht die Medien-Lautstärke. Dreh sie am Gerät einmalig auf Maximum, damit der Kiosk laut genug ist. Reicht das nicht, hilft der **Lautstärke-Regler** oben rechts: Er wirkt zusätzlich und unabhängig davon.
 </Note>
 
 ## Vollbild auf dem Gerät
