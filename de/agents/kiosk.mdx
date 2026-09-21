@@ -104,6 +104,14 @@ Rechts daneben blendet ein **Zahnrad-Symbol** ein kleines Einstell-Panel ein. Do
   **Android: Anruf-Lautstärke.** Sobald der Ton läuft, zeigt Android neben dem Lautstärkeregler ein kleines **Telefonsymbol** — die Lautstärke-Taste regelt dann die (getrennte) Anruf-Lautstärke, nicht die Medien-Lautstärke. Dreh sie am Gerät einmalig auf Maximum, damit der Kiosk laut genug ist. Reicht das nicht, hilft der **Lautstärke-Regler** oben rechts: Er wirkt zusätzlich und unabhängig davon.
 </Note>
 
+### Wenn das Mikrofon ausfällt
+
+Bricht die Aufnahme während eines Gesprächs weg, merkt der Kiosk das und holt das Mikrofon selbst zurück — in den meisten Fällen bemerkt der Besucher nichts. Gelingt das nicht, erscheint ein Hinweis mit einem Knopf, der es erneut versucht. Das passiert höchstens dreimal pro Gespräch; danach bleibt der Hinweis stehen.
+
+<Warning>
+  **Bluetooth-Headsets in Firefox auf Android.** Zum Aufnehmen muss Android ein Headset vom Musik- auf das Telefonprofil umschalten. Firefox verwaltet diesen Wechsel unzuverlässig: Die Aufnahme kann abreißen, obwohl das Headset verbunden bleibt, und das Headset taucht in der Geräteauswahl gar nicht erst auf — dort steht nur „Default audio input device". Hilft der Knopf im Hinweis nicht weiter, trenne das Headset und nutze das Mikrofon des Geräts, oder wechsle zu Chrome. Mit Chrome und Samsung Internet tritt das Problem nach unseren Tests nicht auf.
+</Warning>
+
 ## Vollbild auf dem Gerät
 
 Für echtes Vollbild ohne Adressleiste fügst du die Kiosk-URL zum Startbildschirm des Geräts hinzu und startest sie von dort. Nutze dafür das Teilen-Menü des Browsers (z. B. „Zum Startbildschirm hinzufügen") — die Seite ist als eigenständige Web-App konfiguriert und öffnet sich daher ohne Bedienelemente.
