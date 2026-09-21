@@ -52,6 +52,10 @@ All options are appended as query parameters to the `/kiosk` URL. Invalid values
   Auto-reset timeout in **seconds**. After this much inactivity while the agent is waiting for input, the conversation ends and the start screen returns for the next visitor. Both touching the screen and the visitor speaking count as activity. `0` disables the auto-reset.
 </ParamField>
 
+<ParamField query="webaudio" type="string" default="on">
+  Diagnostic switch for audio output. By default the agent's audio is routed through the browser's Web Audio API (`on`). With `off` the plain audio element plays instead. Intended for troubleshooting only, e.g. to narrow down audio or lip-sync issues on mobile devices. **Note:** in Firefox the agent may stay silent in the kiosk browser with `off` — remove the switch after testing.
+</ParamField>
+
 <Note>
   The `border` and `hideTextChat` parameters from [Embedding](/en/agents/embedding#query-parameters) work here too (background color and hiding the text-chat input).
 </Note>

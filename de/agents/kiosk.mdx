@@ -52,6 +52,10 @@ Alle Optionen werden als Query-Parameter an die `/kiosk`-URL gehängt. Ungültig
   Auto-Reset-Zeit in **Sekunden**. Nach dieser Inaktivität — während der Agent auf eine Eingabe wartet — endet das Gespräch und der Start-Screen kehrt für den nächsten Besucher zurück. Als Aktivität zählen sowohl Berührungen des Bildschirms als auch das Sprechen des Besuchers. `0` deaktiviert den Auto-Reset.
 </ParamField>
 
+<ParamField query="webaudio" type="string" default="on">
+  Diagnose-Schalter für die Tonausgabe. Standardmäßig läuft der Ton des Agenten über die Web-Audio-API des Browsers (`on`). Mit `off` spielt stattdessen direkt das Audio-Element. Nur zur Fehlersuche gedacht, etwa um Ton- oder Lippensynchronisationsprobleme auf Mobilgeräten einzugrenzen. **Hinweis:** In Firefox kann der Agent mit `off` im Kiosk-Browser stumm bleiben — den Schalter nach dem Test wieder entfernen.
+</ParamField>
+
 <Note>
   Die Parameter `border` und `hideTextChat` aus dem [Embedding](/de/agents/embedding#query-parameter) funktionieren hier ebenfalls (Hintergrundfarbe und Ausblenden der Text-Chat-Eingabe).
 </Note>

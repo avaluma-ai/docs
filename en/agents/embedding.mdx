@@ -78,6 +78,10 @@ All options are appended as query parameters to the `/embed` URL. Invalid values
   With `true` the "Hang up" button is shown.
 </ParamField>
 
+<ParamField query="webaudio" type="string" default="on">
+  Diagnostic switch for audio output. By default the agent's audio is routed through the browser's Web Audio API (`on`). With `off` the plain audio element plays instead. Intended for troubleshooting only, e.g. to narrow down audio or lip-sync issues on mobile devices. **Note:** in Firefox the agent may stay silent inside embedded pages with `off` — remove the switch after testing.
+</ParamField>
+
 <Note>
   The microphone stays open for the duration of a conversation. If you want to mute or re-enable it from your page (e.g. your own push-to-talk button), control it via `postMessage` — see [Messaging](#messaging).
 </Note>

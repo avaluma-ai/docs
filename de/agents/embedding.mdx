@@ -78,6 +78,10 @@ Alle Optionen werden als Query-Parameter an die `/embed`-URL gehängt. Ungültig
   Mit `true` wird der „Auflegen"-Button eingeblendet.
 </ParamField>
 
+<ParamField query="webaudio" type="string" default="on">
+  Diagnose-Schalter für die Tonausgabe. Standardmäßig läuft der Ton des Agenten über die Web-Audio-API des Browsers (`on`). Mit `off` spielt stattdessen direkt das Audio-Element. Nur zur Fehlersuche gedacht, etwa um Ton- oder Lippensynchronisationsprobleme auf Mobilgeräten einzugrenzen. **Hinweis:** In Firefox kann der Agent mit `off` in eingebetteten Seiten stumm bleiben — den Schalter nach dem Test wieder entfernen.
+</ParamField>
+
 <Note>
   Das Mikrofon ist während eines Gesprächs dauerhaft offen. Möchtest du es von deiner Seite aus stummschalten oder wieder aktivieren (z. B. ein eigener Push-to-Talk-Button), steuere es per `postMessage` — siehe [Messaging](#messaging).
 </Note>
