@@ -81,6 +81,9 @@ All options are appended as query parameters to the `/embed` URL. Invalid values
 <ParamField query="webaudio" type="string" default="on">
   Diagnostic switch for audio output. By default the agent's audio is routed through the browser's Web Audio API (`on`). With `off` the plain audio element plays instead. Intended for troubleshooting only, e.g. to narrow down audio or lip-sync issues on mobile devices. **Note:** in Firefox the agent may stay silent inside embedded pages with `off` — remove the switch after testing.
 </ParamField>
+<ParamField query="speakerphone" type="string" default="auto">
+  Diagnostic switch for audio output on Android. By default (`auto`) the loud system speaker is selected as soon as the microphone is turned on — audio is loud from the first second, with no dropout while the connection is set up. With `late` the switch happens only after the connection is established (the previous behaviour), which costs one to two seconds without audio or microphone. Intended for comparison only. No effect on iOS or desktop, where the browser offers no such switch. The speaker cannot be turned off — playback would be too quiet on mobile devices.
+</ParamField>
 
 <Note>
   The microphone stays open for the duration of a conversation. If you want to mute or re-enable it from your page (e.g. your own push-to-talk button), control it via `postMessage` — see [Messaging](#messaging).

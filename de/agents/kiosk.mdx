@@ -55,6 +55,9 @@ Alle Optionen werden als Query-Parameter an die `/kiosk`-URL gehängt. Ungültig
 <ParamField query="webaudio" type="string" default="on">
   Diagnose-Schalter für die Tonausgabe. Standardmäßig läuft der Ton des Agenten über die Web-Audio-API des Browsers (`on`). Mit `off` spielt stattdessen direkt das Audio-Element. Nur zur Fehlersuche gedacht, etwa um Ton- oder Lippensynchronisationsprobleme auf Mobilgeräten einzugrenzen. **Hinweis:** In Firefox kann der Agent mit `off` im Kiosk-Browser stumm bleiben — den Schalter nach dem Test wieder entfernen.
 </ParamField>
+<ParamField query="speakerphone" type="string" default="auto">
+  Diagnose-Schalter für die Tonausgabe auf Android. Standardmäßig (`auto`) wird der laute Systemlautsprecher bereits beim Einschalten des Mikrofons gewählt — der Ton ist damit von der ersten Sekunde an laut, ohne Aussetzer beim Verbindungsaufbau. Mit `late` wird erst nach dem Verbindungsaufbau umgeschaltet (das frühere Verhalten); das kostet ein bis zwei Sekunden ohne Ton und Mikrofon. Nur zum Vergleichen gedacht. Auf iOS und am Desktop ohne Wirkung, dort bietet der Browser keine solche Umschaltung an. Der Lautsprecher lässt sich **nicht** abschalten — auf Mobilgeräten wäre die Wiedergabe sonst zu leise.
+</ParamField>
 
 <Note>
   Die Parameter `border` und `hideTextChat` aus dem [Embedding](/de/agents/embedding#query-parameter) funktionieren hier ebenfalls (Hintergrundfarbe und Ausblenden der Text-Chat-Eingabe).
