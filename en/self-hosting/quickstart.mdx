@@ -83,7 +83,7 @@ By the end of this guide you will have the Avaluma Avatar Server rendering your 
     The `AvatarSession` block in that file wires the voice pipeline to the Avatar Server:
 
     ```python
-    from avaluma_livekit_plugin import AvatarSession
+    from livekit.plugins.avaluma import AvatarSession
 
     avatar = AvatarSession(
         license_key=license_key,       # Your License Key

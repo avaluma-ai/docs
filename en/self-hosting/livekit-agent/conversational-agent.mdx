@@ -22,7 +22,7 @@ Microphone → STT → LLM → TTS → Avaluma Avatar → Video stream
 
 <Steps>
   <Step title="Install the plugin">
-    The `avaluma-livekit-plugin` package provides the `AvatarSession` class that connects the agent pipeline to your avatar. The `pyproject.toml` already declares it as a dependency — no extra install step is needed when using Docker:
+    The `livekit-plugins-avaluma` package provides the `AvatarSession` class that connects the agent pipeline to your avatar. The `pyproject.toml` already declares it as a dependency — no extra install step is needed when using Docker:
 
     ```toml pyproject.toml
     dependencies = [
@@ -30,7 +30,7 @@ Microphone → STT → LLM → TTS → Avaluma Avatar → Video stream
         "livekit-agents[silero,turn-detector]~=1.2",
         "livekit-plugins-noise-cancellation~=0.2",
         "python-dotenv",
-        "avaluma-livekit-plugin @ git+https://github.com/avaluma-ai/avaluma-livekit-plugin.git"
+        "livekit-plugins-avaluma @ git+https://github.com/avaluma-ai/avaluma-livekit-plugin.git"
     ]
     ```
   </Step>
@@ -79,7 +79,7 @@ This is the complete source of `agent-1.py`:
 import os
 
 # highlight-next-line
-from avaluma_livekit_plugin import AvatarSession
+from livekit.plugins.avaluma import AvatarSession
 from dotenv import load_dotenv
 from livekit.agents import (
     Agent,

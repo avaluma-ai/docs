@@ -83,7 +83,7 @@ Am Ende dieser Anleitung rendert dein Avaluma-Avatar-Server deine `.hvia`-Avatar
     Der `AvatarSession`-Block in dieser Datei verbindet die Sprach-Pipeline mit dem Avatar-Server:
 
     ```python
-    from avaluma_livekit_plugin import AvatarSession
+    from livekit.plugins.avaluma import AvatarSession
 
     avatar = AvatarSession(
         license_key=license_key,       # Dein Lizenzschlüssel

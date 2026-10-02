@@ -16,7 +16,7 @@ Self-Hosting basiert auf zwei zusammenarbeitenden Komponenten, die du unabhängi
 
 **Avatar-Server** läuft auf einer NVIDIA-GPU und ist die Rendering-Engine. Er liest deine `.hvia`-Avatar-Dateien, animiert den Avatar Bild für Bild als Reaktion auf eingehendes Audio und veröffentlicht den resultierenden Video-Track direkt in einem LiveKit-Raum. Du kannst den Avatar-Server selbst hosten oder den verwalteten Endpunkt von Avaluma unter `https://api.avaluma.ai` nutzen.
 
-**LiveKit-Agent** ist eine Python-basierte Sprach-KI-Pipeline, die eine Konversation steuert. Er erfasst Mikrofon-Eingaben, leitet sie durch Speech-to-Text (STT), übergibt das Transkript an ein Large Language Model (LLM), synthetisiert Sprache per Text-to-Speech (TTS) und reicht das Audio dann über das `avaluma-livekit-plugin` an den Avatar-Server weiter. Der Avatar animiert dieses Audio und streamt das Video zurück in den Raum.
+**LiveKit-Agent** ist eine Python-basierte Sprach-KI-Pipeline, die eine Konversation steuert. Er erfasst Mikrofon-Eingaben, leitet sie durch Speech-to-Text (STT), übergibt das Transkript an ein Large Language Model (LLM), synthetisiert Sprache per Text-to-Speech (TTS) und reicht das Audio dann über das Plugin `livekit-plugins-avaluma` an den Avatar-Server weiter. Der Avatar animiert dieses Audio und streamt das Video zurück in den Raum.
 
 ## Voraussetzungen
 
