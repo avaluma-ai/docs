@@ -81,9 +81,10 @@ speech. Every model offered works with your own instant voice clones (voice ID).
 ### Voice settings
 
 Under **Voice Settings** you adjust **Stability**, **Similarity** and
-**Speed** with sliders. While **Voice default** is checked, the value is not
-sent and ElevenLabs uses the voice's own setting. Uncheck it to enable the
-slider.
+**Speed** with sliders. Each slider has a **Voice default** checkbox above it.
+While it is checked, the value is not sent and ElevenLabs uses the voice's own
+setting. Uncheck it to enable the slider; it then starts at the ElevenLabs
+defaults: stability `0.5`, similarity `0.75`, speed `1.0`.
 
 Which sliders appear depends on the model:
 
@@ -101,6 +102,21 @@ Which sliders appear depends on the model:
 
 New agents start on **v4 Turbo**. Existing agents keep their model until you
 change it yourself.
+
+### Defaults for new agents
+
+A newly created agent starts with this configuration. You can change all of it
+in the form afterwards:
+
+| Area | Default |
+|---|---|
+| **Speech recognition (STT)** | Deepgram Flux `flux-general-multi`, language English |
+| **Language model (LLM)** | LiveKit Inference `gemma-4-31b-it` |
+| **Speech output (TTS)** | ElevenLabs **v4 Turbo** |
+| **Turn-taking** | STT endpointing (Deepgram Flux), endpointing **dynamic** (adapts to speech pauses), **preemptive TTS** on (speech output starts before the end of turn) |
+
+If you switch speech recognition away from Deepgram Flux, turn-taking is reset
+to "Not configured", because STT endpointing only works with Flux.
 
 ## Manage agents
 

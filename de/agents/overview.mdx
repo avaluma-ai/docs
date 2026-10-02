@@ -82,9 +82,11 @@ Instant-Voice-Clones (Voice ID).
 ### Voice Settings
 
 Unter **Voice Settings** stellst du **Stability**, **Similarity** und
-**Speed** per Schieberegler ein. Ist der Haken **Standard der Stimme** gesetzt,
-wird der Wert nicht mitgeschickt und ElevenLabs nutzt die Einstellung der
-Stimme. Entferne den Haken, um den Regler freizugeben.
+**Speed** per Schieberegler ein. Über jedem Regler steht der Haken
+**Standard der Stimme**. Ist er gesetzt, wird der Wert nicht mitgeschickt und
+ElevenLabs nutzt die Einstellung der Stimme. Entferne den Haken, um den Regler
+freizugeben. Er startet dann bei den ElevenLabs-Standards: Stability `0.5`,
+Similarity `0.75`, Speed `1.0`.
 
 Welche Regler erscheinen, hängt vom Modell ab:
 
@@ -102,6 +104,22 @@ Welche Regler erscheinen, hängt vom Modell ab:
 
 Neue Agenten starten mit **v4 Turbo**. Bestehende Agenten behalten ihr Modell,
 bis du es selbst umstellst.
+
+### Standards für neue Agenten
+
+Ein neu angelegter Agent startet mit dieser Konfiguration. Alles lässt sich
+danach im Formular ändern:
+
+| Bereich | Standard |
+|---|---|
+| **Spracherkennung (STT)** | Deepgram Flux `flux-general-multi`, Sprache Englisch |
+| **Sprachmodell (LLM)** | LiveKit Inference `gemma-4-31b-it` |
+| **Sprachausgabe (TTS)** | ElevenLabs **v4 Turbo** |
+| **Turn-Taking** | STT-Endpointing (Deepgram Flux), Endpointing **dynamic** (passt sich den Sprechpausen an), **Preemptive TTS** an (die Sprachausgabe startet vor dem Turn-Ende) |
+
+Wechselst du die Spracherkennung weg von Deepgram Flux, wird das Turn-Taking auf
+„Nicht konfiguriert“ zurückgesetzt, weil STT-Endpointing nur mit Flux
+funktioniert.
 
 ## Agenten verwalten
 
