@@ -66,29 +66,42 @@ Einmal konfiguriert, hat ein Agent eine feste **Agent-ID** (eine UUID), mit der 
 ### Sprachmodell wählen
 
 Unter **Stimme** lässt sich zusätzlich das ElevenLabs-Modell wählen, das die
-Sprachausgabe erzeugt. Alle angebotenen Modelle sind für Echtzeit-Gespräche
-geeignet und funktionieren mit eigenen Instant-Voice-Clones (Voice ID).
+Sprachausgabe erzeugt. Alle angebotenen Modelle funktionieren mit eigenen
+Instant-Voice-Clones (Voice ID).
 
 | Modell | Latenz | Sprachen | Wann sinnvoll |
 |---|---|---|---|
-| **Flash v2.5** (Standard) | ~75 ms | 32 | Voreinstellung für neue Agenten — schnellste Antwortzeit. |
-| **v3 Conversational** | ~280 ms | 70+ | Ausdrucksstärker und emotionaler, bei etwas höherer Latenz. |
+| **v4 Turbo** (Standard) | ~100 ms | 90+ | Voreinstellung für neue Agenten — sehr ausdrucksstark und schnell. |
+| **Flash v2.5** | ~75 ms | 32 | Niedrigste Latenz, wenn Ausdruck zweitrangig ist. |
+| **v3 Conversational** | ~280 ms | 70+ | Ausdrucksstark, aber langsamer als v4 Turbo. |
+| **v4** | ~550 ms | 90+ | Nur zum Vergleichen — für Live-Gespräche zu langsam. |
 | **Flash v2** | ~75 ms | nur Englisch | Rein englische Agenten. |
-| **Multilingual v2** | höher | 29 | Höchste Klangqualität, wenn Latenz zweitrangig ist. |
-| **Turbo v2.5** | ~250 ms | 32 | Das Modell bestehender Agenten. Gleiche Stimme wie Flash v2.5, nur langsamer; ElevenLabs empfiehlt den Wechsel. |
+| **Multilingual v2** | höher | 29 | Hohe Klangqualität, wenn Latenz zweitrangig ist. |
+| **Turbo v2.5** | ~250 ms | 32 | Das Modell älterer Agenten. Gleiche Stimme wie Flash v2.5, nur langsamer; ElevenLabs empfiehlt den Wechsel. |
+
+### Voice Settings
+
+Unter **Voice Settings** stellst du **Stability**, **Similarity** und
+**Speed** per Schieberegler ein. Ist der Haken **Standard der Stimme** gesetzt,
+wird der Wert nicht mitgeschickt und ElevenLabs nutzt die Einstellung der
+Stimme. Entferne den Haken, um den Regler freizugeben.
+
+Welche Regler erscheinen, hängt vom Modell ab:
+
+| Modell | Stability | Similarity | Speed |
+|---|---|---|---|
+| **v4 Turbo**, **v4** | stufenlos | stufenlos | — |
+| **v3 Conversational** | nur `0` (Creative), `0.5` (Natural), `1` (Robust) | — | — |
+| alle übrigen | stufenlos | stufenlos | 0.7–1.2 |
 
 <Note>
-  **v3 Conversational** unterstützt weder **Speed** noch **Similarity Boost**,
-  und **Stability** akzeptiert dort nur die drei Presets `0` (Creative),
-  `0.5` (Natural) und `1` (Robust). Die Felder passen sich automatisch an,
-  sobald du das Modell wählst: die beiden nicht unterstützten verschwinden, und
-  ein abweichender Stability-Wert wird auf das nächste Preset gerundet.
+  Die Regler passen sich automatisch an, sobald du das Modell wechselst: nicht
+  unterstützte verschwinden, und bei v3 wird ein Stability-Wert dazwischen auf
+  das nächste Preset gerundet.
 </Note>
 
-Neue Agenten starten mit **Flash v2.5**. Bestehende Agenten laufen unverändert
-auf **Turbo v2.5** weiter, bis du das Modell selbst umstellst — ein Wechsel auf
-Flash v2.5 ändert dabei nicht, wie die Stimme klingt, sondern nur, wie schnell
-sie antwortet.
+Neue Agenten starten mit **v4 Turbo**. Bestehende Agenten behalten ihr Modell,
+bis du es selbst umstellst.
 
 ## Agenten verwalten
 

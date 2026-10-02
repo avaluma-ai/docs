@@ -66,28 +66,41 @@ Open an agent to adjust its configuration at any time. Common settings include:
 ### Choosing a speech model
 
 Under **Voice** you can also pick the ElevenLabs model that generates the
-speech. Every model offered is suitable for real-time conversations and works
-with your own instant voice clones (voice ID).
+speech. Every model offered works with your own instant voice clones (voice ID).
 
 | Model | Latency | Languages | When to use |
 |---|---|---|---|
-| **Flash v2.5** (default) | ~75 ms | 32 | Preselected for new agents — fastest response time. |
-| **v3 Conversational** | ~280 ms | 70+ | More expressive and emotional, at slightly higher latency. |
+| **v4 Turbo** (default) | ~100 ms | 90+ | Preselected for new agents — highly expressive and fast. |
+| **Flash v2.5** | ~75 ms | 32 | Lowest latency when expressiveness is secondary. |
+| **v3 Conversational** | ~280 ms | 70+ | Expressive, but slower than v4 Turbo. |
+| **v4** | ~550 ms | 90+ | For comparison only — too slow for live conversations. |
 | **Flash v2** | ~75 ms | English only | English-only agents. |
-| **Multilingual v2** | higher | 29 | Highest audio quality when latency is secondary. |
-| **Turbo v2.5** | ~250 ms | 32 | The model existing agents use. Same voice as Flash v2.5, only slower; ElevenLabs recommends switching. |
+| **Multilingual v2** | higher | 29 | High audio quality when latency is secondary. |
+| **Turbo v2.5** | ~250 ms | 32 | The model of older agents. Same voice as Flash v2.5, only slower; ElevenLabs recommends switching. |
+
+### Voice settings
+
+Under **Voice Settings** you adjust **Stability**, **Similarity** and
+**Speed** with sliders. While **Voice default** is checked, the value is not
+sent and ElevenLabs uses the voice's own setting. Uncheck it to enable the
+slider.
+
+Which sliders appear depends on the model:
+
+| Model | Stability | Similarity | Speed |
+|---|---|---|---|
+| **v4 Turbo**, **v4** | continuous | continuous | — |
+| **v3 Conversational** | only `0` (Creative), `0.5` (Natural), `1` (Robust) | — | — |
+| all others | continuous | continuous | 0.7–1.2 |
 
 <Note>
-  **v3 Conversational** supports neither **Speed** nor **Similarity Boost**, and
-  **Stability** only accepts the three presets `0` (Creative), `0.5` (Natural)
-  and `1` (Robust). The fields adapt automatically once you select the model:
-  the two unsupported ones disappear, and a stability value in between is
-  rounded to the nearest preset.
+  The sliders adapt automatically once you switch the model: unsupported ones
+  disappear, and on v3 a stability value in between is rounded to the nearest
+  preset.
 </Note>
 
-New agents start on **Flash v2.5**. Existing agents keep running on
-**Turbo v2.5** until you change the model yourself — switching to Flash v2.5
-does not change how the voice sounds, only how fast it responds.
+New agents start on **v4 Turbo**. Existing agents keep their model until you
+change it yourself.
 
 ## Manage agents
 
