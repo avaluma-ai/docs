@@ -55,12 +55,12 @@ Einmal konfiguriert, hat ein Agent eine feste **Agent-ID** (eine UUID), mit der 
 | **Modell** | Das ElevenLabs-Sprachmodell, mit dem die Stimme erzeugt wird — siehe [Sprachmodell wählen](#sprachmodell-w%C3%A4hlen). |
 | **Anweisungen** | Der System-Prompt, der Persona und Verhalten des Agenten prägt. |
 | **Sprache** | Standardsprache für Konversation und Oberfläche. |
-| **Freigabe** | Ob der Agent über einen öffentlichen Link erreichbar ist. |
 | **Einbettung** | Ob der Agent per `<iframe>` eingebettet werden darf — und auf welchen Origins. |
-| **Kiosk** | Ob der Agent als eigenständige Vollbild-Seite (Kiosk) erreichbar ist. |
+| **Kiosk** | Eigenständige Vollbild-Seite für Displays (Kiosk). Für jeden Agenten verfügbar; URL und QR-Code findest du im Tab **Bereitstellung**. |
+| **Websuche** | Ob der Agent während des Gesprächs im Internet nachschlagen darf — siehe [Websuche](#websuche). |
 
 <Note>
-  Nur **freigegebene** Agenten lassen sich über einen öffentlichen Link öffnen oder auf einer Webseite einbetten. Aktiviere die Freigabe, bevor du einen Agent-Link verteilst.
+  Der direkte Link (`/agent/AGENT_ID`) und der [Kiosk](/de/agents/kiosk) sind für jeden Agenten erreichbar. Behandle die Agent-ID deshalb wie einen öffentlichen Link. Nur das Einbetten per iframe musst du eigens freigeben — samt der Origins, auf denen es erlaubt ist.
 </Note>
 
 ### Sprachmodell wählen
@@ -121,6 +121,19 @@ Wechselst du die Spracherkennung weg von Deepgram Flux, wird das Turn-Taking auf
 „Nicht konfiguriert“ zurückgesetzt, weil STT-Endpointing nur mit Flux
 funktioniert.
 
+### Websuche
+
+Mit der Websuche kann der Agent während des Gesprächs im Internet nach aktuellen
+Informationen suchen — etwa nach Öffnungszeiten, Nachrichten oder Preisen, die
+nicht in seinem Hintergrundwissen stehen. Du schaltest sie im Tab
+**Hintergrundwissen** unter **Tools** mit dem Haken **Websuche** ein und
+speicherst den Agenten. Standardmäßig ist sie aus.
+
+Die Websuche funktioniert mit allen Sprachmodellen außer OpenAI Realtime. Beim
+Standardmodell `gemma-4-31b-it` und bei Cerebras übernimmt im Hintergrund
+GPT-5.4 mini die Suche; eine Suche dauert dann einige Sekunden, bevor der Agent
+antwortet.
+
 ## Agenten verwalten
 
 In der **Agents**-Übersicht findest du bei jedem Agenten ein Menü (drei Punkte) mit zusätzlichen Aktionen:
@@ -132,7 +145,7 @@ In der **Agents**-Übersicht findest du bei jedem Agenten ein Menü (drei Punkte
 | **Löschen** | Entfernt den Agenten endgültig. Diese Aktion kann nicht rückgängig gemacht werden. |
 
 <Note>
-  Beim **Duplizieren** werden auch die Einbettungs- und Kiosk-Einstellungen (inklusive der erlaubten Origins) übernommen. Die Kopie ist damit sofort unter denselben Bedingungen erreichbar wie das Original.
+  Beim **Duplizieren** werden auch die Einbettungs-Einstellungen (inklusive der erlaubten Origins) übernommen. Die Kopie ist damit sofort unter denselben Bedingungen erreichbar wie das Original.
 </Note>
 
 ## Nutzungsstatistik pro Agent

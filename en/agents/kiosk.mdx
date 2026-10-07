@@ -1,23 +1,20 @@
 ---
 title: "Run an Avaluma Agent as a Fullscreen Kiosk"
 sidebarTitle: "Kiosk mode"
-description: "Run a shared Avaluma agent fullscreen on an unattended display — kiosk stand, reception screen, or trade-show booth — with a screen wake lock and idle auto-reset."
+description: "Run an Avaluma agent fullscreen on an unattended display — kiosk stand, reception screen, or trade-show booth — with a screen wake lock and idle auto-reset."
 ---
 
 Kiosk mode opens an agent as a **standalone, fullscreen page** — no iframe, no surrounding website. It is built for unattended displays such as a kiosk stand, a reception screen, or a trade-show booth: the avatar fills the entire screen, the display stays awake, and after a visitor leaves the conversation resets itself for the next one.
 
 <Note>
-  Kiosk mode is a **separate opt-in** from website embedding. An agent can be available as a kiosk without being embeddable on other sites, and vice versa. Unlike embedding, kiosk mode has no allowed-origins list — the only gate is the kiosk toggle, so only enable it for agents you want reachable as a public fullscreen page.
+  Kiosk mode is available for **every agent** — there is no separate toggle and, unlike embedding, no allowed-origins list. Every agent is reachable at `/agent/AGENT_ID/kiosk`. Treat the Agent ID like a public link: anyone who knows it can start conversations that use up your account's conversation minutes.
 </Note>
 
 ## Prerequisites
 
 <Steps>
-  <Step title="Enable kiosk mode">
-    Open the agent in the [dashboard](https://avaluma.ai), go to the **Deployment** tab, and turn on **Enable kiosk mode** in the **Kiosk URL** section. Only shared agents can run as a kiosk. Toggling this switch is **saved immediately** — you can test right away without saving the agent manually first.
-  </Step>
   <Step title="Get the kiosk URL">
-    Copy the ready-made URL from the dashboard, or scan the QR code with the device. You can also build the URL yourself as described below.
+    Open the agent in the [dashboard](https://avaluma.ai), go to the **Deployment** tab, and expand the **Kiosk URL** section. Copy the ready-made URL, or scan the QR code with the device. You can also build the URL yourself as described below.
   </Step>
   <Step title="Add it to the home screen">
     On the device, open the URL in the browser and add it to the home screen. Launched from the home screen it runs as a true fullscreen web app, without browser chrome.

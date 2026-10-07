@@ -55,12 +55,12 @@ Open an agent to adjust its configuration at any time. Common settings include:
 | **Model** | The ElevenLabs speech model used to generate the voice — see [Choosing a speech model](#choosing-a-speech-model). |
 | **Instructions** | The system prompt that shapes the agent's persona and behavior. |
 | **Language** | Default conversation and UI language. |
-| **Sharing** | Whether the agent is reachable via a public link. |
 | **Embedding** | Whether the agent may be embedded via `<iframe>`, and on which origins. |
-| **Kiosk** | Whether the agent is reachable as a standalone fullscreen page (kiosk). |
+| **Kiosk** | Standalone fullscreen page for displays (kiosk). Available for every agent; you find the URL and QR code in the **Deployment** tab. |
+| **Web search** | Whether the agent may look things up on the internet during a conversation — see [Web search](#web-search). |
 
 <Note>
-  Only **shared** agents can be opened via a public link or embedded on a website. Enable sharing before you distribute an agent link.
+  The direct link (`/agent/AGENT_ID`) and the [kiosk](/en/agents/kiosk) are reachable for every agent, so treat the Agent ID like a public link. Only embedding via iframe needs to be enabled separately — together with the origins it is allowed on.
 </Note>
 
 ### Choosing a speech model
@@ -118,6 +118,18 @@ in the form afterwards:
 If you switch speech recognition away from Deepgram Flux, turn-taking is reset
 to "Not configured", because STT endpointing only works with Flux.
 
+### Web search
+
+With web search, the agent can look up current information on the internet
+during a conversation — for example opening hours, news, or prices that are not
+in its background knowledge. Turn it on in the **Background knowledge** tab
+under **Tools** with the **Web search** checkbox, then save the agent. It is off
+by default.
+
+Web search works with all language models except OpenAI Realtime. With the
+default model `gemma-4-31b-it` and with Cerebras, GPT-5.4 mini runs the search
+in the background; a search then takes a few seconds before the agent answers.
+
 ## Manage agents
 
 In the **Agents** overview, each agent has a menu (three dots) with additional actions:
@@ -129,7 +141,7 @@ In the **Agents** overview, each agent has a menu (three dots) with additional a
 | **Delete** | Permanently removes the agent. This action cannot be undone. |
 
 <Note>
-  **Duplicating** also carries over the embedding and kiosk settings (including the allowed origins). The copy is therefore immediately reachable under the same conditions as the original.
+  **Duplicating** also carries over the embedding settings (including the allowed origins). The copy is therefore immediately reachable under the same conditions as the original.
 </Note>
 
 ## Per-agent usage statistics

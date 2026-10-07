@@ -1,23 +1,20 @@
 ---
 title: "Einen Avaluma-Agent als Vollbild-Kiosk betreiben"
 sidebarTitle: "Kiosk-Modus"
-description: "Betreibe einen freigegebenen Avaluma-Agent im Vollbild auf einem unbeaufsichtigten Display — Aufsteller, Empfangsbildschirm oder Messestand — mit Display-Wachhalter und Auto-Reset bei Inaktivität."
+description: "Betreibe einen Avaluma-Agent im Vollbild auf einem unbeaufsichtigten Display — Aufsteller, Empfangsbildschirm oder Messestand — mit Display-Wachhalter und Auto-Reset bei Inaktivität."
 ---
 
 Der Kiosk-Modus öffnet einen Agenten als **eigenständige Vollbild-Seite** — ohne iframe, ohne umgebende Webseite. Er ist für unbeaufsichtigte Displays gemacht, etwa einen Aufsteller, einen Empfangsbildschirm oder einen Messestand: Der Avatar füllt den ganzen Bildschirm, das Display bleibt wach, und nachdem ein Besucher das Gespräch verlässt, setzt es sich für den nächsten von selbst zurück.
 
 <Note>
-  Der Kiosk-Modus ist eine **eigene Freigabe**, unabhängig von der Website-Einbettung. Ein Agent kann als Kiosk verfügbar sein, ohne auf anderen Seiten einbettbar zu sein — und umgekehrt. Anders als beim Einbetten gibt es beim Kiosk keine Liste erlaubter Origins — die einzige Hürde ist der Kiosk-Schalter. Aktiviere ihn daher nur für Agenten, die als öffentliche Vollbild-Seite erreichbar sein sollen.
+  Der Kiosk-Modus ist für **jeden Agenten** verfügbar — es gibt keinen eigenen Schalter und, anders als beim Einbetten, keine Liste erlaubter Origins. Jeder Agent ist unter `/agent/AGENT_ID/kiosk` erreichbar. Behandle die Agent-ID daher wie einen öffentlichen Link: Wer sie kennt, kann Gespräche starten, die die Gesprächsminuten deines Accounts verbrauchen.
 </Note>
 
 ## Voraussetzungen
 
 <Steps>
-  <Step title="Kiosk-Modus aktivieren">
-    Öffne den Agenten im [Dashboard](https://avaluma.ai), gehe zum Tab **Bereitstellung** und aktiviere im Abschnitt **Kiosk-URL** den Schalter **Kiosk-Modus aktivieren**. Nur freigegebene Agenten können als Kiosk laufen. Das Umschalten dieses Schalters wird **sofort gespeichert** — du kannst direkt testen, ohne den Agenten erst manuell zu speichern.
-  </Step>
   <Step title="Kiosk-URL holen">
-    Kopiere die fertige URL aus dem Dashboard oder scanne den QR-Code mit dem Gerät. Du kannst die URL auch wie unten beschrieben selbst zusammenbauen.
+    Öffne den Agenten im [Dashboard](https://avaluma.ai), gehe zum Tab **Bereitstellung** und klappe den Abschnitt **Kiosk-URL** auf. Kopiere die fertige URL oder scanne den QR-Code mit dem Gerät. Du kannst die URL auch wie unten beschrieben selbst zusammenbauen.
   </Step>
   <Step title="Zum Startbildschirm hinzufügen">
     Öffne die URL auf dem Gerät im Browser und füge sie zum Startbildschirm hinzu. Vom Startbildschirm gestartet läuft sie als echte Vollbild-Web-App, ohne Browser-Bedienelemente.
