@@ -1,0 +1,71 @@
+---
+title: "Let an avatar present your slides"
+sidebarTitle: "Presentations"
+description: "Upload a PowerPoint or PDF presentation and share a link – an Avaluma avatar presents it, moves through the slides and answers questions."
+---
+
+With **Presentations** (beta) an Avaluma avatar presents your slides. You upload a presentation in the dashboard and send a link. Viewers see the slides and the avatar, which presents on its own, shows the right slide and answers questions at any time – by voice, in German or English.
+
+## Create a presentation
+
+<Steps>
+  <Step title="New presentation">
+    Open **Presentations** in the [dashboard](https://avaluma.ai/studio/slides) and click **New presentation**.
+  </Step>
+  <Step title="Upload the file">
+    Drag a file into the upload area or click it. The slides are then prepared – depending on the size this takes one to a few minutes. You can leave the page in the meantime; as soon as the status is **Ready**, the link works.
+  </Step>
+  <Step title="Settings">
+    Set the **title**, **start language** and **avatar** and click **Save**. Without a title, the title from the file is used.
+  </Step>
+  <Step title="Share the link">
+    Under **Sharing**, copy the link (`https://avaluma.ai/slides/…`) and send it.
+  </Step>
+</Steps>
+
+## Supported formats
+
+| Format | What is included |
+|---|---|
+| PPTX | Slides, text, **speaker notes** and embedded **videos** (hidden slides are skipped) |
+| PDF | Slides and text |
+| PPT, ODP | Slides and text, no notes |
+| Keynote | Export as PowerPoint in Keynote (*File → Export To → PowerPoint*) and upload the PPTX |
+
+Up to 200 MB per file. Animations and transitions are not included – each slide is shown as a still image.
+
+<Tip>
+  The avatar uses the slide text, speaker notes and an automatic image description of each slide. Good **speaker notes** are the most effective way to get a good talk.
+</Tip>
+
+To replace the presentation, upload a new file under **File**. The link stays the same.
+
+## What viewers see
+
+Viewers open the link and click **Start presentation**. The browser asks for the microphone. The avatar greets them and presents slide by slide. Viewers can:
+
+- **interrupt and ask questions** at any time – the avatar jumps to the relevant slide if needed and then continues,
+- **navigate themselves** (arrow keys, clicking the left/right edge of the slide or the thumbnails) – the avatar follows,
+- **switch the language** by simply speaking English or German, or by asking for it.
+
+The avatar announces embedded videos, plays them and summarizes them afterwards. While a video plays, the microphone is muted.
+
+Add `?lang=en` or `?lang=de` to the link to set the interface language and the start language for that link.
+
+## Protect access
+
+<ParamField path="Link active" type="toggle">
+  When the link is disabled, nobody can open the presentation. The link is kept and works again as soon as you re-enable it.
+</ParamField>
+
+<ParamField path="Password" type="optional">
+  Viewers have to enter the password before they see any slides or the title. A browser then stays unlocked for seven days. If you change or remove the password, all viewers have to enter the new password.
+</ParamField>
+
+<Note>
+  The link contains a random identifier that cannot be guessed. Without a password, anyone who knows the link can still open the presentation and start conversations.
+</Note>
+
+## Conversation minutes
+
+Conversations with the avatar count towards your account's monthly **minute quota** – just like conversations with your agents. Usage appears in the usage overview under **Agents**. See [Pricing & Billing](/en/billing/plans).
