@@ -64,7 +64,7 @@ By the end of this guide your existing LiveKit agent will run a full voice AI pi
     Add the following import at the top of your LiveKit agent's Python file. In LiveKit's `agent-starter-python` repo the file is called `agent.py`.
 
     ```python
-    from avaluma_livekit_plugin import AvatarSession
+    from livekit.plugins.avaluma import AvatarSession
     ```
 
     In the same file, find `await session.start` and insert the following avatar setup block **right before it**:
