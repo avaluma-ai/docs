@@ -5,3 +5,7 @@
 # Draft content
 drafts/
 *.draft.mdx
+
+# Agent instructions, not pages
+AGENTS.md
+CLAUDE.md
