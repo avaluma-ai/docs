@@ -5,7 +5,7 @@ https://docs.avaluma.ai. Pages are MDX with YAML frontmatter; navigation lives i
 Writing style and Mintlify tooling: [AGENTS.md](AGENTS.md).
 
 This repository is **public** and is a git submodule of the website repo (path `docs/`). Never
-commit internal hostnames, keys, customer data or unreleased features.
+commit internal hostnames, keys or customer data.
 
 ## Rules
 
@@ -15,6 +15,9 @@ commit internal hostnames, keys, customer data or unreleased features.
   update in the same unit of work.
 - When working inside the website checkout, the submodule starts in detached HEAD: check out a
   branch here, commit and push, then commit the new submodule pointer in the website repo.
+
+Every root-level `.md` file is published as a page unless `.mintignore` lists it. `CLAUDE.md` is
+listed there; keep it that way.
 
 ## Build
 
