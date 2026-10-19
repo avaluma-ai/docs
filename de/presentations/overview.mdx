@@ -1,0 +1,89 @@
+---
+title: "Präsentationen von einem Avatar vortragen lassen"
+sidebarTitle: "Präsentationen"
+description: "Lade eine PowerPoint- oder PDF-Präsentation hoch, teile einen Link – ein Avaluma-Avatar trägt sie vor, blättert selbst und beantwortet Fragen."
+---
+
+Mit **Präsentationen** (Beta) trägt ein Avaluma-Avatar deine Folien vor. Du lädst eine Präsentation im Dashboard hoch und verschickst einen Link. Zuschauer sehen die Folien und den Avatar, der die Präsentation selbstständig vorträgt, die passende Folie zeigt und jederzeit Fragen beantwortet – per Sprache, auf Deutsch oder Englisch.
+
+## Präsentation anlegen
+
+<Steps>
+  <Step title="Neue Präsentation">
+    Öffne im [Dashboard](https://avaluma.ai/studio/slides) **Präsentationen** und klicke auf **Neue Präsentation**.
+  </Step>
+  <Step title="Datei hochladen">
+    Ziehe eine Datei in das Upload-Feld oder klicke darauf. Danach werden die Folien aufbereitet – je nach Umfang dauert das ein bis wenige Minuten. Du kannst die Seite währenddessen verlassen; sobald der Status **Bereit** ist, funktioniert der Link.
+  </Step>
+  <Step title="Einstellungen">
+    Lege **Titel**, **Startsprache**, **Avatar** und **Stimme** fest und klicke auf **Speichern**. Ohne Titel wird der Titel aus der Datei übernommen. Die Stimmen sind nach weiblich und männlich gruppiert und lassen sich mit ▶ probehören – wähle eine, die zum Avatar passt. Jede Stimme spricht Deutsch und Englisch.
+  </Step>
+  <Step title="Link teilen">
+    Kopiere unter **Teilen** den Link (`https://avaluma.ai/slides/…`) und verschicke ihn.
+  </Step>
+</Steps>
+
+## Unterstützte Formate
+
+| Format | Was übernommen wird |
+|---|---|
+| PPTX | Folien, Texte, **Sprecher-Notizen** und eingebettete **Videos** (ausgeblendete Folien werden übersprungen) |
+| PDF | Folien und Texte |
+| PPT, ODP | Folien und Texte, keine Notizen |
+| Keynote | In Keynote als PowerPoint exportieren (*Ablage → Exportieren → PowerPoint*) und die PPTX hochladen |
+
+Maximal 200 MB pro Datei. Animationen und Folienübergänge werden nicht übernommen – jede Folie wird als Standbild gezeigt.
+
+<Tip>
+  Der Avatar nutzt Folientexte, Sprecher-Notizen und eine automatische Bildbeschreibung jeder Folie. Gute **Sprecher-Notizen** sind der wirksamste Hebel für einen guten Vortrag.
+</Tip>
+
+Um die Präsentation zu ersetzen, lade unter **Datei** eine neue Datei hoch. Der Link bleibt gleich.
+
+## Folieninhalte prüfen und bearbeiten
+
+Sobald die Präsentation **Bereit** ist, zeigt der Abschnitt **Folien** jede Folie groß an. Blättere mit den Pfeilen, den Pfeiltasten oder über die Vorschaubilder darunter. Unter der Folie steht, was der Avatar über sie weiß – du kannst alles korrigieren oder ergänzen:
+
+| Feld | Inhalt |
+|---|---|
+| Titel | Titel der Folie |
+| Text auf der Folie | Aus der Datei übernommener Folientext |
+| Visueller Inhalt | Automatisch erstellte Beschreibung von Bildern, Diagrammen und Grafiken |
+| Sprecher-Notizen | Hinweise und zusätzliches Wissen, was der Avatar zu dieser Folie sagen soll |
+| Video: Inhalt / gesprochener Text | Beschreibung und Transkript eingebetteter Videos |
+
+Änderungen an mehreren Folien sammeln sich – geänderte Folien sind in der Vorschauleiste mit einem Punkt markiert. Klicke auf **Änderungen speichern**; sie gelten ab dem nächsten Gespräch. Folienbilder und Reihenfolge lassen sich nicht ändern.
+
+<Warning>
+  Lädst du eine neue Datei hoch, werden die Inhalte neu aus der Datei erzeugt – deine Bearbeitungen gehen dabei verloren.
+</Warning>
+
+## Was Zuschauer sehen
+
+Zuschauer öffnen den Link und klicken auf **Präsentation starten**. Der Browser fragt nach dem Mikrofon. Der Avatar begrüßt sie und trägt die Präsentation Folie für Folie vor. Zuschauer können:
+
+- den Avatar jederzeit **unterbrechen und Fragen stellen** – er springt bei Bedarf zur passenden Folie und setzt den Vortrag danach fort,
+- **selbst blättern** (Pfeiltasten, Klick auf den linken/rechten Folienrand oder die Vorschaubilder) – der Avatar folgt,
+- die **Sprache wechseln**, indem sie einfach Englisch bzw. Deutsch sprechen oder darum bitten.
+
+Eingebettete Videos kündigt der Avatar an, spielt sie ab und fasst sie danach zusammen. Während ein Video läuft, ist das Mikrofon stumm.
+
+Mit `?lang=en` bzw. `?lang=de` am Link legst du die Sprache der Oberfläche und die Startsprache für diesen Link fest.
+
+## Zugriff schützen
+
+<ParamField path="Link aktiv" type="Schalter">
+  Ist der Link deaktiviert, kann niemand die Präsentation öffnen. Der Link bleibt erhalten und funktioniert wieder, sobald du ihn aktivierst.
+</ParamField>
+
+<ParamField path="Passwort" type="optional">
+  Zuschauer müssen das Passwort eingeben, bevor sie Folien oder Titel sehen. Ein Browser bleibt danach sieben Tage entsperrt. Änderst oder entfernst du das Passwort, müssen alle Zuschauer das neue Passwort eingeben.
+</ParamField>
+
+<Note>
+  Der Link enthält eine zufällige, nicht erratbare Kennung. Ohne Passwort kann trotzdem jeder, der den Link kennt, die Präsentation öffnen und Gespräche starten.
+</Note>
+
+## Gesprächsminuten
+
+Gespräche mit dem Avatar zählen zum monatlichen **Minutenkontingent** deines Accounts – genauso wie Gespräche mit deinen Agenten. Der Verbrauch erscheint unter **Agenten** in der Nutzungsübersicht. Siehe [Preise & Abrechnung](/de/billing/plans).
