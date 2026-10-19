@@ -16,8 +16,8 @@ commit internal hostnames, keys or customer data.
 - When working inside the website checkout, the submodule starts in detached HEAD: check out a
   branch here, commit and push, then commit the new submodule pointer in the website repo.
 
-Every root-level `.md` file is published as a page unless `.mintignore` lists it. `CLAUDE.md` is
-listed there; keep it that way.
+Every root-level `.md` file is published as a page unless `.mintignore` lists it. `AGENTS.md`
+and `CLAUDE.md` are listed there; keep it that way.
 
 ## Build
 

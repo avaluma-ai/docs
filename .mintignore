@@ -6,5 +6,6 @@
 drafts/
 *.draft.mdx
 
-# Agent instructions for Claude Code, not a page
+# Agent instructions, not pages
+AGENTS.md
 CLAUDE.md
