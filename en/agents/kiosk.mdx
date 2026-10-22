@@ -98,12 +98,16 @@ Next to it, a **gear icon** opens a small settings panel. There you can:
 - choose the **audio device**. On Android the system's routing options appear here, such as "Speakerphone" (loud speaker) and "Headset earpiece" (quiet earpiece). If audio is too quiet on an Android device, select **"Speakerphone"** here.
 
 <Note>
+  **Your device choice sticks.** A microphone you pick here or via the arrow next to the microphone button is remembered per device and browser and stays active — in the next conversation and after a reload too. No automatic logic switches it. Choose **"Default"** to follow the system setting again. If the selected microphone is unavailable, for example because it was unplugged, the conversation continues with the default microphone and a message says so; plug it back in and it is used again.
+</Note>
+
+<Note>
   **Android: call volume.** As soon as audio is playing, Android shows a small **phone icon** next to the volume slider — the volume button then controls the (separate) call volume, not the media volume. Turn it up to maximum on the device once so the kiosk is loud enough. If that is not enough, use the **volume control** in the top right: it works in addition to, and independently of, the system volume.
 </Note>
 
 ### If the microphone fails
 
-If the recording breaks down during a conversation, the kiosk notices and gets the microphone back by itself — in most cases the visitor notices nothing. If that does not work, a message appears with a button that tries again. If it fails three times in a row, the message stays — tapping the button starts a fresh round.
+If the recording breaks down during a conversation — the device disappears or the system mutes it for good — the kiosk notices and gets the same microphone back by itself — in most cases the visitor notices nothing. A silent microphone does not count as a failure. If that does not work, a message appears with a button that tries again. If it fails three times in a row, the message stays — tapping the button starts a fresh round.
 
 <Warning>
   **Bluetooth headsets in Firefox on Android.** To record, Android has to switch a headset from its music profile to its phone profile. Firefox handles that switch unreliably: recording can break down even though the headset stays connected, and the headset does not appear in the device list at all — it only shows "Default audio input device". If the button in the message does not help, disconnect the headset and use the device microphone, or switch to Chrome. In our tests the problem does not occur with Chrome or Samsung Internet.
