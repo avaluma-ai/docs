@@ -98,12 +98,16 @@ Rechts daneben blendet ein **Zahnrad-Symbol** ein kleines Einstell-Panel ein. Do
 - das **Audio-Gerät** wählen. Auf Android erscheinen hier die Routing-Optionen des Systems, etwa „Speakerphone" (lauter Lautsprecher) und „Headset earpiece" (leise Ohrmuschel). Ist der Ton auf einem Android-Gerät zu leise, wähle hier **„Speakerphone"**.
 
 <Note>
+  **Die Gerätewahl bleibt.** Ein Mikrofon, das du hier oder über den Pfeil neben dem Mikrofon-Knopf wählst, wird pro Gerät und Browser gemerkt und bleibt aktiv — auch im nächsten Gespräch und nach einem Neuladen. Keine Automatik wechselt es. Mit **„Standard"** folgt der Agent wieder der Einstellung des Systems. Ist das gewählte Mikrofon nicht verfügbar, etwa weil es abgezogen ist, läuft das Gespräch mit dem Standardmikrofon weiter und ein Hinweis zeigt das an; steckst du es wieder ein, wird es wieder verwendet.
+</Note>
+
+<Note>
   **Android: Anruf-Lautstärke.** Sobald der Ton läuft, zeigt Android neben dem Lautstärkeregler ein kleines **Telefonsymbol** — die Lautstärke-Taste regelt dann die (getrennte) Anruf-Lautstärke, nicht die Medien-Lautstärke. Dreh sie am Gerät einmalig auf Maximum, damit der Kiosk laut genug ist. Reicht das nicht, hilft der **Lautstärke-Regler** oben rechts: Er wirkt zusätzlich und unabhängig davon.
 </Note>
 
 ### Wenn das Mikrofon ausfällt
 
-Bricht die Aufnahme während eines Gesprächs weg, merkt der Kiosk das und holt das Mikrofon selbst zurück — in den meisten Fällen bemerkt der Besucher nichts. Gelingt das nicht, erscheint ein Hinweis mit einem Knopf, der es erneut versucht. Scheitert das dreimal hintereinander, bleibt der Hinweis stehen — ein Tipp auf den Knopf startet einen neuen Anlauf.
+Bricht die Aufnahme während eines Gesprächs weg — das Gerät verschwindet oder das System schaltet es dauerhaft stumm —, merkt der Kiosk das und holt dasselbe Mikrofon selbst zurück — in den meisten Fällen bemerkt der Besucher nichts. Ein stilles Mikrofon gilt dabei nicht als Ausfall. Gelingt das nicht, erscheint ein Hinweis mit einem Knopf, der es erneut versucht. Scheitert das dreimal hintereinander, bleibt der Hinweis stehen — ein Tipp auf den Knopf startet einen neuen Anlauf.
 
 <Warning>
   **Bluetooth-Headsets in Firefox auf Android.** Zum Aufnehmen muss Android ein Headset vom Musik- auf das Telefonprofil umschalten. Firefox verwaltet diesen Wechsel unzuverlässig: Die Aufnahme kann abreißen, obwohl das Headset verbunden bleibt, und das Headset taucht in der Geräteauswahl gar nicht erst auf — dort steht nur „Default audio input device". Hilft der Knopf im Hinweis nicht weiter, trenne das Headset und nutze das Mikrofon des Geräts, oder wechsle zu Chrome. Mit Chrome und Samsung Internet tritt das Problem nach unseren Tests nicht auf.
