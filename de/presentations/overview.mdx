@@ -16,7 +16,7 @@ Mit **Präsentationen** (Beta) trägt ein Avaluma-Avatar deine Folien vor. Du l�
     Ziehe eine Datei in das Upload-Feld oder klicke darauf. Danach werden die Folien aufbereitet – je nach Umfang dauert das ein bis wenige Minuten. Du kannst die Seite währenddessen verlassen; sobald der Status **Bereit** ist, funktioniert der Link.
   </Step>
   <Step title="Einstellungen">
-    Lege **Titel**, **Startsprache**, **Avatar** und **Stimme** fest und klicke auf **Speichern**. Ohne Titel wird der Titel aus der Datei übernommen. Die Stimmen sind nach weiblich und männlich gruppiert und lassen sich mit ▶ probehören – wähle eine, die zum Avatar passt. Jede Stimme spricht Deutsch und Englisch.
+    Lege **Titel**, **Startsprache**, **Avatar**, **Stimme** und das Antwortverhalten fest (siehe [Fragen beantworten](#fragen-beantworten)) und klicke auf **Speichern**. Ohne Titel wird der Titel aus der Datei übernommen. Die Stimmen sind nach weiblich und männlich gruppiert und lassen sich mit ▶ probehören – wähle eine, die zum Avatar passt. Jede Stimme spricht Deutsch und Englisch.
   </Step>
   <Step title="Link teilen">
     Kopiere unter **Teilen** den Link (`https://avaluma.ai/slides/…`) und verschicke ihn.
@@ -50,13 +50,24 @@ Sobald die Präsentation **Bereit** ist, zeigt der Abschnitt **Folien** jede Fol
 | Text auf der Folie | Aus der Datei übernommener Folientext |
 | Visueller Inhalt | Automatisch erstellte Beschreibung von Bildern, Diagrammen und Grafiken |
 | Sprecher-Notizen | Hinweise und zusätzliches Wissen, was der Avatar zu dieser Folie sagen soll |
-| Video: Inhalt / gesprochener Text | Beschreibung und Transkript eingebetteter Videos |
+| Video: Inhalt / gesprochener Text | Beschreibung und Transkript eingebetteter Videos. Zeilen mit Zeitmarke wie `[1:05] …` erlauben dem Avatar, an diese Stelle im Video zu springen |
 
 Änderungen an mehreren Folien sammeln sich – geänderte Folien sind in der Vorschauleiste mit einem Punkt markiert. Klicke auf **Änderungen speichern**; sie gelten ab dem nächsten Gespräch. Folienbilder und Reihenfolge lassen sich nicht ändern.
 
 <Warning>
   Lädst du eine neue Datei hoch, werden die Inhalte neu aus der Datei erzeugt – deine Bearbeitungen gehen dabei verloren.
 </Warning>
+
+## Fragen beantworten
+
+<ParamField path="Fragen außerhalb der Präsentation" type="Auswahl">
+  - **Allgemeinwissen erlaubt** (Standard): Inhalte der Präsentation haben Vorrang. Beantwortet der Avatar eine Frage aus Allgemeinwissen, sagt er dazu, dass das nicht aus der Präsentation stammt. Was er nicht sicher weiß, sagt er offen.
+  - **Nur Inhalte der Präsentation**: Der Avatar antwortet nur aus Folien, Sprecher-Notizen und Videos (und der Websuche, falls aktiv). Andere Fragen lehnt er freundlich ab. Gut für Pflichtschulungen.
+</ParamField>
+
+<ParamField path="Websuche" type="Schalter">
+  Der Avatar darf im Internet nachschauen, wenn eine Frage aktuelle oder externe Informationen braucht, etwa neue Vorschriften. Er sagt dazu, dass die Antwort aus dem Internet stammt. Standardmäßig aus.
+</ParamField>
 
 ## Was Zuschauer sehen
 
@@ -66,7 +77,11 @@ Zuschauer öffnen den Link und klicken auf **Präsentation starten**. Der Browse
 - **selbst blättern** (Pfeiltasten, Klick auf den linken/rechten Folienrand oder die Vorschaubilder) – der Avatar folgt,
 - die **Sprache wechseln**, indem sie einfach Englisch bzw. Deutsch sprechen oder darum bitten.
 
-Eingebettete Videos kündigt der Avatar an, spielt sie ab und fasst sie danach zusammen. Während ein Video läuft, ist das Mikrofon stumm.
+Eingebettete Videos kündigt der Avatar an, spielt sie ab und fasst sie danach zusammen. Während ein Video läuft, ist das Mikrofon stumm. Fragen Zuschauer, wo im Video etwas erklärt wird, springt der Avatar an die passende Stelle und spielt sie ab.
+
+<Note>
+  Für Sprünge im Video braucht der Avatar ein Transkript mit Zeitmarken. Es entsteht automatisch beim Hochladen. Bei Präsentationen, die vor dem 28.10.2026 hochgeladen wurden, lade die Datei unter **Datei** einmal neu hoch, oder ergänze die Zeitmarken im Abschnitt **Folien** von Hand.
+</Note>
 
 Mit `?lang=en` bzw. `?lang=de` am Link legst du die Sprache der Oberfläche und die Startsprache für diesen Link fest.
 
