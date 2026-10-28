@@ -1,0 +1,78 @@
+---
+title: "Create videos from a script"
+sidebarTitle: "Videos"
+description: "Paste a script and pick one of your agents – its avatar speaks the text in the agent's voice, and you download the video as an MP4."
+---
+
+With **Videos** (beta) a text becomes a video: you paste a script, for example for a talk or an explainer, and pick one of your agents. Its avatar speaks the text in the agent's voice. Then you download the video as an MP4, in the avatar's resolution.
+
+<Note>
+  Videos are in beta and only visible to enabled accounts. If **Videos** is missing from the Studio sidebar, your account has not been enabled yet. Get in touch if you would like to try it.
+</Note>
+
+## Create a video
+
+<Steps>
+  <Step title="New video">
+    In the [Studio](https://avaluma.ai/studio/videos), open **Videos** and click **New video**.
+  </Step>
+  <Step title="Paste the script">
+    Paste the text the avatar should speak, at most **5,000 characters** (about 5 minutes of video). Below the field you see the character count and the estimated length. Paragraphs are kept. The draft stays saved in your browser until you submit it.
+  </Step>
+  <Step title="Pick an agent">
+    Pick one of your agents. It provides the **avatar, voice, voice settings and language**. You can pick agents with an ElevenLabs voice and an avatar. If you don't have one yet, create [an agent](/en/agents/overview) first.
+  </Step>
+  <Step title="Generate">
+    Optionally enter a title, otherwise the first words of the script are used. Click **Generate**. You can close the page afterwards, the video is created in the background.
+  </Step>
+  <Step title="Download">
+    As soon as the status is **Ready**, click **Download**. You get an MP4 file (H.264 and AAC) that plays in all common browsers, in PowerPoint and in Keynote.
+  </Step>
+</Steps>
+
+Changing the agent after generating no longer affects a video that has already been created.
+
+## Status
+
+| Status | Meaning |
+|---|---|
+| Queued | The video is waiting, with its position in the queue |
+| Generating speech | The agent's voice speaks the script |
+| Rendering video | The avatar speaks, with progress in percent |
+| Uploading | The video is rendered and being stored |
+| Ready | Ready to download |
+| Failed | With a message explaining why; temporary errors offer **Try again** |
+| Canceled | You canceled the video |
+
+How long a video takes depends on the length of the script and the queue. There is no fixed promise. If it takes much longer than usual, the Studio shows a notice.
+
+As long as a video is not ready, you can **cancel** it. You can **delete** a video in any status.
+
+## Retention
+
+- Finished videos are deleted after **30 days**, failed and canceled ones after **7 days**, together with their script. The Studio shows when each video will be deleted and points out videos that expire within the next 7 days.
+- With **Keep**, a video stays until you delete it yourself. How many videos you can keep depends on your plan:
+
+| Plan | Kept videos |
+|---|---|
+| Free | 10 |
+| Starter | 25 |
+| Team | 100 |
+| Business, Scale, Enterprise | unlimited |
+
+If you stop keeping a video, it stays for at least another 7 days. If you delete your account, all videos are deleted right away.
+
+## Billing
+
+Videos use the same minute allowance as conversations, one video minute counts like one conversation minute (see [Pricing & billing](/en/billing/plans)).
+
+- Billing is based on the length of the **spoken audio**, to the second. A video with 1:30 minutes of speech costs 1.5 minutes.
+- Videos with less than **5 seconds** of speech are free.
+- Only finished videos are billed. Failed and canceled videos cost nothing.
+- If you delete a finished video, it stays billed.
+
+## Good to know
+
+- The “AI-generated” label is part of the picture and cannot be turned off. The MP4 file also carries metadata that marks it as AI-generated.
+- ElevenLabs generates the speech in the agent's voice. For that, the script is sent to ElevenLabs.
+- The avatar does not nod in the video, because there is no one to talk to.

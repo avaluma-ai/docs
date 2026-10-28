@@ -1,0 +1,78 @@
+---
+title: "Videos aus einem Skript erstellen"
+sidebarTitle: "Videos"
+description: "Füge ein Skript ein, wähle einen deiner Agenten – sein Avatar spricht den Text mit der Stimme des Agenten, und du lädst das Video als MP4 herunter."
+---
+
+Mit **Videos** (Beta) wird aus einem Text ein Video: Du fügst ein Skript ein, zum Beispiel für einen Vortrag oder ein Erklärvideo, und wählst einen deiner Agenten. Sein Avatar spricht den Text mit der Stimme des Agenten. Danach lädst du das Video als MP4 herunter, in der Auflösung des Avatars.
+
+<Note>
+  Videos sind eine Beta und nur für freigeschaltete Konten sichtbar. Fehlt der Punkt **Videos** in der Seitenleiste des Studios, ist dein Konto noch nicht freigeschaltet. Schreib uns, wenn du die Funktion testen möchtest.
+</Note>
+
+## Video erstellen
+
+<Steps>
+  <Step title="Neues Video">
+    Öffne im [Studio](https://avaluma.ai/studio/videos) **Videos** und klicke auf **Neues Video**.
+  </Step>
+  <Step title="Skript einfügen">
+    Füge den Text ein, den der Avatar sprechen soll, höchstens **5.000 Zeichen** (etwa 5 Minuten Video). Unter dem Feld siehst du die Zeichenzahl und die geschätzte Länge. Absätze bleiben erhalten. Der Entwurf bleibt im Browser gespeichert, bis du ihn abschickst.
+  </Step>
+  <Step title="Agent wählen">
+    Wähle einen deiner Agenten. Von ihm kommen **Avatar, Stimme, Stimm-Einstellungen und Sprache**. Wählbar sind Agenten mit einer ElevenLabs-Stimme und einem Avatar. Hast du noch keinen, lege zuerst [einen Agenten](/de/agents/overview) an.
+  </Step>
+  <Step title="Generieren">
+    Optional gibst du einen Titel ein, sonst gelten die ersten Wörter des Skripts. Klicke auf **Generieren**. Du kannst die Seite danach schließen, das Video entsteht im Hintergrund.
+  </Step>
+  <Step title="Herunterladen">
+    Sobald der Status **Fertig** ist, klicke auf **Herunterladen**. Du bekommst eine MP4-Datei (H.264 und AAC), die in allen gängigen Browsern, in PowerPoint und in Keynote läuft.
+  </Step>
+</Steps>
+
+Änderst du den Agenten nach dem Generieren, wirkt das nicht mehr auf ein schon angelegtes Video.
+
+## Status
+
+| Status | Bedeutung |
+|---|---|
+| In der Warteschlange | Das Video wartet, mit Platz in der Warteschlange |
+| Sprache wird erzeugt | Die Stimme des Agenten spricht das Skript ein |
+| Video wird gerendert | Der Avatar spricht, mit Fortschritt in Prozent |
+| Wird hochgeladen | Das Video ist fertig gerendert und wird gespeichert |
+| Fertig | Bereit zum Herunterladen |
+| Fehlgeschlagen | Mit einer Meldung, warum; bei vorübergehenden Fehlern gibt es **Erneut versuchen** |
+| Abgebrochen | Du hast das Video abgebrochen |
+
+Wie lange ein Video braucht, hängt von der Länge des Skripts und der Warteschlange ab. Eine feste Zusage gibt es nicht. Dauert es deutlich länger als üblich, zeigt das Studio einen Hinweis.
+
+Solange ein Video nicht fertig ist, kannst du es **abbrechen**. **Löschen** geht in jedem Status.
+
+## Aufbewahrung
+
+- Fertige Videos werden nach **30 Tagen** gelöscht, fehlgeschlagene und abgebrochene nach **7 Tagen**, jeweils mit Skript. Das Studio zeigt an jedem Video, wann es gelöscht wird, und weist auf Videos hin, die in den nächsten 7 Tagen ablaufen.
+- Mit **Behalten** bleibt ein Video, bis du es selbst löschst. Wie viele Videos du behalten kannst, hängt vom Plan ab:
+
+| Plan | Behaltene Videos |
+|---|---|
+| Free | 10 |
+| Starter | 25 |
+| Team | 100 |
+| Business, Scale, Enterprise | unbegrenzt |
+
+Nimmst du **Behalten** wieder zurück, bleibt das Video noch mindestens 7 Tage. Löschst du dein Konto, werden alle Videos sofort gelöscht.
+
+## Abrechnung
+
+Videos laufen über dasselbe Minutenkontingent wie Gespräche, eine Videominute zählt wie eine Gesprächsminute (siehe [Preise & Abrechnung](/de/billing/plans)).
+
+- Abgerechnet wird die Länge der **gesprochenen Sprache**, sekundengenau. Ein Video mit 1:30 Minuten Sprache kostet 1,5 Minuten.
+- Videos mit weniger als **5 Sekunden** Sprache kosten nichts.
+- Abgerechnet wird nur ein fertiges Video. Fehlgeschlagene und abgebrochene Videos kosten nichts.
+- Löschst du ein fertiges Video, bleibt es abgerechnet.
+
+## Gut zu wissen
+
+- Das Label „AI-generated“ ist im Bild und lässt sich nicht abschalten. Die MP4-Datei trägt zusätzlich Metadaten, die sie als KI-erzeugt kennzeichnen.
+- Die Sprache erzeugt ElevenLabs mit der Stimme des Agenten. Dafür geht das Skript an ElevenLabs.
+- Der Avatar nickt im Video nicht, weil es keinen Gesprächspartner gibt.
