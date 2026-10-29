@@ -16,10 +16,10 @@ Mit **Präsentationen** (Beta) trägt ein Avaluma-Avatar deine Folien vor. Du l�
     Ziehe eine Datei in das Upload-Feld oder klicke darauf. Danach werden die Folien aufbereitet – je nach Umfang dauert das ein bis wenige Minuten. Du kannst die Seite währenddessen verlassen; sobald der Status **Bereit** ist, funktioniert der Link.
   </Step>
   <Step title="Einstellungen">
-    Lege **Titel**, **Startsprache**, **Avatar** und **Stimme** fest und klicke auf **Speichern**. Ohne Titel wird der Titel aus der Datei übernommen. Die Stimmen sind nach weiblich und männlich gruppiert und lassen sich mit ▶ probehören – wähle eine, die zum Avatar passt. Jede Stimme spricht Deutsch und Englisch.
+    Lege unter **Präsentation** Titel und Startsprache fest, wähle die [Persona](#persona) und stelle unter **Antwortverhalten** ein, wie Fragen beantwortet werden (siehe [Fragen beantworten](#fragen-beantworten)). Sobald etwas geändert ist, erscheint unten die Leiste **Ungespeicherte Änderungen** – klicke dort auf **Speichern** (oder **Verwerfen**). Ohne Titel wird der Titel aus der Datei übernommen.
   </Step>
   <Step title="Link teilen">
-    Kopiere unter **Teilen** den Link (`https://avaluma.ai/slides/…`) und verschicke ihn.
+    Kopiere unter **Teilen** den Link (`https://avaluma.ai/slides/…`) und verschicke ihn. Mit **Präsentation öffnen** oben rechts testest du sie selbst.
   </Step>
 </Steps>
 
@@ -50,13 +50,48 @@ Sobald die Präsentation **Bereit** ist, zeigt der Abschnitt **Folien** jede Fol
 | Text auf der Folie | Aus der Datei übernommener Folientext |
 | Visueller Inhalt | Automatisch erstellte Beschreibung von Bildern, Diagrammen und Grafiken |
 | Sprecher-Notizen | Hinweise und zusätzliches Wissen, was der Avatar zu dieser Folie sagen soll |
-| Video: Inhalt / gesprochener Text | Beschreibung und Transkript eingebetteter Videos |
+| Video: Inhalt / gesprochener Text | Beschreibung und Transkript eingebetteter Videos. Zeilen mit Zeitmarke wie `[1:05] …` erlauben dem Avatar, an diese Stelle im Video zu springen |
+
+Unter dem Transkript eines eingebetteten Videos steht eine **Vorschau** des Videos. Ein Klick auf eine Zeitmarke springt im Video an diese Stelle. Mit **Zeitmarke bei … einfügen** übernimmst du die aktuelle Position des Videos als neue Zeile ins Transkript, an der Stelle des Cursors.
 
 Änderungen an mehreren Folien sammeln sich – geänderte Folien sind in der Vorschauleiste mit einem Punkt markiert. Klicke auf **Änderungen speichern**; sie gelten ab dem nächsten Gespräch. Folienbilder und Reihenfolge lassen sich nicht ändern.
 
 <Warning>
   Lädst du eine neue Datei hoch, werden die Inhalte neu aus der Datei erzeugt – deine Bearbeitungen gehen dabei verloren.
 </Warning>
+
+## Persona
+
+Die **Persona** legt fest, wer die Präsentation vorträgt. Sie wird gespeichert und lässt sich in weiteren Präsentationen wiederverwenden: Wähle sie im Feld **Persona** aus oder lege mit **+ Neue Persona** eine neue an. Eine gewählte Persona wird kompakt mit Bild, Stimme und Avatar angezeigt; mit **Bearbeiten** öffnest du ihre Felder.
+
+| Feld | Bedeutung |
+| --- | --- |
+| Name | So stellt sich der Avatar vor, z. B. „Anna Müller“ (Pflichtfeld) |
+| Rolle | Optional, z. B. „Head of Sales bei Beispiel GmbH“ |
+| Hintergrund | Werdegang, Expertise, Persönlichkeit, Sprechweise (max. 2.000 Zeichen). Damit beantwortet der Avatar Fragen zu sich selbst |
+| Avatar | Das Aussehen, sechs Avatare pro Seite – mit ‹ › blättern |
+| Stimme | Umschaltbar zwischen weiblich und männlich, mit ▶ probehören. Jede Stimme spricht Deutsch und Englisch |
+
+Änderungen an einer Persona gelten für **alle Präsentationen**, die sie verwenden. Der Editor zeigt einen Hinweis, wenn das mehr als eine ist. Löschst du eine Persona, nutzen diese Präsentationen den Standard-Avatar.
+
+<Tip>
+  Schreib den Hintergrund so, wie die Person sich selbst vorstellen würde: wichtigste Stationen, Fachgebiet, wofür sie steht. Fragen zu sich beantwortet der Avatar nur aus diesen Angaben und erfindet nichts dazu.
+</Tip>
+
+<Note>
+  Fragt ein Zuschauer, ob er mit einem Menschen spricht, sagt der Avatar immer ehrlich, dass er ein KI-Avatar ist, der als diese Persona auftritt.
+</Note>
+
+## Fragen beantworten
+
+<ParamField path="Fragen außerhalb der Präsentation" type="Auswahl">
+  - **Allgemeinwissen erlaubt** (Standard): Inhalte der Präsentation haben Vorrang. Beantwortet der Avatar eine Frage aus Allgemeinwissen, sagt er dazu, dass das nicht aus der Präsentation stammt. Was er nicht sicher weiß, sagt er offen.
+  - **Nur Inhalte der Präsentation**: Der Avatar antwortet nur aus Folien, Sprecher-Notizen und Videos (und der Websuche, falls aktiv). Andere Fragen lehnt er freundlich ab. Gut für Pflichtschulungen.
+</ParamField>
+
+<ParamField path="Websuche" type="Schalter">
+  Der Avatar darf im Internet nachschauen, wenn eine Frage aktuelle oder externe Informationen braucht, etwa neue Vorschriften. Er sagt dazu, dass die Antwort aus dem Internet stammt. Standardmäßig aus.
+</ParamField>
 
 ## Was Zuschauer sehen
 
@@ -66,7 +101,11 @@ Zuschauer öffnen den Link und klicken auf **Präsentation starten**. Der Browse
 - **selbst blättern** (Pfeiltasten, Klick auf den linken/rechten Folienrand oder die Vorschaubilder) – der Avatar folgt,
 - die **Sprache wechseln**, indem sie einfach Englisch bzw. Deutsch sprechen oder darum bitten.
 
-Eingebettete Videos kündigt der Avatar an, spielt sie ab und fasst sie danach zusammen. Während ein Video läuft, ist das Mikrofon stumm.
+Eingebettete Videos kündigt der Avatar an, spielt sie ab und fasst sie danach zusammen. Während ein Video läuft, ist das Mikrofon stumm. Fragen Zuschauer, wo im Video etwas erklärt wird, springt der Avatar an die passende Stelle und spielt sie ab.
+
+<Note>
+  Für Sprünge im Video braucht der Avatar ein Transkript mit Zeitmarken. Es entsteht automatisch beim Hochladen. Bei Präsentationen, die vor dem 28.10.2026 hochgeladen wurden, lade die Datei unter **Datei** einmal neu hoch, oder ergänze die Zeitmarken im Abschnitt **Folien** von Hand.
+</Note>
 
 Mit `?lang=en` bzw. `?lang=de` am Link legst du die Sprache der Oberfläche und die Startsprache für diesen Link fest.
 
