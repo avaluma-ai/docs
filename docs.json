@@ -30,6 +30,12 @@
             ]
           },
           {
+            "group": "Presentations",
+            "pages": [
+              "en/presentations/overview"
+            ]
+          },
+          {
             "group": "Pricing & Billing",
             "pages": [
               "en/billing/plans"
@@ -96,6 +102,12 @@
               "de/agents/overview",
               "de/agents/embedding",
               "de/agents/kiosk"
+            ]
+          },
+          {
+            "group": "Präsentationen",
+            "pages": [
+              "de/presentations/overview"
             ]
           },
           {
