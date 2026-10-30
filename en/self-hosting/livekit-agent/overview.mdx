@@ -27,10 +27,10 @@ The Avaluma LiveKit Agent is a Python worker built on the [livekit-agents](https
 
 ## How the AvatarSession Works
 
-Both agents rely on `AvatarSession` from the `avaluma-livekit-plugin` package. You instantiate it with your credentials, call `avatar.start()`, and it handles joining the room as a separate avatar participant and forwarding audio frames to the avatar server for rendering.
+Both agents rely on `AvatarSession` from the `livekit-plugins-avaluma` package. You instantiate it with your credentials, call `avatar.start()`, and it handles joining the room as a separate avatar participant and forwarding audio frames to the avatar server for rendering.
 
 ```python
-from avaluma_livekit_plugin import AvatarSession
+from livekit.plugins.avaluma import AvatarSession
 
 avatar = AvatarSession(
     license_key=license_key,
@@ -65,7 +65,7 @@ dependencies = [
     "livekit-agents[silero,turn-detector]~=1.2",
     "livekit-plugins-noise-cancellation~=0.2",
     "python-dotenv",
-    "avaluma-livekit-plugin @ git+https://github.com/avaluma-ai/avaluma-livekit-plugin.git"
+    "livekit-plugins-avaluma @ git+https://github.com/avaluma-ai/avaluma-livekit-plugin.git"
 ]
 ```
 
@@ -74,7 +74,7 @@ dependencies = [
 | `livekit` | LiveKit RTC SDK — room, track, and DataStream primitives |
 | `livekit-agents` | Core agent framework (includes `silero` VAD and `turn-detector`) |
 | `livekit-plugins-noise-cancellation` | Background noise suppression via BVC |
-| `avaluma-livekit-plugin` | `AvatarSession` — Avaluma avatar integration |
+| `livekit-plugins-avaluma` | `AvatarSession` — Avaluma avatar integration |
 | `python-dotenv` | Loads credentials from `.env.local` |
 
 ## Prerequisites

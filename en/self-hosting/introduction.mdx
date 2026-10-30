@@ -12,7 +12,7 @@ Avaluma AI is built on two cooperating components that you deploy independently.
 
 **Avatar Server** runs on an NVIDIA GPU and is the rendering engine. It reads your `.hvia` avatar files, animates the avatar frame-by-frame in response to incoming audio, and publishes the resulting video track directly into a LiveKit room. You can host the Avatar Server yourself or use Avaluma's managed endpoint at `https://api.avaluma.ai`.
 
-**LiveKit Agent** is a Python-based voice AI pipeline that drives a conversation. It captures microphone input, runs it through Speech-to-Text (STT), passes the transcript to a Large Language Model (LLM), synthesises speech with Text-to-Speech (TTS), and then hands the audio to the Avatar Server via the `avaluma-livekit-plugin`. The avatar animates that audio and streams the video back into the room.
+**LiveKit Agent** is a Python-based voice AI pipeline that drives a conversation. It captures microphone input, runs it through Speech-to-Text (STT), passes the transcript to a Large Language Model (LLM), synthesises speech with Text-to-Speech (TTS), and then hands the audio to the Avatar Server via the `livekit-plugins-avaluma` plugin. The avatar animates that audio and streams the video back into the room.
 
 ## Prerequisites
 
