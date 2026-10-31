@@ -25,6 +25,7 @@
             "group": "Agents",
             "pages": [
               "en/agents/overview",
+              "en/agents/knowledge-tools",
               "en/agents/embedding",
               "en/agents/kiosk"
             ]
@@ -38,7 +39,14 @@
           {
             "group": "Avatars",
             "pages": [
-              "en/avatars/quickstart"
+              "en/avatars/quickstart",
+              "en/avatars/studio"
+            ]
+          },
+          {
+            "group": "Account",
+            "pages": [
+              "en/account/settings"
             ]
           },
           {
@@ -94,6 +102,7 @@
             "group": "Agents",
             "pages": [
               "de/agents/overview",
+              "de/agents/knowledge-tools",
               "de/agents/embedding",
               "de/agents/kiosk"
             ]
@@ -107,7 +116,14 @@
           {
             "group": "Avatare",
             "pages": [
-              "de/avatars/quickstart"
+              "de/avatars/quickstart",
+              "de/avatars/studio"
+            ]
+          },
+          {
+            "group": "Konto",
+            "pages": [
+              "de/account/settings"
             ]
           },
           {
