@@ -1,0 +1,60 @@
+---
+title: "Avatars and license keys in the Studio"
+sidebarTitle: "Avatars & licenses"
+description: "Copy avatar IDs, download .hvia files and create license keys: the Avatars and License Keys sections of the Avaluma Studio."
+---
+
+For your own LiveKit agent and for [self-hosting](/en/self-hosting/introduction)
+you need an avatar ID, a license key and, with your own avatar server, the
+`.hvia` file. You find all of this in the Studio on
+[avaluma.ai](https://avaluma.ai/studio), in the sidebar under **Self-Hosting**.
+
+## Avatars
+
+Under [Avatars](https://avaluma.ai/studio/avatars) you see every avatar that is
+available to you. Each card shows:
+
+| Element | Meaning |
+|---|---|
+| **Preview image and name** | What the avatar looks like. |
+| **Avatar ID** | The copy icon next to it puts it on the clipboard. You enter it as `avatar_id`, see [Quickstart](/en/avatars/quickstart). |
+| **Labels** | Tags for the avatar, if any. |
+| **Exclusive** | This avatar is granted to you only. |
+| **Download** | Downloads the avatar's `.hvia` file. You only need it for your own avatar server, see [Avatar files](/en/self-hosting/configuration/avatar-files). |
+
+To request a specific or custom avatar, write to
+[hello@avaluma.ai](mailto:hello@avaluma.ai).
+
+## License keys
+
+Under [License Keys](https://avaluma.ai/studio/license-keys) you create and
+manage the keys for your installations.
+
+<Steps>
+  <Step title="Create a license">
+    Click **Create license**, give the license a name (for example
+    `Production`) and click **Create**.
+  </Step>
+  <Step title="Copy the key">
+    Copy the key right away. It is shown in full only this once, afterwards
+    only shortened.
+  </Step>
+</Steps>
+
+How to use the key in your agent is described in the
+[Quickstart](/en/avatars/quickstart) and, for self-hosting, under
+[Environment variables](/en/self-hosting/configuration/environment-variables).
+
+The table shows for each license:
+
+| Column | Meaning |
+|---|---|
+| **Name** | The name you gave it when creating it. |
+| **Key** | Start and end of the key, the rest is hidden. |
+| **Status** | **Active**, **Suspended** or **Expired**. |
+| **Usage time** | Hours used so far. If usage is limited, the quota is shown next to it and a bar shows the consumption. `∞` means unlimited. |
+| **Expires** | Expiry date, `—` if it does not expire. |
+| **Created** | Date of creation. |
+
+Delete a license with the trash icon after confirming. Deleted licenses cannot
+be restored.

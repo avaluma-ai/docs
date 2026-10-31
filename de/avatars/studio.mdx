@@ -1,0 +1,61 @@
+---
+title: "Avatare und Lizenzschlüssel im Studio"
+sidebarTitle: "Avatare & Lizenzen"
+description: "Avatar-IDs kopieren, .hvia-Dateien herunterladen und Lizenzschlüssel erstellen: die Bereiche Avatare und Lizenz-Schlüssel im Avaluma-Studio."
+---
+
+Für einen eigenen LiveKit-Agenten und für [Self-Hosting](/de/self-hosting/introduction)
+brauchst du eine Avatar-ID, einen Lizenzschlüssel und bei eigenem
+Avatar-Server die `.hvia`-Datei. All das findest du im Studio auf
+[avaluma.ai](https://avaluma.ai/studio) in der Seitenleiste unter
+**Self-Hosting**.
+
+## Avatare
+
+Unter [Avatare](https://avaluma.ai/studio/avatars) siehst du alle Avatare, die
+für dich verfügbar sind. Jede Kachel zeigt:
+
+| Element | Bedeutung |
+|---|---|
+| **Vorschaubild und Name** | So sieht der Avatar aus. |
+| **Avatar-ID** | Mit dem Kopier-Symbol daneben übernimmst du sie in die Zwischenablage. Du trägst sie als `avatar_id` ein, siehe [Quickstart](/de/avatars/quickstart). |
+| **Labels** | Schlagworte zum Avatar, falls vorhanden. |
+| **Exklusiv** | Dieser Avatar ist nur für dich freigegeben. |
+| **Herunterladen** | Lädt die `.hvia`-Datei des Avatars. Du brauchst sie nur für einen eigenen Avatar-Server, siehe [Avatar-Dateien](/de/self-hosting/configuration/avatar-files). |
+
+Einen bestimmten oder eigenen Avatar fragst du unter
+[hello@avaluma.ai](mailto:hello@avaluma.ai) an.
+
+## Lizenz-Schlüssel
+
+Unter [Lizenz-Schlüssel](https://avaluma.ai/studio/license-keys) erstellst und
+verwaltest du die Schlüssel für deine Installationen.
+
+<Steps>
+  <Step title="Lizenz erstellen">
+    Klicke auf **Lizenz erstellen**, gib der Lizenz einen Namen (zum Beispiel
+    `Produktion`) und klicke auf **Erstellen**.
+  </Step>
+  <Step title="Schlüssel kopieren">
+    Kopiere den Schlüssel sofort. Er wird nur dieses eine Mal vollständig
+    angezeigt, danach nur noch gekürzt.
+  </Step>
+</Steps>
+
+Wie du den Schlüssel in deinem Agenten einsetzt, steht im
+[Quickstart](/de/avatars/quickstart) und für Self-Hosting unter
+[Umgebungsvariablen](/de/self-hosting/configuration/environment-variables).
+
+Die Tabelle zeigt je Lizenz:
+
+| Spalte | Bedeutung |
+|---|---|
+| **Name** | Der Name, den du beim Erstellen vergeben hast. |
+| **Schlüssel** | Anfang und Ende des Schlüssels, der Rest ist ausgeblendet. |
+| **Status** | **Aktiv**, **Pausiert** oder **Abgelaufen**. |
+| **Nutzungsdauer** | Bisher genutzte Stunden. Ist die Nutzung begrenzt, steht das Kontingent daneben, und ein Balken zeigt den Verbrauch. `∞` heißt unbegrenzt. |
+| **Läuft ab** | Ablaufdatum, `—` ohne Ablauf. |
+| **Erstellt am** | Datum der Erstellung. |
+
+Mit dem Papierkorb-Symbol löschst du eine Lizenz nach einer Rückfrage.
+Gelöschte Lizenzen lassen sich nicht wiederherstellen.

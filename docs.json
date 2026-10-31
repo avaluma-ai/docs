@@ -39,7 +39,14 @@
           {
             "group": "Avatars",
             "pages": [
-              "en/avatars/quickstart"
+              "en/avatars/quickstart",
+              "en/avatars/studio"
+            ]
+          },
+          {
+            "group": "Account",
+            "pages": [
+              "en/account/settings"
             ]
           },
           {
@@ -109,7 +116,14 @@
           {
             "group": "Avatare",
             "pages": [
-              "de/avatars/quickstart"
+              "de/avatars/quickstart",
+              "de/avatars/studio"
+            ]
+          },
+          {
+            "group": "Konto",
+            "pages": [
+              "de/account/settings"
             ]
           },
           {
