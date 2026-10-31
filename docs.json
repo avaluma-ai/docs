@@ -25,6 +25,7 @@
             "group": "Agents",
             "pages": [
               "en/agents/overview",
+              "en/agents/knowledge-tools",
               "en/agents/embedding",
               "en/agents/kiosk"
             ]
@@ -94,6 +95,7 @@
             "group": "Agents",
             "pages": [
               "de/agents/overview",
+              "de/agents/knowledge-tools",
               "de/agents/embedding",
               "de/agents/kiosk"
             ]

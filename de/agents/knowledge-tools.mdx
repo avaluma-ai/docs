@@ -1,0 +1,89 @@
+---
+title: "Wissen & Tools: PDFs, Websuche und Übertragen"
+sidebarTitle: "Wissen & Tools"
+description: "Gib deinem Agenten PDFs als Hintergrundwissen, schalte die Websuche ein und übertrage einen Agenten an ein anderes Avaluma-Konto."
+---
+
+Was dein Agent über seine Anweisungen hinaus weiß, legst du im Agent-Editor im
+Tab **Hintergrundwissen** fest: hochgeladene PDFs und die Websuche. Beides
+wirkt ab dem nächsten Gespräch, das nach dem Speichern beginnt.
+
+## Dokumente als Wissen (PDF)
+
+Unter **Dokumente (PDF)** lädst du PDFs hoch, deren Text der Agent als
+Hintergrundwissen nutzt. Der Volltext aller Dateien wird ans Ende des
+System-Prompts angehängt. Der Agent beantwortet Sachfragen auf dieser
+Grundlage und behandelt die Inhalte wie eigenes Wissen. Er erwähnt nicht, dass
+ihm Dokumente vorliegen, und nennt keine Dateinamen.
+
+<Steps>
+  <Step title="Agent speichern">
+    Hochladen geht erst, wenn der Agent einmal gespeichert ist. Bei einem neuen
+    Agenten speicherst du ihn also zuerst.
+  </Step>
+  <Step title="PDFs hochladen">
+    Öffne den Tab **Hintergrundwissen** und lege die PDFs im Feld ab oder
+    klicke darauf. Du kannst mehrere Dateien auf einmal wählen.
+  </Step>
+  <Step title="Erneut speichern">
+    Speichere den Agenten nach jedem Hochladen oder Entfernen. Erst dann nutzt
+    er die aktuelle Dateiliste.
+  </Step>
+</Steps>
+
+| Regel | Wert |
+|---|---|
+| **Dateityp** | Nur PDF mit auslesbarem Text. PDFs ohne Textebene, etwa reine Scans, werden abgelehnt. |
+| **Dateigröße** | Höchstens 10 MB je Datei. |
+| **Gesamtumfang** | Höchstens 100.000 Tokens über alle PDFs. Jede Datei zeigt ihre Tokens, ein Balken den Füllstand. Ein Upload, der das Limit überschreiten würde, wird abgelehnt. |
+| **Gleicher Dateiname** | Ersetzt die vorhandene Datei. |
+| **Entfernen** | Über das Papierkorb-Symbol neben der Datei. |
+
+<Note>
+  Läuft dein Agent auf einem OpenAI-Realtime-Modell, ist das Feld gesperrt.
+  Diese Modelle nehmen keine Dokumente in den System-Prompt auf.
+</Note>
+
+Beim [Duplizieren](/de/agents/overview#agenten-verwalten) eines Agenten werden
+die hochgeladenen PDFs mitkopiert.
+
+## Websuche
+
+Mit der Websuche kann der Agent während des Gesprächs im Internet nach aktuellen
+Informationen suchen, etwa nach Öffnungszeiten, Nachrichten oder Preisen, die
+nicht in seinem Hintergrundwissen stehen. Du schaltest sie im Tab
+**Hintergrundwissen** unter **Tools** mit dem Haken **Websuche** ein und
+speicherst den Agenten. Standardmäßig ist sie aus.
+
+Die Websuche funktioniert mit allen Sprachmodellen außer OpenAI Realtime. Beim
+Standardmodell `gemma-4-31b-it` und bei Cerebras übernimmt im Hintergrund
+GPT-5.4 mini die Suche; eine Suche dauert dann einige Sekunden, bevor der Agent
+antwortet.
+
+## Agent übertragen
+
+Du kannst einen Agenten an ein anderes Avaluma-Konto übergeben, etwa wenn du
+ihn für einen Kunden eingerichtet hast.
+
+<Steps>
+  <Step title="Menü öffnen">
+    Öffne in der Übersicht **Agenten** das Menü (drei Punkte) des Agenten und
+    wähle **Übertragen...**.
+  </Step>
+  <Step title="Empfänger angeben">
+    Gib die E-Mail-Adresse ein, mit der sich der Empfänger bei Avaluma anmeldet,
+    und klicke auf **Übertragen**.
+  </Step>
+</Steps>
+
+Danach gehört der Agent dem Empfänger, und er verschwindet aus deiner Liste.
+Agent-ID, Konfiguration und hochgeladene PDFs bleiben unverändert. Links,
+Einbettungen und Kiosk-URLs funktionieren deshalb weiter. Zurückholen kann den
+Agenten nur der neue Eigentümer, indem er ihn an dich zurücküberträgt.
+
+Die Übertragung wird abgelehnt, wenn
+
+- es kein Avaluma-Konto mit dieser E-Mail-Adresse gibt,
+- du die eigene Adresse angibst oder
+- der Empfänger das Agent-Limit seines Plans schon erreicht hat (siehe
+  [Preise & Abrechnung](/de/billing/plans)).

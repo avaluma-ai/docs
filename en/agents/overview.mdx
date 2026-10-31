@@ -57,7 +57,8 @@ Open an agent to adjust its configuration at any time. Common settings include:
 | **Language** | Default conversation and UI language. |
 | **Embedding** | Whether the agent may be embedded via `<iframe>`, and on which origins. |
 | **Kiosk** | Standalone fullscreen page for displays (kiosk). Available for every agent; you find the URL and QR code in the **Deployment** tab. |
-| **Web search** | Whether the agent may look things up on the internet during a conversation — see [Web search](#web-search). |
+| **Background knowledge** | PDFs whose content the agent uses as knowledge — see [Knowledge & tools](/en/agents/knowledge-tools). |
+| **Web search** | Whether the agent may look things up on the internet during a conversation — see [Web search](/en/agents/knowledge-tools#web-search). |
 
 <Note>
   The direct link (`/agent/AGENT_ID`) and the [kiosk](/en/agents/kiosk) are reachable for every agent, so treat the Agent ID like a public link. Only embedding via iframe needs to be enabled separately — together with the origins it is allowed on.
@@ -118,18 +119,6 @@ in the form afterwards:
 If you switch speech recognition away from Deepgram Flux, turn-taking is reset
 to "Not configured", because STT endpointing only works with Flux.
 
-### Web search
-
-With web search, the agent can look up current information on the internet
-during a conversation — for example opening hours, news, or prices that are not
-in its background knowledge. Turn it on in the **Background knowledge** tab
-under **Tools** with the **Web search** checkbox, then save the agent. It is off
-by default.
-
-Web search works with all language models except OpenAI Realtime. With the
-default model `gemma-4-31b-it` and with Cerebras, GPT-5.4 mini runs the search
-in the background; a search then takes a few seconds before the agent answers.
-
 ## Manage agents
 
 In the **Agents** overview, each agent has a menu (three dots) with additional actions:
@@ -137,7 +126,7 @@ In the **Agents** overview, each agent has a menu (three dots) with additional a
 | Action | Description |
 |---|---|
 | **Duplicate** | Creates a full copy of the agent — including voice, instructions, tools, and all uploaded documents. The copy gets a new Agent ID and the name `<Name> (Copy)`. |
-| **Transfer** | Hands the agent over to another user (by email address). The new owner gets full access, and the agent disappears from your list. |
+| **Transfer** | Hands the agent over to another user (by email address). The new owner gets full access, and the agent disappears from your list — see [Transfer an agent](/en/agents/knowledge-tools#transfer-an-agent). |
 | **Delete** | Permanently removes the agent. This action cannot be undone. |
 
 <Note>

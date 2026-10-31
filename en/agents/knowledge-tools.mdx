@@ -1,0 +1,88 @@
+---
+title: "Knowledge & tools: PDFs, web search and transfer"
+sidebarTitle: "Knowledge & tools"
+description: "Give your agent PDFs as background knowledge, turn on web search, and transfer an agent to another Avaluma account."
+---
+
+What your agent knows beyond its instructions is set in the agent editor, in the
+**Background knowledge** tab: uploaded PDFs and web search. Both take effect
+from the next conversation that starts after you save.
+
+## Documents as knowledge (PDF)
+
+Under **Documents (PDF)** you upload PDFs whose text the agent uses as
+background knowledge. The full text of all files is appended to the end of the
+system prompt. The agent answers factual questions on this basis and treats the
+content as its own knowledge. It does not mention that it has documents and
+does not name file names.
+
+<Steps>
+  <Step title="Save the agent">
+    Uploading only works once the agent has been saved. For a new agent, save
+    it first.
+  </Step>
+  <Step title="Upload PDFs">
+    Open the **Background knowledge** tab and drop the PDFs onto the field or
+    click it. You can select several files at once.
+  </Step>
+  <Step title="Save again">
+    Save the agent after every upload or removal. Only then does it use the
+    current list of files.
+  </Step>
+</Steps>
+
+| Rule | Value |
+|---|---|
+| **File type** | PDF with extractable text only. PDFs without a text layer, such as plain scans, are rejected. |
+| **File size** | At most 10 MB per file. |
+| **Total size** | At most 100,000 tokens across all PDFs. Each file shows its tokens, a bar shows how full the budget is. An upload that would exceed the limit is rejected. |
+| **Same file name** | Replaces the existing file. |
+| **Remove** | With the trash icon next to the file. |
+
+<Note>
+  If your agent runs on an OpenAI Realtime model, the field is locked. These
+  models do not include documents in the system prompt.
+</Note>
+
+When you [duplicate](/en/agents/overview#manage-agents) an agent, the uploaded
+PDFs are copied too.
+
+## Web search
+
+With web search, the agent can look up current information on the internet
+during a conversation — for example opening hours, news, or prices that are not
+in its background knowledge. Turn it on in the **Background knowledge** tab
+under **Tools** with the **Web search** checkbox, then save the agent. It is off
+by default.
+
+Web search works with all language models except OpenAI Realtime. With the
+default model `gemma-4-31b-it` and with Cerebras, GPT-5.4 mini runs the search
+in the background; a search then takes a few seconds before the agent answers.
+
+## Transfer an agent
+
+You can hand an agent over to another Avaluma account, for example after
+setting it up for a client.
+
+<Steps>
+  <Step title="Open the menu">
+    In the **Agents** overview, open the agent's menu (three dots) and choose
+    **Transfer...**.
+  </Step>
+  <Step title="Enter the recipient">
+    Enter the email address the recipient uses to sign in to Avaluma and click
+    **Transfer**.
+  </Step>
+</Steps>
+
+After that, the agent belongs to the recipient and disappears from your list.
+Agent ID, configuration and uploaded PDFs stay the same, so links, embeds and
+kiosk URLs keep working. Only the new owner can give the agent back, by
+transferring it to you.
+
+The transfer is rejected if
+
+- there is no Avaluma account with this email address,
+- you enter your own address, or
+- the recipient has already reached the agent limit of their plan (see
+  [Pricing & Billing](/en/billing/plans)).
