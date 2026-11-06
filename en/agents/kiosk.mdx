@@ -75,6 +75,12 @@ Push-to-talk, English UI, and a reset to the start screen after 60 seconds of in
   **Microphone unavailable?** If the agent cannot access the microphone, the kiosk shows a notice with the specific cause — access not granted, device held by another app, or no microphone found — along with the technical error code. Below it sits an **"Enable microphone"** button: tapping it requests access again so the browser shows its prompt. The conversation itself keeps running, text chat stays usable, and the push-to-talk button does not light up while held as long as no microphone is active.
 </Note>
 
+## Logo
+
+If you uploaded a logo in the **Deployment** tab, the kiosk shows it centered above the avatar, on the start screen and during the conversation. It sits in the free strip that remains above the avatar in **portrait**. In landscape or with `fit=cover` the avatar fills the screen, so the kiosk hides the logo to keep it from covering anything. A PNG or WebP with a transparent background works best. You set the background color with `border`.
+
+The logo does not appear in the [website embed](/en/agents/embedding).
+
 ## Sound & volume
 
 So the agent is clearly audible on a stand, the kiosk optimizes playback automatically — but depending on the device there are a few adjustments.
