@@ -77,11 +77,15 @@ Push-to-Talk, englische Oberfläche und ein Reset zum Start-Screen nach 60 Sekun
 
 ## Logo
 
-Hast du im Tab **Bereitstellung** ein Logo hochgeladen, zeigt der Kiosk es mittig über dem Avatar: auf dem Startbildschirm und während des Gesprächs. Es sitzt im freien Streifen, der im **Hochformat** über dem Avatar bleibt. Im Querformat oder mit `fit=cover` füllt der Avatar den Bildschirm, dann blendet der Kiosk das Logo aus, damit es nichts verdeckt. Für ein sauberes Ergebnis eignet sich ein PNG oder WebP mit transparentem Hintergrund. Die Hintergrundfarbe legst du mit `border` fest.
+Hast du im Tab **Bereitstellung** Logos hochgeladen (bis zu vier), zeigt der Kiosk sie über dem Avatar: auf dem Startbildschirm und während des Gesprächs. Ein einzelnes Logo steht mittig, mehrere verteilen sich nebeneinander über die Breite, in der Reihenfolge aus dem Studio (mit den Pfeilen änderst du sie). Die Logos sitzen im freien Streifen, der im **Hochformat** über dem Avatar bleibt. Im Querformat oder mit `fit=cover` füllt der Avatar den Bildschirm, dann blendet der Kiosk die Logos aus, damit sie nichts verdecken. Für ein sauberes Ergebnis eignet sich ein PNG oder WebP mit transparentem Hintergrund. Die Hintergrundfarbe legst du mit `border` fest.
 
-Die Größe wählst du unter dem Logo: **Klein**, **Mittel** (Standard) oder **Groß**. Sie gilt für den Kiosk und die Agentenseite gleichermaßen. Reicht der Platz über dem Avatar nicht, zeigt der Kiosk das Logo kleiner.
+Die Größe wählst du für jedes Logo einzeln: **Klein**, **Mittel** (Standard) oder **Groß**. So passt ein breiter Schriftzug neben ein quadratisches Signet. Die Größe gilt für den Kiosk und die Agentenseite gleichermaßen. Reicht der Platz über dem Avatar nicht, zeigt der Kiosk die Logos kleiner.
 
-In der [Website-Einbettung](/de/agents/embedding) erscheint das Logo nicht.
+Hat ein Logo eine Hintergrundfarbe, etwa Weiß, schalte an seiner Karte **Farbe transparent machen** ein. Dann klickst du in der Vorschau auf die Farbe, die verschwinden soll; die Stellen, die durchsichtig werden, zeigt ein Schachbrettmuster. Mit **Toleranz** erfasst du auch ähnliche Farbtöne, etwa Reste an den Kanten. Das Original bleibt erhalten: Schaltest du die Option wieder aus, ist das Logo sofort wie vorher.
+
+Mit **Schwarz-Weiß anzeigen** erscheinen alle Logos einfarbig. Im Kiosk sind sie weiß, auf einem hellen Hintergrund (`border`) schwarz. Auf der Agentenseite sind sie im dunklen Modus weiß und im hellen Modus schwarz. Dabei wird jede nicht durchsichtige Fläche einfarbig – mache Hintergrundfarben deshalb vorher transparent.
+
+In der [Website-Einbettung](/de/agents/embedding) erscheinen die Logos nicht.
 
 ## Ton & Lautstärke
 
