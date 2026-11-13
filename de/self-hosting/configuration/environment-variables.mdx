@@ -13,11 +13,39 @@ Der LiveKit-Agent liest seine Konfiguration beim Start aus `.env.local`. Alle al
 | Variable | Erforderlich | Standard | Beschreibung |
 |---|---|---|---|
 | `AVALUMA_LICENSE_KEY` | Ja | — | Dein Avaluma-Lizenzschlüssel von [avaluma.ai](https://avaluma.ai). |
-| `AVATAR_SERVER_URL` | Ja | `https://api.avaluma.ai` | URL des laufenden Avatar-Servers. Bei Self-Hosting durch die URL deines eigenen Servers ersetzen. |
+| `AVATAR_SERVER_URL` | Nein | `https://api.avaluma.ai` | URL des laufenden Avatar-Servers. Bei Self-Hosting durch die URL deines eigenen Servers ersetzen. |
 | `LIVEKIT_URL` | Ja | — | WebSocket-URL deines LiveKit-Servers (z. B. `wss://your-project.livekit.cloud`). |
 | `LIVEKIT_API_KEY` | Ja | — | API-Key für dein LiveKit-Projekt. |
 | `LIVEKIT_API_SECRET` | Ja | — | API-Secret für dein LiveKit-Projekt. |
-| `AGENT_NAME` | Nein | `agent-1` | Eindeutiger Name für diesen Agent-Worker. Setze einen unterschiedlichen Wert je Agent, wenn du mehrere Agenten im selben LiveKit-Projekt betreibst. |
+
+<Note>
+  Den Namen des Agent-Workers liest das Skript nicht aus der Umgebung. Er steht als `agent_name` im Skript (z. B. `agent_name = "agent-1"` in `agent-1.py`). Betreibst du mehrere Agenten im selben LiveKit-Projekt, gib jedem Skript einen eigenen `agent_name`.
+</Note>
+
+## Plugin-Variablen
+
+Die Variablen oben liest das **Agent-Skript** (per `os.getenv`) und übergibt sie explizit an `AvatarSession(...)`. Das Plugin `livekit-plugins-avaluma` kennt darüber hinaus eigene Fallback-Variablen: Lässt du den jeweiligen Konstruktor-Parameter weg, greift es auf sie zurück.
+
+| Variable | Fallback für | Standard | Beschreibung |
+|---|---|---|---|
+| `AVALUMA_API_KEY` | `license_key` | — | Dein Avaluma-Lizenzschlüssel. |
+| `AVALUMA_AVATAR_ID` | `avatar_id` | — | Avatar-Bezeichner (Name der `.hvia`-Datei ohne Endung). |
+| `AVALUMA_API_URL` | `avatar_server_url` | `https://api.avaluma.ai` | URL des Avatar-Servers. |
+
+Damit lässt sich die `AvatarSession` auch ganz ohne Argumente erzeugen:
+
+```python
+from livekit.plugins.avaluma import AvatarSession
+
+# Liest AVALUMA_API_KEY, AVALUMA_AVATAR_ID und AVALUMA_API_URL aus der Umgebung
+avatar = AvatarSession()
+```
+
+Zusätzlich fällt `avatar.start()` für die LiveKit-Verbindung auf `LIVEKIT_URL`, `LIVEKIT_API_KEY` und `LIVEKIT_API_SECRET` zurück, wenn du sie nicht als Argumente übergibst.
+
+<Note>
+  Fehlen sowohl Argument als auch Umgebungsvariable für `license_key` oder `avatar_id`, bricht das Plugin beim Erzeugen der `AvatarSession` mit einer `AvalumaException` ab.
+</Note>
 
 ## Avatar-Server-Variablen
 
@@ -26,7 +54,6 @@ Der Avatar-Server liest seine Konfiguration aus dem `environment`-Block in `dock
 | Variable | Erforderlich | Standard | Beschreibung |
 |---|---|---|---|
 | `API_UTILS_PWD` | Ja | — | Passwort für die Utility-API des Avatar-Servers. Wähle einen starken, eindeutigen Wert und halte ihn geheim. |
-| `API_SERVER_HOST` | Nein | — | Öffentliche IP-Adresse oder Domainname des Servers. Der Avatar-Server nutzt diesen Wert, um seine eigene Adresse an verbundene Agenten zu melden. Erforderlich bei Verwendung eines Reverse-Proxys oder beim Exponieren auf einer öffentlichen URL. |
 
 ## Variablen setzen
 
@@ -59,11 +86,10 @@ Setze die Avatar-Server-Variablen direkt im `environment`-Block von `docker-comp
 
 ```yaml docker-compose.yaml
 environment:
-  - API_SERVER_HOST=api.yourdomain.com
   - API_UTILS_PWD=CHANGE_THIS
 ```
 
-Ersetze `api.yourdomain.com` durch die tatsächliche öffentliche Domain oder IP deines Servers und `CHANGE_THIS` durch ein starkes Passwort, bevor du den Server startest.
+Ersetze `CHANGE_THIS` durch ein starkes Passwort, bevor du den Server startest. Der Server lauscht immer auf `0.0.0.0:8080`; eine Variable für Host oder Domain gibt es nicht. Die öffentliche Adresse legst du über den Reverse-Proxy fest.
 
 <Warning>
   Committe niemals `.env.local` und gib `AVALUMA_LICENSE_KEY`, `LIVEKIT_API_SECRET` oder `API_UTILS_PWD` nicht in Versionskontrolle oder öffentlichen Repositories preis. Füge `.env.local` direkt nach dem Anlegen zu deiner `.gitignore` hinzu.

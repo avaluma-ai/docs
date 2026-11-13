@@ -10,10 +10,10 @@ Jeder freigegebene Agent lässt sich als `<iframe>` in eine beliebige Webseite e
 
 <Steps>
   <Step title="Embedding aktivieren">
-    Öffne den Agenten im [Dashboard](https://avaluma.ai) und aktiviere **Einbettung erlauben**. Nur freigegebene Agenten können eingebettet werden. Das Umschalten dieses Schalters wird **sofort gespeichert** — du kannst direkt testen, ohne den Agenten erst manuell zu speichern.
+    Öffne den Agenten im [Studio](https://avaluma.ai/studio/agents) und aktiviere im Tab **Bereitstellung** unter **Website-Einbettung** den Schalter **Einbettung aktivieren**. Nur freigegebene Agenten können eingebettet werden. Das Umschalten dieses Schalters wird **sofort gespeichert** — du kannst direkt testen, ohne den Agenten erst manuell zu speichern.
   </Step>
   <Step title="Origin freigeben">
-    Trage unter **Erlaubte Origins** die Adresse(n) der Seite(n) ein, auf denen der Avatar laufen darf — z. B. `https://www.deine-domain.de`.
+    Trage unter **Erlaubte Domains** die Adresse(n) der Seite(n) ein, auf denen der Avatar laufen darf — z. B. `https://www.deine-domain.de`.
 
     <Warning>
       Steht der Origin der einbettenden Seite **nicht** auf der Liste, blockiert der Browser den iframe (über `frame-ancestors`) und alle [Messaging](#messaging)-Befehle werden abgewiesen. Trage exakt den Origin ein (Schema + Host + Port), ohne Pfad.
@@ -41,7 +41,7 @@ Ersetze `AGENT_ID` durch die UUID deines Agenten (im Dashboard sichtbar).
 </Note>
 
 <Tip>
-  Du willst nicht erst eine eigene Seite aufsetzen? Nutze die eingebaute **[Embedding-Testseite](https://avaluma.ai/embed-test)** auf `avaluma.ai/embed-test`: Agent-UUID eintragen, einbetten und die postMessage-Brücke (Handshake, Text senden, Mikrofon ein/aus, Event-Log) direkt ausprobieren. Trage dafür einmalig `https://avaluma.ai` bei den **Erlaubten Origins** des Agenten ein.
+  Du willst nicht erst eine eigene Seite aufsetzen? Nutze die eingebaute **[Embedding-Testseite](https://avaluma.ai/embed-test)** auf `avaluma.ai/embed-test`: Agent-UUID eintragen, einbetten und die postMessage-Brücke (Handshake, Text senden, Mikrofon ein/aus, Event-Log) direkt ausprobieren. Trage dafür einmalig `https://avaluma.ai` bei den **Erlaubten Domains** des Agenten ein.
 </Tip>
 
 ## Startbildschirm-Vorschau
@@ -78,8 +78,8 @@ Alle Optionen werden als Query-Parameter an die `/embed`-URL gehängt. Ungültig
   Mit `true` wird der „Auflegen"-Button eingeblendet.
 </ParamField>
 
-<ParamField query="webaudio" type="string" default="on">
-  Diagnose-Schalter für die Tonausgabe. Standardmäßig läuft der Ton des Agenten über die Web-Audio-API des Browsers (`on`). Mit `off` spielt stattdessen direkt das Audio-Element. Nur zur Fehlersuche gedacht, etwa um Ton- oder Lippensynchronisationsprobleme auf Mobilgeräten einzugrenzen. **Hinweis:** In Firefox kann der Agent mit `off` in eingebetteten Seiten stumm bleiben — den Schalter nach dem Test wieder entfernen.
+<ParamField query="webaudio" type="string" default="on (Android: off)">
+  Diagnose-Schalter für die Tonausgabe. Standardmäßig läuft der Ton des Agenten über die Web-Audio-API des Browsers (`on`). Auf Android (Chrome und andere Chromium-Browser) ist der Standard `off`: Dort spielt das Audio-Element direkt, weil seit Android 17 eine von zwei gleichzeitigen Ausgaben ausfallen kann. `on` erzwingt dort den Web-Audio-Weg. Mit `off` spielt direkt das Audio-Element; die Lautstärke lässt sich dann nicht über das Geräte-Maximum hinaus anheben. Nur zur Fehlersuche gedacht, etwa um Ton- oder Lippensynchronisationsprobleme auf Mobilgeräten einzugrenzen. **Hinweis:** In Firefox kann der Agent mit `off` in eingebetteten Seiten stumm bleiben — den Schalter nach dem Test wieder entfernen.
 </ParamField>
 <ParamField query="speakerphone" type="string" default="auto">
   Diagnose-Schalter für die Tonausgabe auf Android. Standardmäßig (`auto`) wird der laute Systemlautsprecher bereits beim Einschalten des Mikrofons gewählt — der Ton ist damit von der ersten Sekunde an laut, ohne Aussetzer beim Verbindungsaufbau. Mit `late` wird erst nach dem Verbindungsaufbau umgeschaltet (das frühere Verhalten); das kostet ein bis zwei Sekunden ohne Ton und Mikrofon. Nur zum Vergleichen gedacht. Weitere Diagnosewerte gegen einen stummen Lautsprecher auf manchen Android-Geräten (etwa Galaxy S25): `hop` schaltet vor dem Gesprächsbeginn einmal über die Hörmuschel auf den Lautsprecher; `hop-late` tut das erst, wenn der Agent zu sprechen beginnt (kurzer Aussetzer, wirkt nicht mit `mic=ptt`); `capture-first` wie `hop`, die Verbindung startet aber erst, wenn das Mikrofon freigegeben ist; `restart` startet das Mikrofon zur Kontrolle nur neu. Mit verbundenem Headset oder einem selbst gewählten Mikrofon wird nie umgeschaltet. Auf iOS und am Desktop ohne Wirkung, dort bietet der Browser keine solche Umschaltung an. Der Lautsprecher lässt sich **nicht** abschalten — auf Mobilgeräten wäre die Wiedergabe sonst zu leise.
@@ -113,7 +113,7 @@ Wie im Kiosk optimiert der eingebettete Agent die Wiedergabe automatisch: Auf iP
 Alle Nachrichten tragen das Präfix `avaluma:`, damit fremde Messages (z. B. von Drittanbieter-Skripten) sicher ignoriert werden.
 
 <Warning>
-  Messaging funktioniert nur, wenn der Origin deiner Seite unter **Erlaubte Origins** des Agenten eingetragen ist (siehe [Voraussetzungen](#voraussetzungen) oben). Nachrichten von oder an einen nicht erlaubten Origin werden vom Browser abgewiesen.
+  Messaging funktioniert nur, wenn der Origin deiner Seite unter **Erlaubte Domains** des Agenten eingetragen ist (siehe [Voraussetzungen](#voraussetzungen) oben). Nachrichten von oder an einen nicht erlaubten Origin werden vom Browser abgewiesen.
 </Warning>
 
 ### Referenz auf den iframe holen
@@ -232,10 +232,10 @@ window.addEventListener("message", (event) => {
 ### Vollständiges Testbeispiel
 
 <Tip>
-  Schnellster Weg ohne eigenen Code: die eingebaute **[Embedding-Testseite](https://avaluma.ai/embed-test)** auf `avaluma.ai/embed-test`. Sie bettet einen Agenten von der avaluma.ai-Domain ein und visualisiert die komplette Brücke (Handshake, Text senden, Mikrofon ein/aus, Event-Log). Trage dafür `https://avaluma.ai` bei den **Erlaubten Origins** des Agenten ein.
+  Schnellster Weg ohne eigenen Code: die eingebaute **[Embedding-Testseite](https://avaluma.ai/embed-test)** auf `avaluma.ai/embed-test`. Sie bettet einen Agenten von der avaluma.ai-Domain ein und visualisiert die komplette Brücke (Handshake, Text senden, Mikrofon ein/aus, Event-Log). Trage dafür `https://avaluma.ai` bei den **Erlaubten Domains** des Agenten ein.
 </Tip>
 
-Eine eigenständige HTML-Seite, die den Avatar einbettet, Text an ihn sendet und alle Events in einem kleinen Log anzeigt. Lokal mit einem statischen Server ausliefern (z. B. `python3 -m http.server 8080`) und dessen Origin (`http://localhost:8080`) bei den **Erlaubten Origins** des Agenten eintragen.
+Eine eigenständige HTML-Seite, die den Avatar einbettet, Text an ihn sendet und alle Events in einem kleinen Log anzeigt. Lokal mit einem statischen Server ausliefern (z. B. `python3 -m http.server 8080`) und dessen Origin (`http://localhost:8080`) bei den **Erlaubten Domains** des Agenten eintragen.
 
 <CodeGroup>
 
@@ -328,7 +328,7 @@ Eine eigenständige HTML-Seite, die den Avatar einbettet, Text an ihn sendet und
 </CodeGroup>
 
 <Warning>
-  Ersetze `AGENT_ID` durch die UUID deines Agenten. Damit das Senden funktioniert, muss der Origin der Testseite bei den **Erlaubten Origins** des Agenten eingetragen sein.
+  Ersetze `AGENT_ID` durch die UUID deines Agenten. Damit das Senden funktioniert, muss der Origin der Testseite bei den **Erlaubten Domains** des Agenten eingetragen sein.
 </Warning>
 
 ### Sicherheits-Checkliste
@@ -340,7 +340,7 @@ Eine eigenständige HTML-Seite, die den Avatar einbettet, Text an ihn sendet und
   <Step title="Immer den Quell-Origin prüfen">
     Weise in deinem `message`-Listener jedes Event ab, dessen `event.origin` nicht `https://avaluma.ai` ist.
   </Step>
-  <Step title="Erlaubte Origins eng halten">
-    Trage unter **Erlaubte Origins** im Dashboard nur die Origins ein, die den Avatar tatsächlich hosten.
+  <Step title="Erlaubte Domains eng halten">
+    Trage unter **Erlaubte Domains** im Studio nur die Origins ein, die den Avatar tatsächlich hosten.
   </Step>
 </Steps>

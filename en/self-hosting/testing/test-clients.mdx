@@ -27,7 +27,7 @@ The Avaluma Test Client works with both LiveKit Cloud and self-hosted LiveKit se
     Fill in your **LiveKit URL** (e.g. `wss://your-project.livekit.cloud`), **API Key**, and **API Secret** from your `.env.local` file.
   </Step>
   <Step title="Enter the agent name">
-    Type the `AGENT_NAME` configured in your `docker-compose.yaml` (e.g. `agent-1`).
+    Type the `agent_name` from your agent script (e.g. `agent-1`).
   </Step>
   <Step title="Click Connect">
     Click **Connect**. The avatar video stream should appear within a few seconds as the agent joins the room and begins rendering.
@@ -46,7 +46,7 @@ The LiveKit Agent Playground is available when you are using a LiveKit Cloud pro
     Choose your LiveKit Cloud project from the dropdown, or manually enter your server URL, API key, and API secret.
   </Step>
   <Step title="Enter the agent name">
-    Type the `AGENT_NAME` set in your agent's `docker-compose.yaml` environment block (e.g. `agent-1`).
+    Type the `agent_name` from your agent script (e.g. `agent-1`).
   </Step>
   <Step title="Click Connect">
     Click **Connect** to open a room. The agent will join automatically and the avatar video stream will begin.

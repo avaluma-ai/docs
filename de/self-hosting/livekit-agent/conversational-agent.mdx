@@ -22,7 +22,7 @@ Mikrofon → STT → LLM → TTS → Avaluma-Avatar → Video-Stream
 
 <Steps>
   <Step title="Plugin installieren">
-    Das Paket `avaluma-livekit-plugin` stellt die `AvatarSession`-Klasse bereit, die die Agent-Pipeline mit deinem Avatar verbindet. Die `pyproject.toml` deklariert es bereits als Abhängigkeit — bei Verwendung von Docker ist kein zusätzlicher Installationsschritt nötig:
+    Das Paket `livekit-plugins-avaluma` stellt die `AvatarSession`-Klasse bereit, die die Agent-Pipeline mit deinem Avatar verbindet. Die `pyproject.toml` deklariert es bereits als Abhängigkeit — bei Verwendung von Docker ist kein zusätzlicher Installationsschritt nötig:
 
     ```toml pyproject.toml
     dependencies = [
@@ -30,7 +30,7 @@ Mikrofon → STT → LLM → TTS → Avaluma-Avatar → Video-Stream
         "livekit-agents[silero,turn-detector]~=1.2",
         "livekit-plugins-noise-cancellation~=0.2",
         "python-dotenv",
-        "avaluma-livekit-plugin @ git+https://github.com/avaluma-ai/avaluma-livekit-plugin.git"
+        "livekit-plugins-avaluma @ git+https://github.com/avaluma-ai/avaluma-livekit-plugin@cea612d1fc8d67d9aca715784fea488fbc2360f4"
     ]
     ```
   </Step>
@@ -79,7 +79,7 @@ Dies ist der komplette Quellcode von `agent-1.py`:
 import os
 
 # highlight-next-line
-from avaluma_livekit_plugin import AvatarSession
+from livekit.plugins.avaluma import AvatarSession
 from dotenv import load_dotenv
 from livekit.agents import (
     Agent,
@@ -96,7 +96,7 @@ from livekit.plugins.turn_detector.multilingual import MultilingualModel
 
 load_dotenv(".env.local")
 agent_name = "agent-1"
-avatar_id = "260218-Avaluma_Avatar_Kadda_v5"
+avatar_id = "260921-Steven_v114"
 license_key = os.getenv("AVALUMA_LICENSE_KEY", "")
 avatar_server_url = os.getenv("AVATAR_SERVER_URL", "https://api.avaluma.ai")
 
@@ -239,7 +239,7 @@ Folge diesen Schritten, um einen zusätzlichen Agent neben `agent-1` zu erstelle
   </Step>
 
   <Step title="Service zur docker-compose.yaml hinzufügen">
-    Mounte dein Skript in den Container und setze `AGENT_NAME` passend zu `agent_name` in deinem Skript:
+    Mounte dein Skript in den Container. Den Namen des Workers liest der Container aus `agent_name` im Skript, eine Umgebungsvariable dafür gibt es nicht:
 
     ```yaml docker-compose.yaml
     livekit-agent-3:
@@ -247,8 +247,6 @@ Folge diesen Schritten, um einen zusätzlichen Agent neben `agent-1` zu erstelle
       restart: unless-stopped
       env_file:
         - .env.local
-      environment:
-        - AGENT_NAME=agent-3
       volumes:
         - livekit_plugin_cache:/root/.cache
         - ./agents/3-my-custom-agent/agent-3.py:/app/src/agent.py
@@ -263,5 +261,5 @@ Folge diesen Schritten, um einen zusätzlichen Agent neben `agent-1` zu erstelle
 </Steps>
 
 <Warning>
-  Jeder Agent-Service muss einen eindeutigen `AGENT_NAME` haben. Mehrere Agenten mit demselben Namen im selben LiveKit-Projekt zu deployen führt zu Routing-Konflikten — beide Worker konkurrieren um dieselben Jobs.
+  Jedes Agent-Skript muss einen eindeutigen `agent_name` haben. Mehrere Agenten mit demselben Namen im selben LiveKit-Projekt zu deployen führt zu Routing-Konflikten — beide Worker konkurrieren um dieselben Jobs.
 </Warning>

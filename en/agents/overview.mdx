@@ -54,15 +54,16 @@ Open an agent to adjust its configuration at any time. Common settings include:
 | **Voice** | The text-to-speech voice used for spoken replies. |
 | **Model** | The ElevenLabs speech model used to generate the voice — see [Choosing a speech model](#choosing-a-speech-model). |
 | **Instructions** | The system prompt that shapes the agent's persona and behavior. |
-| **Language** | Default conversation and UI language. |
-| **Embedding** | Whether the agent may be embedded via `<iframe>`, and on which origins. |
+| **Language** | Language of the speech output (TTS), in the **Voice** tab. You set the UI language via the `lang` parameter when sharing or embedding. |
+| **Text chunking** | In the **Voice** tab: the portions in which text is sent to ElevenLabs. The default is **Automatic** (recommended), the agent then picks the right value per model. You only need this field to experiment. |
+| **Embedding** | Whether the agent may be embedded via `<iframe>`, and on which domains. |
 | **Kiosk** | Standalone fullscreen page for displays (kiosk). Available for every agent; you find the URL and QR code in the **Deployment** tab. |
 | **Logo** | Up to four logos at the top of the agent page (`/agent/AGENT_ID`) and in the [kiosk](/en/agents/kiosk#logo): one is centered, several sit side by side. Upload them in the **Deployment** tab: PNG or WebP, ideally with a transparent background, max. 2 MB each. Size **Small**, **Medium** or **Large** per logo, order via the arrows, make a color transparent; optionally all logos in black and white. Takes effect immediately, no need to save. |
 | **Background knowledge** | PDFs whose content the agent uses as knowledge — see [Knowledge & tools](/en/agents/knowledge-tools). |
 | **Web search** | Whether the agent may look things up on the internet during a conversation — see [Web search](/en/agents/knowledge-tools#web-search). |
 
 <Note>
-  The direct link (`/agent/AGENT_ID`) and the [kiosk](/en/agents/kiosk) are reachable for every agent, so treat the Agent ID like a public link. Only embedding via iframe needs to be enabled separately — together with the origins it is allowed on.
+  The direct link (`/agent/AGENT_ID`) and the [kiosk](/en/agents/kiosk) are reachable for every agent, so treat the Agent ID like a public link. Only embedding via iframe needs to be enabled separately — together with the domains it is allowed on.
 </Note>
 
 ### Choosing a speech model
@@ -107,18 +108,17 @@ change it yourself.
 
 ### Defaults for new agents
 
-A newly created agent starts with this configuration. You can change all of it
-in the form afterwards:
+A newly created agent starts with this configuration. You choose the voice and
+the voice model yourself in the **Voice** tab. Speech recognition, LLM and
+turn-taking are set up for you by Avaluma; these settings are not shown in the
+form.
 
 | Area | Default |
 |---|---|
-| **Speech recognition (STT)** | Deepgram Flux `flux-general-multi`, language English |
+| **Speech recognition (STT)** | Deepgram Flux `flux-general-multi`, language **Auto** (detects the language itself) |
 | **Language model (LLM)** | LiveKit Inference `gemma-4-31b-it` |
 | **Speech output (TTS)** | ElevenLabs **v4 Turbo** |
 | **Turn-taking** | STT endpointing (Deepgram Flux), endpointing **dynamic** (adapts to speech pauses), **preemptive TTS** on (speech output starts before the end of turn) |
-
-If you switch speech recognition away from Deepgram Flux, turn-taking is reset
-to "Not configured", because STT endpointing only works with Flux.
 
 ## Manage agents
 
@@ -131,7 +131,7 @@ In the **Agents** overview, each agent has a menu (three dots) with additional a
 | **Delete** | Permanently removes the agent. This action cannot be undone. |
 
 <Note>
-  **Duplicating** also carries over the embedding settings (including the allowed origins). The copy is therefore immediately reachable under the same conditions as the original.
+  **Duplicating** also carries over the embedding settings (including the allowed domains). The copy is therefore immediately reachable under the same conditions as the original.
 </Note>
 
 ## Per-agent usage statistics

@@ -40,16 +40,14 @@ Das Einrichten des Avatar-Servers umfasst drei Schritte: deine `.hvia`-Avatar-Da
 
     ```yaml
     environment:
-      - API_SERVER_HOST=api.yourdomain.com  # öffentliche IP oder Domain
       - API_UTILS_PWD=your-secure-password
     ```
 
-    Setze `API_SERVER_HOST` auf die öffentliche IP-Adresse oder den Domainnamen, über den Clients den Server erreichen. Wenn du den Server nur auf `localhost` ohne Reverse-Proxy betreibst, kannst du dies für lokale Tests so belassen.
+    Der Server lauscht immer auf `0.0.0.0:8080`. Eine Variable für die öffentliche Adresse gibt es nicht; die legst du über den Reverse-Proxy fest (siehe [HTTPS mit Caddy](/de/self-hosting/avatar-server/https-proxy)).
 
     | Variable | Beschreibung |
     |---|---|
     | `API_UTILS_PWD` | Passwort für die Utility-API des Avatar-Servers |
-    | `API_SERVER_HOST` | Öffentliche IP oder Domainname des Servers |
   </Step>
 
   <Step title="Server starten">
@@ -59,7 +57,7 @@ Das Einrichten des Avatar-Servers umfasst drei Schritte: deine `.hvia`-Avatar-Da
     docker compose up -d
     ```
 
-    Der Server startet im Hintergrund (detached) und ist unter `http://localhost:8080` erreichbar. Wenn du einen Reverse-Proxy verwendest oder den Server auf einer öffentlichen IP exponierst, stelle sicher, dass `API_SERVER_HOST` zu dieser Adresse passt.
+    Der Server startet im Hintergrund (detached) und ist unter `http://localhost:8080` erreichbar.
 
     Um zu prüfen, ob der Container erfolgreich gestartet ist, sieh dir die Logs an:
 
@@ -80,8 +78,6 @@ services:
     pull_policy: always # update on restart
     restart: unless-stopped
     environment:
-      # change this to the Public IP of the server or domain name when using reverse proxy
-      - API_SERVER_HOST=api.avaluma.ai
       - API_UTILS_PWD=CHANGE_THIS
     ports:
       # not necessary when using reverse proxy

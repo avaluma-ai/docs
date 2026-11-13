@@ -13,11 +13,39 @@ The LiveKit Agent reads its configuration from `.env.local` at startup. All vari
 | Variable | Required | Default | Description |
 |---|---|---|---|
 | `AVALUMA_LICENSE_KEY` | Yes | — | Your Avaluma license key, obtained from [avaluma.ai](https://avaluma.ai). |
-| `AVATAR_SERVER_URL` | Yes | `https://api.avaluma.ai` | URL of the running Avatar Server. Replace with your own server's URL if self-hosting. |
+| `AVATAR_SERVER_URL` | No | `https://api.avaluma.ai` | URL of the running Avatar Server. Replace with your own server's URL if self-hosting. |
 | `LIVEKIT_URL` | Yes | — | WebSocket URL of your LiveKit server (e.g. `wss://your-project.livekit.cloud`). |
 | `LIVEKIT_API_KEY` | Yes | — | API key for your LiveKit project. |
 | `LIVEKIT_API_SECRET` | Yes | — | API secret for your LiveKit project. |
-| `AGENT_NAME` | No | `agent-1` | Unique name for this agent worker. Set a distinct value for each agent when running multiple agents inside the same LiveKit project. |
+
+<Note>
+  The script does not read the agent worker's name from the environment. It is set as `agent_name` in the script (e.g. `agent_name = "agent-1"` in `agent-1.py`). If you run several agents in the same LiveKit project, give each script its own `agent_name`.
+</Note>
+
+## Plugin Variables
+
+The variables above are read by the **agent script** (via `os.getenv`) and passed explicitly to `AvatarSession(...)`. The `livekit-plugins-avaluma` plugin also has its own fallback variables: if you omit the corresponding constructor argument, it falls back to these.
+
+| Variable | Fallback for | Default | Description |
+|---|---|---|---|
+| `AVALUMA_API_KEY` | `license_key` | — | Your Avaluma license key. |
+| `AVALUMA_AVATAR_ID` | `avatar_id` | — | Avatar identifier (name of the `.hvia` file without the extension). |
+| `AVALUMA_API_URL` | `avatar_server_url` | `https://api.avaluma.ai` | URL of the Avatar Server. |
+
+This lets you create the `AvatarSession` without any arguments at all:
+
+```python
+from livekit.plugins.avaluma import AvatarSession
+
+# Reads AVALUMA_API_KEY, AVALUMA_AVATAR_ID and AVALUMA_API_URL from the environment
+avatar = AvatarSession()
+```
+
+In addition, `avatar.start()` falls back to `LIVEKIT_URL`, `LIVEKIT_API_KEY` and `LIVEKIT_API_SECRET` for the LiveKit connection when you don't pass them as arguments.
+
+<Note>
+  If neither the argument nor the environment variable is set for `license_key` or `avatar_id`, the plugin raises an `AvalumaException` when the `AvatarSession` is created.
+</Note>
 
 ## Avatar Server Variables
 
@@ -26,7 +54,6 @@ The Avatar Server reads its configuration from the `environment` block in `docke
 | Variable | Required | Default | Description |
 |---|---|---|---|
 | `API_UTILS_PWD` | Yes | — | Password for the Avatar Server utility API. Choose a strong, unique value and keep it secret. |
-| `API_SERVER_HOST` | No | — | Public IP address or domain name of the server. The Avatar Server uses this value to report its own address to connected agents. Required when you are running a reverse proxy or exposing the server on a public URL. |
 
 ## Setting Variables
 
@@ -59,11 +86,10 @@ Set the Avatar Server variables directly in the `environment` block of `docker-c
 
 ```yaml docker-compose.yaml
 environment:
-  - API_SERVER_HOST=api.yourdomain.com
   - API_UTILS_PWD=CHANGE_THIS
 ```
 
-Replace `api.yourdomain.com` with your server's actual public domain or IP, and replace `CHANGE_THIS` with a strong password before starting the server.
+Replace `CHANGE_THIS` with a strong password before starting the server. The server always listens on `0.0.0.0:8080`; there is no variable for host or domain. You set the public address through your reverse proxy.
 
 <Warning>
   Never commit `.env.local` or expose your `AVALUMA_LICENSE_KEY`, `LIVEKIT_API_SECRET`, or `API_UTILS_PWD` to version control or public repositories. Add `.env.local` to your `.gitignore` file immediately after creating it.

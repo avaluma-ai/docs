@@ -30,7 +30,7 @@ Einmal konfiguriert, hat ein Agent eine feste **Agent-ID** (eine UUID), mit der 
 
 <Steps>
   <Step title="Im Dashboard anmelden">
-    Melde dich auf [avaluma.ai](https://avaluma.ai) an und öffne den Bereich **Agents** in deinem Dashboard.
+    Melde dich auf [avaluma.ai](https://avaluma.ai) an und öffne den Bereich **Agenten** im Studio.
   </Step>
   <Step title="Neuen Agent anlegen">
     Klicke auf **Neuer Agent**, gib ihm einen Namen und wähle den gewünschten Avatar aus. Deine verfügbaren Avatare stammen aus den `.hvia`-Dateien, die mit deiner Lizenz ausgestellt wurden.
@@ -54,15 +54,16 @@ Einmal konfiguriert, hat ein Agent eine feste **Agent-ID** (eine UUID), mit der 
 | **Stimme** | Die Text-to-Speech-Stimme für gesprochene Antworten. |
 | **Modell** | Das ElevenLabs-Sprachmodell, mit dem die Stimme erzeugt wird — siehe [Sprachmodell wählen](#sprachmodell-w%C3%A4hlen). |
 | **Anweisungen** | Der System-Prompt, der Persona und Verhalten des Agenten prägt. |
-| **Sprache** | Standardsprache für Konversation und Oberfläche. |
-| **Einbettung** | Ob der Agent per `<iframe>` eingebettet werden darf — und auf welchen Origins. |
+| **Sprache** | Sprache der Sprachausgabe (TTS), im Tab **Stimme**. Die Sprache der Oberfläche steuerst du beim Teilen und Einbetten über den Parameter `lang`. |
+| **Textübergabe** | Im Tab **Stimme**: in welchen Portionen der Text an ElevenLabs geht. Standard ist **Automatisch** (empfohlen), der Agent wählt dann je Modell den passenden Wert. Das Feld brauchst du nur zum Experimentieren. |
+| **Einbettung** | Ob der Agent per `<iframe>` eingebettet werden darf — und auf welchen Domains. |
 | **Kiosk** | Eigenständige Vollbild-Seite für Displays (Kiosk). Für jeden Agenten verfügbar; URL und QR-Code findest du im Tab **Bereitstellung**. |
 | **Logo** | Bis zu vier Logos oben auf der Agentenseite (`/agent/AGENT_ID`) und im [Kiosk](/de/agents/kiosk#logo): eins mittig, mehrere nebeneinander. Hochladen im Tab **Bereitstellung**: PNG oder WebP, am besten mit transparentem Hintergrund, je max. 2 MB. Pro Logo Größe **Klein**, **Mittel** oder **Groß**, Reihenfolge per Pfeilen, eine Farbe transparent machen; alle Logos auf Wunsch in Schwarz-Weiß. Wirkt sofort, ohne Speichern. |
 | **Hintergrundwissen** | PDFs, deren Inhalt der Agent als Wissen nutzt — siehe [Wissen & Tools](/de/agents/knowledge-tools). |
 | **Websuche** | Ob der Agent während des Gesprächs im Internet nachschlagen darf — siehe [Websuche](/de/agents/knowledge-tools#websuche). |
 
 <Note>
-  Der direkte Link (`/agent/AGENT_ID`) und der [Kiosk](/de/agents/kiosk) sind für jeden Agenten erreichbar. Behandle die Agent-ID deshalb wie einen öffentlichen Link. Nur das Einbetten per iframe musst du eigens freigeben — samt der Origins, auf denen es erlaubt ist.
+  Der direkte Link (`/agent/AGENT_ID`) und der [Kiosk](/de/agents/kiosk) sind für jeden Agenten erreichbar. Behandle die Agent-ID deshalb wie einen öffentlichen Link. Nur das Einbetten per iframe musst du eigens freigeben — samt der Domains, auf denen es erlaubt ist.
 </Note>
 
 ### Sprachmodell wählen
@@ -109,23 +110,21 @@ bis du es selbst umstellst.
 
 ### Standards für neue Agenten
 
-Ein neu angelegter Agent startet mit dieser Konfiguration. Alles lässt sich
-danach im Formular ändern:
+Ein neu angelegter Agent startet mit dieser Konfiguration. Stimme und
+Sprachmodell der Stimme wählst du selbst im Tab **Stimme**. Spracherkennung,
+LLM und Turn-Taking stellt Avaluma für dich ein; diese Einstellungen sind im
+Formular nicht sichtbar.
 
 | Bereich | Standard |
 |---|---|
-| **Spracherkennung (STT)** | Deepgram Flux `flux-general-multi`, Sprache Englisch |
+| **Spracherkennung (STT)** | Deepgram Flux `flux-general-multi`, Sprache **Auto** (erkennt die Sprache selbst) |
 | **Sprachmodell (LLM)** | LiveKit Inference `gemma-4-31b-it` |
 | **Sprachausgabe (TTS)** | ElevenLabs **v4 Turbo** |
 | **Turn-Taking** | STT-Endpointing (Deepgram Flux), Endpointing **dynamic** (passt sich den Sprechpausen an), **Preemptive TTS** an (die Sprachausgabe startet vor dem Turn-Ende) |
 
-Wechselst du die Spracherkennung weg von Deepgram Flux, wird das Turn-Taking auf
-„Nicht konfiguriert“ zurückgesetzt, weil STT-Endpointing nur mit Flux
-funktioniert.
-
 ## Agenten verwalten
 
-In der **Agents**-Übersicht findest du bei jedem Agenten ein Menü (drei Punkte) mit zusätzlichen Aktionen:
+In der **Agenten**-Übersicht findest du bei jedem Agenten ein Menü (drei Punkte) mit zusätzlichen Aktionen:
 
 | Aktion | Beschreibung |
 |---|---|
@@ -134,12 +133,12 @@ In der **Agents**-Übersicht findest du bei jedem Agenten ein Menü (drei Punkte
 | **Löschen** | Entfernt den Agenten endgültig. Diese Aktion kann nicht rückgängig gemacht werden. |
 
 <Note>
-  Beim **Duplizieren** werden auch die Einbettungs-Einstellungen (inklusive der erlaubten Origins) übernommen. Die Kopie ist damit sofort unter denselben Bedingungen erreichbar wie das Original.
+  Beim **Duplizieren** werden auch die Einbettungs-Einstellungen (inklusive der erlaubten Domains) übernommen. Die Kopie ist damit sofort unter denselben Bedingungen erreichbar wie das Original.
 </Note>
 
 ## Nutzungsstatistik pro Agent
 
-In der **Agents**-Übersicht zeigt jede Agenten-Kachel, wie viele **Gesprächsminuten** dieser Agent im laufenden Monat genutzt wurde. Über das Statistik-Symbol auf der Kachel öffnest du ein Fenster mit den wichtigsten Kennzahlen:
+In der **Agenten**-Übersicht zeigt jede Agenten-Kachel, wie viele **Gesprächsminuten** dieser Agent im laufenden Monat genutzt wurde. Über das Statistik-Symbol auf der Kachel öffnest du ein Fenster mit den wichtigsten Kennzahlen:
 
 | Kennzahl | Beschreibung |
 |---|---|
@@ -151,7 +150,7 @@ In der **Agents**-Übersicht zeigt jede Agenten-Kachel, wie viele **Gesprächsmi
 Dazu zeigt ein **Verlauf** die Gespräche im Zeitverlauf, umschaltbar zwischen **1 Tag (stündlich), 7 Tagen und 30 Tagen**. Über das Datumsfeld wählst du das **Enddatum** des Zeitraums (Standard: heute) und blätterst so auch zu vergangenen Tagen oder Wochen zurück.
 
 <Note>
-  Den monatlichen Gesamtverbrauch aller Agenten und dein Tarif-Limit siehst du im Balken oben auf der **Agents**-Seite — mehr dazu unter [Preise & Abrechnung](/de/billing/plans).
+  Den monatlichen Gesamtverbrauch aller Agenten und dein Tarif-Limit siehst du im Balken oben auf der **Agenten**-Seite — mehr dazu unter [Preise & Abrechnung](/de/billing/plans).
 </Note>
 
 ## Teilen und einbetten

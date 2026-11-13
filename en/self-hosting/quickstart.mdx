@@ -32,7 +32,6 @@ By the end of this guide you will have the Avaluma Avatar Server rendering your 
 
     ```yaml
     environment:
-      - API_SERVER_HOST=api.avaluma.ai   # public IP or domain of this server
       - API_UTILS_PWD=CHANGE_THIS        # replace with a strong password
     ```
 
@@ -83,7 +82,7 @@ By the end of this guide you will have the Avaluma Avatar Server rendering your 
     The `AvatarSession` block in that file wires the voice pipeline to the Avatar Server:
 
     ```python
-    from avaluma_livekit_plugin import AvatarSession
+    from livekit.plugins.avaluma import AvatarSession
 
     avatar = AvatarSession(
         license_key=license_key,       # Your License Key
@@ -112,7 +111,7 @@ By the end of this guide you will have the Avaluma Avatar Server rendering your 
     ```
 
     <Tip>
-      Each agent must have a unique `AGENT_NAME` in `docker-compose.yaml` when you deploy multiple agents to the same LiveKit project.
+      Each agent script needs a unique `agent_name` (e.g. `agent_name = "agent-1"`) when you deploy multiple agents to the same LiveKit project.
     </Tip>
 
   </Step>
@@ -152,7 +151,7 @@ By the end of this guide you will have the Avaluma Avatar Server rendering your 
   <Card title="LiveKit Agent" icon="microphone" href="/en/self-hosting/livekit-agent/overview">
     Swap in different STT, LLM, and TTS models and add custom agent logic.
   </Card>
-  <Card title="External Audio" icon="waveform" href="/en/self-hosting/livekit-agent/overview#external-audio">
+  <Card title="External Audio" icon="waveform" href="/en/self-hosting/livekit-agent/external-audio">
     Stream audio from any external service directly to the avatar without an AgentSession.
   </Card>
 </CardGroup>
