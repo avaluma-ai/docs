@@ -33,15 +33,59 @@ Once configured, an agent has a stable **Agent ID** (a UUID) that you use to sha
     Log in at [avaluma.ai](https://avaluma.ai) and open the **Agents** section of your dashboard.
   </Step>
   <Step title="Create a new agent">
-    Click **New agent**, give it a name, and select the avatar you want it to use. Your available avatars come from the `.hvia` files issued with your license.
+    Click **New agent** and give it a name. As soon as it has a name, the agent is created. From then on the editor saves every change automatically. Then select the avatar you want it to use. Your available avatars come from the `.hvia` files issued with your license.
   </Step>
   <Step title="Configure voice and persona">
-    Choose a voice for text-to-speech and write the agent's instructions (system prompt). The instructions define the agent's tone, knowledge, and behavior during a conversation. A default voice is already preselected — a voice must be selected for the agent to speak.
+    Choose a voice for text-to-speech and write the agent's instructions (system prompt). The instructions define the agent's tone, knowledge, and behavior during a conversation. You can write them into the form yourself or let the [prompting guide](#prompting-guide) walk you through them. A default voice is already preselected — a voice must be selected for the agent to speak.
   </Step>
-  <Step title="Save and test">
-    Save the agent and start a test conversation from the dashboard to confirm the avatar speaks and responds as expected.
+  <Step title="Test">
+    Click **Test agent** at the bottom and start a test conversation to confirm the avatar speaks and responds as expected.
   </Step>
 </Steps>
+
+## The agent editor
+
+All settings of an agent sit on one page, one below the other: **Avatar**,
+**Voice**, **Prompting**, **Background knowledge**, **Deployment**,
+**Metadata** and, at the very bottom, the collapsible **Advanced** area.
+
+### Automatic saving
+
+There is no save button. The editor saves every change on its own, about one
+second after your last input and immediately when you leave a field. The bar at
+the bottom of the page shows the state: **Saving …** or **Saved**.
+
+- Every change takes effect from the next conversation, for embedded agents
+  too.
+- The editor does not save incomplete input, for example a tool without a name.
+  The bar then shows **Not saved:** with the reason. Clicking it jumps to the
+  field. Everything else is saved anyway.
+- If saving fails, for example without an internet connection, the error
+  appears in the bar. **Try again** saves once more.
+
+### Prompting guide
+
+The **Prompting** section holds the form for the instructions with the fields
+**Greeting**, **Identity**, **Goal**, **Output Formatting**, **Guardrails**,
+**User Information** and **Additional Information**. You can fill it in
+yourself.
+
+Above it, **Start prompting guide** starts a conversation with an avatar that
+walks you through the instructions and fills in the form for you. The browser
+needs access to your microphone for this.
+
+- The fields are locked during the conversation. You can watch live what the
+  guide enters: a changed field lights up briefly.
+- **Stop prompting guide** ends the conversation. After that you can edit all
+  fields yourself again.
+- Uploading, importing and deleting in **Background knowledge** is locked in
+  the meantime.
+
+### Advanced
+
+The **Advanced** area is collapsed by default. It holds the **Avatar ID**, the
+models for speech recognition (**STT**) and replies (**LLM**), **Turn taking**
+and **Tools**. The [defaults](#defaults-for-new-agents) fit most agents.
 
 ## Configure an agent
 
@@ -56,9 +100,9 @@ Open an agent to adjust its configuration at any time. Common settings include:
 | **Instructions** | The system prompt that shapes the agent's persona and behavior. |
 | **Language** | Default conversation and UI language. |
 | **Embedding** | Whether the agent may be embedded via `<iframe>`, and on which origins. |
-| **Kiosk** | Standalone fullscreen page for displays (kiosk). Available for every agent; you find the URL and QR code in the **Deployment** tab. |
-| **Logo** | Up to four logos at the top of the agent page (`/agent/AGENT_ID`) and in the [kiosk](/en/agents/kiosk#logo): one is centered, several sit side by side. Upload them in the **Deployment** tab: PNG or WebP, ideally with a transparent background, max. 2 MB each. Size **Small**, **Medium** or **Large** per logo, order via the arrows, make a color transparent; optionally all logos in black and white. Takes effect immediately, no need to save. |
-| **Background knowledge** | PDFs whose content the agent uses as knowledge — see [Knowledge & tools](/en/agents/knowledge-tools). |
+| **Kiosk** | Standalone fullscreen page for displays (kiosk). Available for every agent; you find the URL and QR code in the **Deployment** section. |
+| **Logo** | Up to four logos at the top of the agent page (`/agent/AGENT_ID`) and in the [kiosk](/en/agents/kiosk#logo): one is centered, several sit side by side. Upload them in the **Deployment** section: PNG or WebP, ideally with a transparent background, max. 2 MB each. Size **Small**, **Medium** or **Large** per logo, order via the arrows, make a color transparent; optionally all logos in black and white. Takes effect immediately. |
+| **Background knowledge** | PDFs and imported websites whose content the agent uses as knowledge — see [Knowledge & tools](/en/agents/knowledge-tools). |
 | **Web search** | Whether the agent may look things up on the internet during a conversation — see [Web search](/en/agents/knowledge-tools#web-search). |
 
 <Note>
@@ -107,8 +151,8 @@ change it yourself.
 
 ### Defaults for new agents
 
-A newly created agent starts with this configuration. You can change all of it
-in the form afterwards:
+A newly created agent starts with this configuration. You change the speech
+output under **Voice** and everything else in the **Advanced** area:
 
 | Area | Default |
 |---|---|

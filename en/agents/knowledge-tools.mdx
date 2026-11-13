@@ -1,12 +1,13 @@
 ---
-title: "Knowledge & tools: PDFs, web search and transfer"
+title: "Knowledge & tools: PDFs, websites, web search and transfer"
 sidebarTitle: "Knowledge & tools"
-description: "Give your agent PDFs as background knowledge, turn on web search, and transfer an agent to another Avaluma account."
+description: "Give your agent PDFs and websites as background knowledge, turn on web search, and transfer an agent to another Avaluma account."
 ---
 
 What your agent knows beyond its instructions is set in the agent editor, in the
-**Background knowledge** tab: uploaded PDFs and web search. Both take effect
-from the next conversation that starts after you save.
+**Background knowledge** section: uploaded PDFs, imported websites and web
+search. The editor saves everything automatically. It takes effect from the
+next conversation.
 
 ## Documents as knowledge (PDF)
 
@@ -17,43 +18,75 @@ content as its own knowledge. It does not mention that it has documents and
 does not name file names.
 
 <Steps>
-  <Step title="Save the agent">
-    Uploading only works once the agent has been saved. For a new agent, save
-    it first.
+  <Step title="Name the agent">
+    Uploading only works once the agent exists. For a new agent, give it a
+    name first.
   </Step>
   <Step title="Upload PDFs">
-    Open the **Background knowledge** tab and drop the PDFs onto the field or
+    In the **Background knowledge** section, drop the PDFs onto the field or
     click it. You can select several files at once.
   </Step>
-  <Step title="Save again">
-    Save the agent after every upload or removal. Only then does it use the
-    current list of files.
-  </Step>
 </Steps>
+
+Uploaded PDFs and imported websites share the list **Agent knowledge**.
+**Show prompt text** shows the text the agent gets from an entry.
 
 | Rule | Value |
 |---|---|
 | **File type** | PDF with extractable text only. PDFs without a text layer, such as plain scans, are rejected. |
 | **File size** | At most 10 MB per file. |
-| **Total size** | At most 100,000 tokens across all PDFs. Each file shows its tokens, a bar shows how full the budget is. An upload that would exceed the limit is rejected. |
+| **Total size** | At most 100,000 tokens across all PDFs and imported websites together. Each entry shows its tokens, a bar shows how full the budget is. An upload that would exceed the limit is rejected. |
 | **Same file name** | Replaces the existing file. |
 | **Remove** | With the trash icon next to the file. |
 
 <Note>
-  If your agent runs on an OpenAI Realtime model, the field is locked. These
-  models do not include documents in the system prompt.
+  If your agent runs on an OpenAI Realtime model, upload and import are
+  locked. These models do not include documents in the system prompt.
 </Note>
 
 When you [duplicate](/en/agents/overview#manage-agents) an agent, the uploaded
 PDFs are copied too.
 
+## Import website as knowledge
+
+Under **Import website as knowledge**, the editor reads the text of a website
+and appends it to the system prompt as full text, like a PDF.
+
+<Steps>
+  <Step title="Enter the address">
+    Enter the address of the website, for example `example.com`. You can leave
+    out `https://`.
+  </Step>
+  <Step title="Set the scope">
+    **Maximum subpages** sets how many pages the import loads at most (up to
+    10). In the focus field you name terms such as `references, projects`:
+    pages whose address contains one of them are fetched first.
+  </Step>
+  <Step title="Import">
+    Click **Import**. An import can take a few minutes. After that the website
+    appears in the list **Agent knowledge**.
+  </Step>
+</Steps>
+
+| Rule | Value |
+|---|---|
+| **Clean-up** | With **Clean up content with AI** (default: on) the import removes navigation and repetition. Facts stay verbatim. |
+| **Legal pages** | The import leaves out pages such as privacy policy and terms, but keeps the imprint. |
+| **Same address** | Importing again replaces the existing entry. |
+| **At the same time** | Only one import runs at a time. |
+| **Check** | **Show prompt text** shows the text the agent gets, **Show raw extract** the text before the clean-up. |
+
+<Note>
+  The import only reads text that is in the page's HTML. Pages that load their
+  content with JavaScript or reject the request yield no text.
+</Note>
+
 ## Web search
 
 With web search, the agent can look up current information on the internet
 during a conversation — for example opening hours, news, or prices that are not
-in its background knowledge. Turn it on in the **Background knowledge** tab
-under **Tools** with the **Web search** checkbox, then save the agent. It is off
-by default.
+in its background knowledge. Turn it on in the **Background knowledge** section
+under **Web search** with the **Web search** checkbox. It is off by default.
 
 Web search works with all language models except OpenAI Realtime. With the
 default model `gemma-4-31b-it` and with Cerebras, GPT-5.4 mini runs the search
