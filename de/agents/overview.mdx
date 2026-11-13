@@ -33,15 +33,61 @@ Einmal konfiguriert, hat ein Agent eine feste **Agent-ID** (eine UUID), mit der 
     Melde dich auf [avaluma.ai](https://avaluma.ai) an und öffne den Bereich **Agents** in deinem Dashboard.
   </Step>
   <Step title="Neuen Agent anlegen">
-    Klicke auf **Neuer Agent**, gib ihm einen Namen und wähle den gewünschten Avatar aus. Deine verfügbaren Avatare stammen aus den `.hvia`-Dateien, die mit deiner Lizenz ausgestellt wurden.
+    Klicke auf **Neuer Agent** und gib ihm einen Namen. Sobald der Name steht, wird der Agent angelegt. Ab dann speichert der Editor jede Änderung automatisch. Wähle danach den gewünschten Avatar aus. Deine verfügbaren Avatare stammen aus den `.hvia`-Dateien, die mit deiner Lizenz ausgestellt wurden.
   </Step>
   <Step title="Stimme und Persona konfigurieren">
-    Wähle eine Stimme für die Sprachausgabe und schreibe die Anweisungen des Agenten (System-Prompt). Die Anweisungen bestimmen Ton, Wissen und Verhalten des Agenten während einer Konversation. Eine Standardstimme ist bereits vorausgewählt — eine Stimme muss gewählt sein, damit der Agent spricht.
+    Wähle eine Stimme für die Sprachausgabe und schreibe die Anweisungen des Agenten (System-Prompt). Die Anweisungen bestimmen Ton, Wissen und Verhalten des Agenten während einer Konversation. Du kannst sie selbst ins Formular schreiben oder dich vom [Prompting Guide](#prompting-guide) führen lassen. Eine Standardstimme ist bereits vorausgewählt — eine Stimme muss gewählt sein, damit der Agent spricht.
   </Step>
-  <Step title="Speichern und testen">
-    Speichere den Agent und starte ein Testgespräch im Dashboard, um zu prüfen, ob der Avatar spricht und wie erwartet antwortet.
+  <Step title="Testen">
+    Klicke unten auf **Agent testen** und starte ein Testgespräch, um zu prüfen, ob der Avatar spricht und wie erwartet antwortet.
   </Step>
 </Steps>
+
+## Der Agent-Editor
+
+Alle Einstellungen eines Agenten stehen auf einer Seite untereinander:
+**Avatar**, **Stimme**, **Prompting**, **Hintergrundwissen**,
+**Bereitstellung**, **Metadaten** und ganz unten der aufklappbare Bereich
+**Advanced**.
+
+### Automatisches Speichern
+
+Einen Speichern-Knopf gibt es nicht. Der Editor speichert jede Änderung von
+selbst, etwa eine Sekunde nach der letzten Eingabe und sofort, wenn du ein Feld
+verlässt. Unten auf der Seite steht der Stand: **Speichert …** oder
+**Gespeichert**.
+
+- Jede Änderung wirkt ab dem nächsten Gespräch, auch bei eingebetteten Agenten.
+- Unvollständige Eingaben speichert der Editor nicht, zum Beispiel ein Tool
+  ohne Namen. Die Fußleiste zeigt dann **Nicht gespeichert:** mit dem Grund.
+  Ein Klick darauf springt zum Feld. Alles andere wird trotzdem gespeichert.
+- Schlägt das Speichern fehl, etwa ohne Internetverbindung, steht der Fehler in
+  der Fußleiste. Mit **Erneut versuchen** speicherst du noch einmal.
+
+### Prompting Guide
+
+Im Abschnitt **Prompting** steht das Formular für die Anweisungen mit den
+Feldern **Begrüßung**, **Identität**, **Ziel**, **Ausgabeformatierung**,
+**Richtlinien**, **Nutzerinformationen** und **Weitere Informationen**. Du
+kannst es selbst ausfüllen.
+
+Darüber startest du mit **Prompting Guide starten** ein Gespräch mit einem
+Avatar, der dich durch die Anweisungen führt und das Formular für dich
+ausfüllt. Dafür braucht der Browser Zugriff auf dein Mikrofon.
+
+- Während des Gesprächs sind die Felder gesperrt. Du siehst live, was der Guide
+  einträgt: Ein geändertes Feld leuchtet kurz auf.
+- Mit **Prompting Guide beenden** beendest du das Gespräch. Danach kannst du
+  alle Felder wieder selbst bearbeiten.
+- Hochladen, Importieren und Löschen im **Hintergrundwissen** ist währenddessen
+  gesperrt.
+
+### Advanced
+
+Der Bereich **Advanced** ist standardmäßig zugeklappt. Er enthält die
+**Avatar ID**, die Modelle für Spracherkennung (**STT**) und Antworten
+(**LLM**), das **Turn-Taking** und **Tools**. Für die meisten Agenten passen
+die [Standardwerte](#standards-f%C3%BCr-neue-agenten).
 
 ## Einen Agent konfigurieren
 
@@ -56,9 +102,9 @@ Einmal konfiguriert, hat ein Agent eine feste **Agent-ID** (eine UUID), mit der 
 | **Anweisungen** | Der System-Prompt, der Persona und Verhalten des Agenten prägt. |
 | **Sprache** | Standardsprache für Konversation und Oberfläche. |
 | **Einbettung** | Ob der Agent per `<iframe>` eingebettet werden darf — und auf welchen Origins. |
-| **Kiosk** | Eigenständige Vollbild-Seite für Displays (Kiosk). Für jeden Agenten verfügbar; URL und QR-Code findest du im Tab **Bereitstellung**. |
-| **Logo** | Bis zu vier Logos oben auf der Agentenseite (`/agent/AGENT_ID`) und im [Kiosk](/de/agents/kiosk#logo): eins mittig, mehrere nebeneinander. Hochladen im Tab **Bereitstellung**: PNG oder WebP, am besten mit transparentem Hintergrund, je max. 2 MB. Pro Logo Größe **Klein**, **Mittel** oder **Groß**, Reihenfolge per Pfeilen, eine Farbe transparent machen; alle Logos auf Wunsch in Schwarz-Weiß. Wirkt sofort, ohne Speichern. |
-| **Hintergrundwissen** | PDFs, deren Inhalt der Agent als Wissen nutzt — siehe [Wissen & Tools](/de/agents/knowledge-tools). |
+| **Kiosk** | Eigenständige Vollbild-Seite für Displays (Kiosk). Für jeden Agenten verfügbar; URL und QR-Code findest du im Abschnitt **Bereitstellung**. |
+| **Logo** | Bis zu vier Logos oben auf der Agentenseite (`/agent/AGENT_ID`) und im [Kiosk](/de/agents/kiosk#logo): eins mittig, mehrere nebeneinander. Hochladen im Abschnitt **Bereitstellung**: PNG oder WebP, am besten mit transparentem Hintergrund, je max. 2 MB. Pro Logo Größe **Klein**, **Mittel** oder **Groß**, Reihenfolge per Pfeilen, eine Farbe transparent machen; alle Logos auf Wunsch in Schwarz-Weiß. Wirkt sofort. |
+| **Hintergrundwissen** | PDFs und importierte Webseiten, deren Inhalt der Agent als Wissen nutzt — siehe [Wissen & Tools](/de/agents/knowledge-tools). |
 | **Websuche** | Ob der Agent während des Gesprächs im Internet nachschlagen darf — siehe [Websuche](/de/agents/knowledge-tools#websuche). |
 
 <Note>
@@ -109,8 +155,8 @@ bis du es selbst umstellst.
 
 ### Standards für neue Agenten
 
-Ein neu angelegter Agent startet mit dieser Konfiguration. Alles lässt sich
-danach im Formular ändern:
+Ein neu angelegter Agent startet mit dieser Konfiguration. Die Sprachausgabe
+änderst du unter **Stimme**, alles andere im Bereich **Advanced**:
 
 | Bereich | Standard |
 |---|---|

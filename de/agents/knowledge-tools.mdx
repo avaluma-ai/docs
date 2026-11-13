@@ -1,12 +1,13 @@
 ---
-title: "Wissen & Tools: PDFs, Websuche und Übertragen"
+title: "Wissen & Tools: PDFs, Webseiten, Websuche und Übertragen"
 sidebarTitle: "Wissen & Tools"
-description: "Gib deinem Agenten PDFs als Hintergrundwissen, schalte die Websuche ein und übertrage einen Agenten an ein anderes Avaluma-Konto."
+description: "Gib deinem Agenten PDFs und Webseiten als Hintergrundwissen, schalte die Websuche ein und übertrage einen Agenten an ein anderes Avaluma-Konto."
 ---
 
 Was dein Agent über seine Anweisungen hinaus weiß, legst du im Agent-Editor im
-Tab **Hintergrundwissen** fest: hochgeladene PDFs und die Websuche. Beides
-wirkt ab dem nächsten Gespräch, das nach dem Speichern beginnt.
+Abschnitt **Hintergrundwissen** fest: hochgeladene PDFs, importierte Webseiten
+und die Websuche. Der Editor speichert alles automatisch. Es wirkt ab dem
+nächsten Gespräch.
 
 ## Dokumente als Wissen (PDF)
 
@@ -17,43 +18,79 @@ Grundlage und behandelt die Inhalte wie eigenes Wissen. Er erwähnt nicht, dass
 ihm Dokumente vorliegen, und nennt keine Dateinamen.
 
 <Steps>
-  <Step title="Agent speichern">
-    Hochladen geht erst, wenn der Agent einmal gespeichert ist. Bei einem neuen
-    Agenten speicherst du ihn also zuerst.
+  <Step title="Agent benennen">
+    Hochladen geht erst, wenn es den Agenten gibt. Einem neuen Agenten gibst du
+    also zuerst einen Namen.
   </Step>
   <Step title="PDFs hochladen">
-    Öffne den Tab **Hintergrundwissen** und lege die PDFs im Feld ab oder
-    klicke darauf. Du kannst mehrere Dateien auf einmal wählen.
-  </Step>
-  <Step title="Erneut speichern">
-    Speichere den Agenten nach jedem Hochladen oder Entfernen. Erst dann nutzt
-    er die aktuelle Dateiliste.
+    Lege die PDFs im Abschnitt **Hintergrundwissen** im Feld ab oder klicke
+    darauf. Du kannst mehrere Dateien auf einmal wählen.
   </Step>
 </Steps>
+
+Hochgeladene PDFs und importierte Webseiten stehen gemeinsam in der Liste
+**Wissen des Agenten**. Mit **Prompt-Text anzeigen** siehst du den Text, den
+der Agent aus einem Eintrag bekommt.
 
 | Regel | Wert |
 |---|---|
 | **Dateityp** | Nur PDF mit auslesbarem Text. PDFs ohne Textebene, etwa reine Scans, werden abgelehnt. |
 | **Dateigröße** | Höchstens 10 MB je Datei. |
-| **Gesamtumfang** | Höchstens 100.000 Tokens über alle PDFs. Jede Datei zeigt ihre Tokens, ein Balken den Füllstand. Ein Upload, der das Limit überschreiten würde, wird abgelehnt. |
+| **Gesamtumfang** | Höchstens 100.000 Tokens über alle PDFs und importierten Webseiten zusammen. Jeder Eintrag zeigt seine Tokens, ein Balken den Füllstand. Ein Upload, der das Limit überschreiten würde, wird abgelehnt. |
 | **Gleicher Dateiname** | Ersetzt die vorhandene Datei. |
 | **Entfernen** | Über das Papierkorb-Symbol neben der Datei. |
 
 <Note>
-  Läuft dein Agent auf einem OpenAI-Realtime-Modell, ist das Feld gesperrt.
-  Diese Modelle nehmen keine Dokumente in den System-Prompt auf.
+  Läuft dein Agent auf einem OpenAI-Realtime-Modell, sind Upload und Import
+  gesperrt. Diese Modelle nehmen keine Dokumente in den System-Prompt auf.
 </Note>
 
 Beim [Duplizieren](/de/agents/overview#agenten-verwalten) eines Agenten werden
 die hochgeladenen PDFs mitkopiert.
 
+## Webseite als Wissen importieren
+
+Unter **Webseite als Wissen importieren** liest der Editor den Text einer
+Website aus und hängt ihn wie ein PDF als Volltext an den System-Prompt an.
+
+<Steps>
+  <Step title="Adresse eingeben">
+    Trage die Adresse der Website ein, zum Beispiel `beispiel.de`. `https://`
+    kannst du weglassen.
+  </Step>
+  <Step title="Umfang festlegen">
+    Mit **Maximale Unterseiten** legst du fest, wie viele Seiten der Import
+    höchstens lädt (bis zu 10). Im Feld für den Schwerpunkt nennst du
+    Begriffe wie `referenzen, projekte`: Seiten, deren Adresse einen davon
+    enthält, werden zuerst geholt.
+  </Step>
+  <Step title="Importieren">
+    Klicke auf **Importieren**. Ein Import kann einige Minuten dauern. Danach
+    steht die Website in der Liste **Wissen des Agenten**.
+  </Step>
+</Steps>
+
+| Regel | Wert |
+|---|---|
+| **Bereinigung** | Mit **Inhalt per KI bereinigen** (Standard: an) entfernt der Import Navigation und Wiederholungen. Fakten bleiben wörtlich erhalten. |
+| **Rechtstexte** | Seiten wie Datenschutz und AGB lässt der Import weg, das Impressum nicht. |
+| **Gleiche Adresse** | Ein erneuter Import ersetzt den vorhandenen Eintrag. |
+| **Gleichzeitig** | Es läuft immer nur ein Import auf einmal. |
+| **Kontrolle** | **Prompt-Text anzeigen** zeigt den Text, den der Agent bekommt, **Rohextrakt anzeigen** den Text vor der Bereinigung. |
+
+<Note>
+  Der Import liest nur Text, der im HTML der Seite steht. Seiten, die ihren
+  Inhalt erst per JavaScript laden oder den Abruf abweisen, liefern keinen
+  Text.
+</Note>
+
 ## Websuche
 
 Mit der Websuche kann der Agent während des Gesprächs im Internet nach aktuellen
 Informationen suchen, etwa nach Öffnungszeiten, Nachrichten oder Preisen, die
-nicht in seinem Hintergrundwissen stehen. Du schaltest sie im Tab
-**Hintergrundwissen** unter **Tools** mit dem Haken **Websuche** ein und
-speicherst den Agenten. Standardmäßig ist sie aus.
+nicht in seinem Hintergrundwissen stehen. Du schaltest sie im Abschnitt
+**Hintergrundwissen** unter **Websuche** mit dem Haken **Websuche** ein.
+Standardmäßig ist sie aus.
 
 Die Websuche funktioniert mit allen Sprachmodellen außer OpenAI Realtime. Beim
 Standardmodell `gemma-4-31b-it` und bei Cerebras übernimmt im Hintergrund
