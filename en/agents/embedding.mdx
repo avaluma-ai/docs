@@ -10,10 +10,10 @@ Every shared agent can be embedded as an `<iframe>` on any website. The avatar t
 
 <Steps>
   <Step title="Enable embedding">
-    Open the agent in the [dashboard](https://avaluma.ai) and turn on **Allow embedding**. Only shared agents can be embedded. Toggling this switch is **saved immediately** — you can test right away without saving the agent manually first.
+    Open the agent in the [Studio](https://avaluma.ai/studio/agents) and, in the **Deployment** tab under **Website embedding**, turn on **Enable embedding**. Only shared agents can be embedded. Toggling this switch is **saved immediately** — you can test right away without saving the agent manually first.
   </Step>
   <Step title="Allow your origin">
-    Under **Allowed origins**, add the address(es) of the page(s) that may run the avatar — for example `https://www.your-domain.com`.
+    Under **Allowed domains**, add the address(es) of the page(s) that may run the avatar — for example `https://www.your-domain.com`.
 
     <Warning>
       If the embedding page's origin is **not** on the list, the browser blocks the iframe (via `frame-ancestors`) and all [messaging](#messaging) commands are rejected. Enter the exact origin (scheme + host + port), without a path.
@@ -41,7 +41,7 @@ Replace `AGENT_ID` with your agent's UUID (visible in the dashboard).
 </Note>
 
 <Tip>
-  Don't want to set up your own page first? Use the built-in **[embedding test page](https://avaluma.ai/embed-test)** at `avaluma.ai/embed-test`: enter an agent UUID, embed it, and try the postMessage bridge (handshake, send text, microphone on/off, event log) right away. Just add `https://avaluma.ai` to the agent's **Allowed origins** once.
+  Don't want to set up your own page first? Use the built-in **[embedding test page](https://avaluma.ai/embed-test)** at `avaluma.ai/embed-test`: enter an agent UUID, embed it, and try the postMessage bridge (handshake, send text, microphone on/off, event log) right away. Just add `https://avaluma.ai` to the agent's **Allowed domains** once.
 </Tip>
 
 ## Start screen preview
@@ -66,7 +66,7 @@ All options are appended as query parameters to the `/embed` URL. Invalid values
   How the avatar preview and live stream are displayed inside the iframe. `contain` shows the full image (possibly with thin bars in the `border` color); `cover` fills the area and crops the edges. Applies to both the start-screen video and the running avatar.
 </ParamField>
 
-<ParamField query="lang" type="string" default="en">
+<ParamField query="lang" type="string" default="de">
   UI language of the controls. `de` or `en`.
 </ParamField>
 
@@ -78,8 +78,8 @@ All options are appended as query parameters to the `/embed` URL. Invalid values
   With `true` the "Hang up" button is shown.
 </ParamField>
 
-<ParamField query="webaudio" type="string" default="on">
-  Diagnostic switch for audio output. By default the agent's audio is routed through the browser's Web Audio API (`on`). With `off` the plain audio element plays instead. Intended for troubleshooting only, e.g. to narrow down audio or lip-sync issues on mobile devices. **Note:** in Firefox the agent may stay silent inside embedded pages with `off` — remove the switch after testing.
+<ParamField query="webaudio" type="string" default="on (Android: off)">
+  Diagnostic switch for audio output. By default the agent's audio is routed through the browser's Web Audio API (`on`). On Android (Chrome and other Chromium browsers) the default is `off`: the audio element plays directly there, because since Android 17 one of two simultaneous outputs can fail. `on` forces the Web Audio path there. With `off` the plain audio element plays; the volume then cannot be raised beyond the device maximum. Intended for troubleshooting only, e.g. to narrow down audio or lip-sync issues on mobile devices. **Note:** in Firefox the agent may stay silent inside embedded pages with `off` — remove the switch after testing.
 </ParamField>
 <ParamField query="speakerphone" type="string" default="auto">
   Diagnostic switch for audio output on Android. By default (`auto`) the loud system speaker is selected as soon as the microphone is turned on — audio is loud from the first second, with no dropout while the connection is set up. With `late` the switch happens only after the connection is established (the previous behaviour), which costs one to two seconds without audio or microphone. Intended for comparison only. Further diagnostic values against a silent speaker on some Android devices (such as the Galaxy S25): `hop` switches once via the earpiece to the speaker before the conversation starts; `hop-late` does so only when the agent starts speaking (short dropout, no effect with `mic=ptt`); `capture-first` works like `hop` but starts the connection only after the microphone is granted; `restart` merely restarts the microphone as a control. With a headset connected or a microphone the visitor picked, nothing is switched. No effect on iOS or desktop, where the browser offers no such switch. The speaker cannot be turned off — playback would be too quiet on mobile devices.
@@ -113,7 +113,7 @@ Beyond simply embedding the avatar, you can control it programmatically and reac
 Every message carries the `avaluma:` prefix so that foreign messages (e.g. from third-party scripts) are safely ignored.
 
 <Warning>
-  Messaging only works if your page's origin is listed under the agent's **Allowed origins** (see [Prerequisites](#prerequisites) above). Messages from or to a disallowed origin are rejected by the browser.
+  Messaging only works if your page's origin is listed under the agent's **Allowed domains** (see [Prerequisites](#prerequisites) above). Messages from or to a disallowed origin are rejected by the browser.
 </Warning>
 
 ### Get a reference to the iframe
@@ -232,10 +232,10 @@ window.addEventListener("message", (event) => {
 ### Full test example
 
 <Tip>
-  The quickest way without writing your own code: the built-in **[embedding test page](https://avaluma.ai/embed-test)** at `avaluma.ai/embed-test`. It embeds an agent from the avaluma.ai domain and visualizes the full bridge (handshake, send text, microphone on/off, event log). Just add `https://avaluma.ai` to the agent's **Allowed origins**.
+  The quickest way without writing your own code: the built-in **[embedding test page](https://avaluma.ai/embed-test)** at `avaluma.ai/embed-test`. It embeds an agent from the avaluma.ai domain and visualizes the full bridge (handshake, send text, microphone on/off, event log). Just add `https://avaluma.ai` to the agent's **Allowed domains**.
 </Tip>
 
-A standalone HTML page that embeds the avatar, sends text to it, and shows all events in a small log. Serve it locally with a static server (e.g. `python3 -m http.server 8080`) and add its origin (`http://localhost:8080`) to the agent's **Allowed origins**.
+A standalone HTML page that embeds the avatar, sends text to it, and shows all events in a small log. Serve it locally with a static server (e.g. `python3 -m http.server 8080`) and add its origin (`http://localhost:8080`) to the agent's **Allowed domains**.
 
 <CodeGroup>
 
@@ -328,7 +328,7 @@ A standalone HTML page that embeds the avatar, sends text to it, and shows all e
 </CodeGroup>
 
 <Warning>
-  Replace `AGENT_ID` with your agent's UUID. For sending to work, the test page's origin must be listed under the agent's **Allowed origins**.
+  Replace `AGENT_ID` with your agent's UUID. For sending to work, the test page's origin must be listed under the agent's **Allowed domains**.
 </Warning>
 
 ### Security checklist
@@ -340,7 +340,7 @@ A standalone HTML page that embeds the avatar, sends text to it, and shows all e
   <Step title="Always verify the source origin">
     In your `message` listener, reject every event whose `event.origin` is not `https://avaluma.ai`.
   </Step>
-  <Step title="Keep allowed origins tight">
-    Under **Allowed origins** in the Dashboard, list only the origins that actually host the avatar.
+  <Step title="Keep allowed domains tight">
+    Under **Allowed domains** in the Studio, list only the origins that actually host the avatar.
   </Step>
 </Steps>
