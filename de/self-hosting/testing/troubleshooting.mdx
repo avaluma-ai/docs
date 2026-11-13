@@ -64,8 +64,8 @@ Wenn deine Avatar-Session nicht wie erwartet funktioniert, behandelt diese Anlei
 <Accordion title="Agent reagiert nicht im LiveKit Playground">
   Wenn du dich verbindest, der Agent aber dem Raum nie beitritt oder nie antwortet, prüfe Folgendes:
 
-  - **Stimme den Agent-Namen exakt ab.** Der im `environment`-Block der Agent-`docker-compose.yaml` gesetzte `AGENT_NAME` muss identisch mit dem im Playground eingegebenen sein. Groß-/Kleinschreibung und Bindestriche zählen.
-  - **Lade das Playground neu und verbinde erneut.** Das LiveKit Agent Playground speichert den vorherigen Agent-Namen in der Browser-Session. Hast du `AGENT_NAME` geändert, lade die Seite vor dem erneuten Verbinden neu.
+  - **Stimme den Agent-Namen exakt ab.** Der `agent_name` in deinem Agent-Skript (z. B. `agent_name = "agent-1"`) muss identisch mit dem im Playground eingegebenen sein. Groß-/Kleinschreibung und Bindestriche zählen.
+  - **Lade das Playground neu und verbinde erneut.** Das LiveKit Agent Playground speichert den vorherigen Agent-Namen in der Browser-Session. Hast du `agent_name` geändert, lade die Seite vor dem erneuten Verbinden neu.
   - **Prüfe die Agent-Logs.** Führe Folgendes aus dem Verzeichnis `livekit-agent/` aus, um Start- und Dispatch-Fehler zu sehen:
 
   ```bash

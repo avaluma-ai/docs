@@ -64,7 +64,7 @@ By the end of this guide your existing LiveKit agent will run a full voice AI pi
     Add the following import at the top of your LiveKit agent's Python file. In LiveKit's `agent-starter-python` repo the file is called `agent.py`.
 
     ```python
-    from avaluma_livekit_plugin import AvatarSession
+    from livekit.plugins.avaluma import AvatarSession
     ```
 
     In the same file, find `await session.start` and insert the following avatar setup block **right before it**:
@@ -73,7 +73,7 @@ By the end of this guide your existing LiveKit agent will run a full voice AI pi
     # Avatar
     avatar = AvatarSession(
         license_key="YOUR_AVALUMA_KEY",
-        avatar_id="260218-Avaluma_Avatar_Kadda_v5",  # Avatar identifier without .hvia ("string" -> test stream)
+        avatar_id="260921-Steven_v114",  # Avatar identifier without .hvia ("string" -> test stream)
         avatar_server_url="https://api.avaluma.ai",
     )
     # Start the avatar and wait for it to join

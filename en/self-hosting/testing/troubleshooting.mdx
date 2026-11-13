@@ -64,8 +64,8 @@ If your avatar session isn't working as expected, this guide covers the most com
 <Accordion title="Agent doesn't respond in the LiveKit Playground">
   If you connect but the agent never joins the room or never replies, check the following:
 
-  - **Match the agent name exactly.** The `AGENT_NAME` value set in the agent's `docker-compose.yaml` environment block must be identical to what you entered in the playground. Capitalization and hyphens matter.
-  - **Reload the playground and reconnect.** The LiveKit Agent Playground caches the previous agent name in the browser session. If you changed `AGENT_NAME`, reload the page before connecting again.
+  - **Match the agent name exactly.** The `agent_name` in your agent script (e.g. `agent_name = "agent-1"`) must be identical to what you entered in the playground. Capitalization and hyphens matter.
+  - **Reload the playground and reconnect.** The LiveKit Agent Playground caches the previous agent name in the browser session. If you changed `agent_name`, reload the page before connecting again.
   - **Check agent logs.** Run the following from the `livekit-agent/` directory to see startup and dispatch errors:
 
   ```bash

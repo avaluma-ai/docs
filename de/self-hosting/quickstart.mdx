@@ -32,7 +32,6 @@ Am Ende dieser Anleitung rendert dein Avaluma-Avatar-Server deine `.hvia`-Avatar
 
     ```yaml
     environment:
-      - API_SERVER_HOST=api.avaluma.ai   # öffentliche IP oder Domain dieses Servers
       - API_UTILS_PWD=CHANGE_THIS        # durch ein starkes Passwort ersetzen
     ```
 
@@ -83,7 +82,7 @@ Am Ende dieser Anleitung rendert dein Avaluma-Avatar-Server deine `.hvia`-Avatar
     Der `AvatarSession`-Block in dieser Datei verbindet die Sprach-Pipeline mit dem Avatar-Server:
 
     ```python
-    from avaluma_livekit_plugin import AvatarSession
+    from livekit.plugins.avaluma import AvatarSession
 
     avatar = AvatarSession(
         license_key=license_key,       # Dein Lizenzschlüssel
@@ -112,7 +111,7 @@ Am Ende dieser Anleitung rendert dein Avaluma-Avatar-Server deine `.hvia`-Avatar
     ```
 
     <Tip>
-      Jeder Agent muss in `docker-compose.yaml` einen eindeutigen `AGENT_NAME` haben, wenn du mehrere Agenten im selben LiveKit-Projekt deployst.
+      Jedes Agent-Skript braucht einen eindeutigen `agent_name` (z. B. `agent_name = "agent-1"`), wenn du mehrere Agenten im selben LiveKit-Projekt deployst.
     </Tip>
 
   </Step>

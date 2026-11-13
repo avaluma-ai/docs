@@ -22,7 +22,7 @@ Microphone → STT → LLM → TTS → Avaluma Avatar → Video stream
 
 <Steps>
   <Step title="Install the plugin">
-    The `avaluma-livekit-plugin` package provides the `AvatarSession` class that connects the agent pipeline to your avatar. The `pyproject.toml` already declares it as a dependency — no extra install step is needed when using Docker:
+    The `livekit-plugins-avaluma` package provides the `AvatarSession` class that connects the agent pipeline to your avatar. The `pyproject.toml` already declares it as a dependency — no extra install step is needed when using Docker:
 
     ```toml pyproject.toml
     dependencies = [
@@ -30,7 +30,7 @@ Microphone → STT → LLM → TTS → Avaluma Avatar → Video stream
         "livekit-agents[silero,turn-detector]~=1.2",
         "livekit-plugins-noise-cancellation~=0.2",
         "python-dotenv",
-        "avaluma-livekit-plugin @ git+https://github.com/avaluma-ai/avaluma-livekit-plugin.git"
+        "livekit-plugins-avaluma @ git+https://github.com/avaluma-ai/avaluma-livekit-plugin@cea612d1fc8d67d9aca715784fea488fbc2360f4"
     ]
     ```
   </Step>
@@ -79,7 +79,7 @@ This is the complete source of `agent-1.py`:
 import os
 
 # highlight-next-line
-from avaluma_livekit_plugin import AvatarSession
+from livekit.plugins.avaluma import AvatarSession
 from dotenv import load_dotenv
 from livekit.agents import (
     Agent,
@@ -96,7 +96,7 @@ from livekit.plugins.turn_detector.multilingual import MultilingualModel
 
 load_dotenv(".env.local")
 agent_name = "agent-1"
-avatar_id = "260218-Avaluma_Avatar_Kadda_v5"
+avatar_id = "260921-Steven_v114"
 license_key = os.getenv("AVALUMA_LICENSE_KEY", "")
 avatar_server_url = os.getenv("AVATAR_SERVER_URL", "https://api.avaluma.ai")
 
@@ -239,7 +239,7 @@ Follow these steps to create an additional agent alongside `agent-1`:
   </Step>
 
   <Step title="Add a service to docker-compose.yaml">
-    Mount your script into the container and set `AGENT_NAME` to match `agent_name` in your script:
+    Mount your script into the container. The worker's name comes from `agent_name` in the script; there is no environment variable for it:
 
     ```yaml docker-compose.yaml
     livekit-agent-3:
@@ -247,8 +247,6 @@ Follow these steps to create an additional agent alongside `agent-1`:
       restart: unless-stopped
       env_file:
         - .env.local
-      environment:
-        - AGENT_NAME=agent-3
       volumes:
         - livekit_plugin_cache:/root/.cache
         - ./agents/3-my-custom-agent/agent-3.py:/app/src/agent.py
@@ -263,5 +261,5 @@ Follow these steps to create an additional agent alongside `agent-1`:
 </Steps>
 
 <Warning>
-  Each agent service must have a unique `AGENT_NAME`. Deploying multiple agents with the same name on the same LiveKit project causes routing conflicts — both workers will compete for the same jobs.
+  Each agent script must have a unique `agent_name`. Deploying multiple agents with the same name on the same LiveKit project causes routing conflicts — both workers will compete for the same jobs.
 </Warning>

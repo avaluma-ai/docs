@@ -48,19 +48,14 @@ Für Produktions-Deployments solltest du den Avatar-Server über HTTPS bereitste
     ```
   </Step>
 
-  <Step title="Avatar-Server-Konfiguration aktualisieren">
-    Da der Server jetzt über HTTPS erreichbar ist, aktualisiere `API_SERVER_HOST` in der `docker-compose.yaml` des Avatar-Servers auf deine Domain:
+  <Step title="Agenten auf die HTTPS-Adresse umstellen">
+    Am Avatar-Server selbst musst du nichts ändern, er lauscht weiter auf Port 8080. Trage stattdessen in der `.env.local` deiner Agenten die neue Adresse ein:
 
-    ```yaml
-    environment:
-      - API_SERVER_HOST=your-domain.com
+    ```env .env.local
+    AVATAR_SERVER_URL="https://your-domain.com"
     ```
 
-    Starte den Avatar-Server neu, um die Änderung anzuwenden:
-
-    ```bash
-    docker compose up -d
-    ```
+    Starte die Agenten neu, damit sie die Änderung übernehmen.
   </Step>
 </Steps>
 
