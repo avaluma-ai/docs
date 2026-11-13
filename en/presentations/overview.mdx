@@ -40,6 +40,36 @@ Up to 200 MB per file. Animations and transitions are not included – each slid
 
 To replace the presentation, upload a new file under **File**. The link stays the same.
 
+## How PowerPoint files are rendered
+
+PowerPoint files are re-rendered for display. Most things look like the original, some can differ. After the conversion, the Studio shows **rendering notes** below the file: what is affected in your file and on which slides.
+
+### Fonts
+
+These fonts are rendered as in the original:
+
+Arial, Calibri, Cambria, Century Gothic, Courier New, Times New Roman, Lato, Montserrat, Open Sans, Poppins, Roboto
+
+Any other font is replaced by a default font. The text stays readable, but line breaks and spacing may shift. This also applies to **Aptos**, the default font of recent PowerPoint versions, and to fonts embedded in the file.
+
+### What can differ
+
+| In the file | In the talk |
+|---|---|
+| Chinese, Japanese and Korean characters and many emojis | appear as boxes |
+| Bullets from symbol fonts (Wingdings, Webdings) | common ones are kept, rare ones replaced by a dot |
+| Text in a symbol font | may appear as the wrong character |
+| Chart types such as waterfall, treemap, sunburst or funnel | may be missing – insert them as a picture |
+| Animations | are not played, the slide shows all elements at once |
+| WordArt, 3D, glow, reflection, soft edges | may be missing or look different |
+| Embedded audio | is not played |
+
+Password-protected files cannot be converted. Remove the password before uploading.
+
+<Tip>
+  For an exact rendering, export the presentation as **PDF** in PowerPoint and upload the PDF. Speaker notes and videos are then not included, though.
+</Tip>
+
 ## Review and edit slide content
 
 Once the presentation is **Ready**, the **Slides** section shows each slide in a large view. Browse with the arrows, the arrow keys or the thumbnails below. Underneath the slide you see what the avatar knows about it – you can correct or extend all of it:
