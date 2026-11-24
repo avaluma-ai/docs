@@ -31,6 +31,12 @@
             ]
           },
           {
+            "group": "Videos",
+            "pages": [
+              "en/videos/overview"
+            ]
+          },
+          {
             "group": "Pricing & Billing",
             "pages": [
               "en/billing/plans"
@@ -105,6 +111,12 @@
               "de/agents/knowledge-tools",
               "de/agents/embedding",
               "de/agents/kiosk"
+            ]
+          },
+          {
+            "group": "Videos",
+            "pages": [
+              "de/videos/overview"
             ]
           },
           {
