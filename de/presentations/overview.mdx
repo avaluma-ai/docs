@@ -16,10 +16,10 @@ Mit **Präsentationen** (Beta) trägt ein Avaluma-Avatar deine Folien vor. Du l�
     Ziehe eine Datei in das Upload-Feld oder klicke darauf. Danach werden die Folien aufbereitet – je nach Umfang dauert das ein bis wenige Minuten. Du kannst die Seite währenddessen verlassen; sobald der Status **Bereit** ist, funktioniert der Link.
   </Step>
   <Step title="Einstellungen">
-    Lege **Titel**, **Startsprache**, **Avatar**, **Stimme** und das Antwortverhalten fest (siehe [Fragen beantworten](#fragen-beantworten)) und klicke auf **Speichern**. Ohne Titel wird der Titel aus der Datei übernommen. Die Stimmen sind nach weiblich und männlich gruppiert und lassen sich mit ▶ probehören – wähle eine, die zum Avatar passt. Jede Stimme spricht Deutsch und Englisch.
+    Lege unter **Präsentation** Titel und Startsprache fest, wähle die [Persona](#persona) und stelle unter **Antwortverhalten** ein, wie Fragen beantwortet werden (siehe [Fragen beantworten](#fragen-beantworten)). Sobald etwas geändert ist, erscheint unten die Leiste **Ungespeicherte Änderungen** – klicke dort auf **Speichern** (oder **Verwerfen**). Ohne Titel wird der Titel aus der Datei übernommen.
   </Step>
   <Step title="Link teilen">
-    Kopiere unter **Teilen** den Link (`https://avaluma.ai/slides/…`) und verschicke ihn.
+    Kopiere unter **Teilen** den Link (`https://avaluma.ai/slides/…`) und verschicke ihn. Mit **Präsentation öffnen** oben rechts testest du sie selbst.
   </Step>
 </Steps>
 
@@ -40,6 +40,37 @@ Maximal 200 MB pro Datei. Animationen und Folienübergänge werden nicht überno
 
 Um die Präsentation zu ersetzen, lade unter **Datei** eine neue Datei hoch. Der Link bleibt gleich.
 
+## Darstellung von PowerPoint-Dateien
+
+PowerPoint-Dateien werden für die Anzeige neu gerendert. Das meiste sieht aus wie im Original, einiges kann abweichen. Nach der Konvertierung zeigt das Studio unter der Datei **Hinweise zur Darstellung**: was in deiner Datei betroffen ist und auf welchen Folien.
+
+### Schriften
+
+Diese Schriften werden wie im Original dargestellt:
+
+Aptos, Arial, Calibri, Cambria, Century Gothic, Comic Sans MS, Courier New, Georgia, Segoe UI, Times New Roman, Lato, Montserrat, Open Sans, Poppins, Roboto
+
+Einige davon werden durch eine frei verfügbare Schrift mit denselben Zeichenbreiten dargestellt: Die Buchstaben sehen leicht anders aus, die Zeilenumbrüche bleiben. Jede andere Schrift wird durch eine Standardschrift ersetzt. Der Text bleibt lesbar, aber Zeilenumbrüche und Abstände können sich verschieben. Das gilt auch für Schriften, die in der Datei eingebettet sind, und für die Aptos-Varianten Narrow, Serif und Mono.
+
+### Was abweichen kann
+
+| In der Datei | Im Vortrag |
+|---|---|
+| Emojis | erscheinen einfarbig |
+| Zeichen, für die keine Schrift vorhanden ist | erscheinen als Kästchen |
+| Aufzählungszeichen aus Symbolschriften (Wingdings, Webdings) | die gängigen werden übernommen, seltene durch einen Punkt ersetzt |
+| Text in einer Symbolschrift | kann als falsches Zeichen erscheinen |
+| Diagrammtypen wie Wasserfall, Treemap, Sunburst oder Trichter | können fehlen – als Bild einfügen |
+| Animationen | werden nicht abgespielt, die Folie zeigt alle Elemente auf einmal |
+| WordArt, 3D, Leuchten, Spiegelung, weiche Kanten | können fehlen oder anders aussehen |
+| Eingebettete Tonaufnahmen | werden nicht abgespielt |
+
+Mit einem Passwort geschützte Dateien können nicht konvertiert werden. Entferne das Passwort vor dem Hochladen.
+
+<Tip>
+  Für eine exakte Darstellung exportiere die Präsentation in PowerPoint als **PDF** und lade das PDF hoch. Sprecher-Notizen und Videos werden dann allerdings nicht übernommen.
+</Tip>
+
 ## Folieninhalte prüfen und bearbeiten
 
 Sobald die Präsentation **Bereit** ist, zeigt der Abschnitt **Folien** jede Folie groß an. Blättere mit den Pfeilen, den Pfeiltasten oder über die Vorschaubilder darunter. Unter der Folie steht, was der Avatar über sie weiß – du kannst alles korrigieren oder ergänzen:
@@ -51,6 +82,7 @@ Sobald die Präsentation **Bereit** ist, zeigt der Abschnitt **Folien** jede Fol
 | Visueller Inhalt | Automatisch erstellte Beschreibung von Bildern, Diagrammen und Grafiken |
 | Sprecher-Notizen | Hinweise und zusätzliches Wissen, was der Avatar zu dieser Folie sagen soll |
 | Video: Inhalt / gesprochener Text | Beschreibung und Transkript eingebetteter Videos. Zeilen mit Zeitmarke wie `[1:05] …` erlauben dem Avatar, an diese Stelle im Video zu springen |
+| Video: Im Vollbild abspielen | Nur eingebettete Videos. Ist der Schalter an, füllt das Video beim Abspielen das ganze Fenster und schließt sich am Ende von selbst – auch wenn der Avatar es startet |
 
 Unter dem Transkript eines eingebetteten Videos steht eine **Vorschau** des Videos. Ein Klick auf eine Zeitmarke springt im Video an diese Stelle. Mit **Zeitmarke bei … einfügen** übernimmst du die aktuelle Position des Videos als neue Zeile ins Transkript, an der Stelle des Cursors.
 
@@ -59,6 +91,28 @@ Unter dem Transkript eines eingebetteten Videos steht eine **Vorschau** des Vide
 <Warning>
   Lädst du eine neue Datei hoch, werden die Inhalte neu aus der Datei erzeugt – deine Bearbeitungen gehen dabei verloren.
 </Warning>
+
+## Persona
+
+Die **Persona** legt fest, wer die Präsentation vorträgt. Sie wird gespeichert und lässt sich in weiteren Präsentationen wiederverwenden: Wähle sie im Feld **Persona** aus oder lege mit **+ Neue Persona** eine neue an. Eine gewählte Persona wird kompakt mit Bild, Stimme und Avatar angezeigt; mit **Bearbeiten** öffnest du ihre Felder.
+
+| Feld | Bedeutung |
+| --- | --- |
+| Name | So stellt sich der Avatar vor, z. B. „Anna Müller“ (Pflichtfeld) |
+| Rolle | Optional, z. B. „Head of Sales bei Beispiel GmbH“ |
+| Hintergrund | Die Beschreibung der vortragenden Person: Werdegang, Expertise, Persönlichkeit, Sprechweise (max. 2.000 Zeichen). Damit beantwortet der Avatar Fragen zu sich selbst |
+| Avatar | Das Aussehen, sechs Avatare pro Seite – mit ‹ › blättern |
+| Stimme | Umschaltbar zwischen weiblich und männlich, mit ▶ probehören. Jede Stimme spricht Deutsch und Englisch |
+
+Änderungen an einer Persona gelten für **alle Präsentationen**, die sie verwenden. Der Editor zeigt einen Hinweis, wenn das mehr als eine ist. Löschst du eine Persona, nutzen diese Präsentationen den Standard-Avatar.
+
+<Tip>
+  Schreib den Hintergrund so, wie die Person sich selbst vorstellen würde: wichtigste Stationen, Fachgebiet, wofür sie steht. Fragen zu sich beantwortet der Avatar nur aus diesen Angaben und erfindet nichts dazu.
+</Tip>
+
+<Note>
+  Fragt ein Zuschauer, ob er mit einem Menschen spricht, sagt der Avatar immer ehrlich, dass er ein KI-Avatar ist, der als diese Persona auftritt.
+</Note>
 
 ## Fragen beantworten
 
@@ -71,13 +125,22 @@ Unter dem Transkript eines eingebetteten Videos steht eine **Vorschau** des Vide
   Der Avatar darf im Internet nachschauen, wenn eine Frage aktuelle oder externe Informationen braucht, etwa neue Vorschriften. Er sagt dazu, dass die Antwort aus dem Internet stammt. Standardmäßig aus.
 </ParamField>
 
+<ParamField path="Regieanweisungen" type="Text, optional">
+  Vorgaben für Ablauf, Schwerpunkte und Ton des Vortrags, bis 10.000 Zeichen. Der Avatar hält sich beim Vortragen und Antworten daran, zum Beispiel: „Beginne mit der Themenkarte und frage, welches Thema das Publikum hören möchte. Sprich locker und in kurzen Sätzen.“ Mit **Aus Datei einfügen** übernimmst du den Text aus einer `.txt`- oder `.md`-Datei, etwa einen Ablaufplan, den du mit einer KI geschrieben hast. Die Regieanweisungen bleiben erhalten, wenn du eine neue Datei hochlädst.
+</ParamField>
+
 ## Was Zuschauer sehen
 
 Zuschauer öffnen den Link und klicken auf **Präsentation starten**. Der Browser fragt nach dem Mikrofon. Der Avatar begrüßt sie und trägt die Präsentation Folie für Folie vor. Zuschauer können:
 
 - den Avatar jederzeit **unterbrechen und Fragen stellen** – er springt bei Bedarf zur passenden Folie und setzt den Vortrag danach fort,
-- **selbst blättern** (Pfeiltasten, Klick auf den linken/rechten Folienrand oder die Vorschaubilder) – der Avatar folgt,
+- **nur ein Thema hören** („Erzähl mir nur etwas zur Technik“) – der Avatar trägt nur die passenden Folien vor, kehrt danach zur Übersichts- oder Themenfolie zurück und fragt nach dem nächsten Thema. Welche Folien zu welchem Thema gehören, erkennt er aus den Inhalten; eindeutig wird es mit einer Regieanweisung wie „Folie 3 ist die Themenkarte: Kunst = Folien 4–9, Kultur = Folien 10–15“,
+- **selbst blättern** (Pfeiltasten, Klick auf den linken/rechten Folienrand oder die Vorschaubilder) – der Avatar folgt. Über **Alle Folien** (Raster-Symbol unter der Folie) springen sie direkt zu jeder Folie,
+- die **Lautstärke** von Avatar und Videos über das Lautsprecher-Symbol unter der Folie in Stufen anpassen (am Computer bis 200 %, auf Android-Handys bis 100 %),
+- mit **Präsentation im Vollbild** die ganze Seite bildschirmfüllend anzeigen,
 - die **Sprache wechseln**, indem sie einfach Englisch bzw. Deutsch sprechen oder darum bitten.
+
+Was der Avatar sagt, steht als Text neben dem Avatar. Lange Beiträge scrollen mit; der Text bleibt stehen, bis der Avatar wieder spricht.
 
 Eingebettete Videos kündigt der Avatar an, spielt sie ab und fasst sie danach zusammen. Während ein Video läuft, ist das Mikrofon stumm. Fragen Zuschauer, wo im Video etwas erklärt wird, springt der Avatar an die passende Stelle und spielt sie ab.
 
