@@ -1,0 +1,169 @@
+---
+title: "Let an avatar present your slides"
+sidebarTitle: "Presentations"
+description: "Upload a PowerPoint or PDF presentation and share a link – an Avaluma avatar presents it, moves through the slides and answers questions."
+---
+
+With **Presentations** (beta) an Avaluma avatar presents your slides. You upload a presentation in the dashboard and send a link. Viewers see the slides and the avatar, which presents on its own, shows the right slide and answers questions at any time – by voice, in German or English.
+
+## Create a presentation
+
+<Steps>
+  <Step title="New presentation">
+    Open **Presentations** in the [dashboard](https://avaluma.ai/studio/slides) and click **New presentation**.
+  </Step>
+  <Step title="Upload the file">
+    Drag a file into the upload area or click it. The slides are then prepared – depending on the size this takes one to a few minutes. You can leave the page in the meantime; as soon as the status is **Ready**, the link works.
+  </Step>
+  <Step title="Settings">
+    Under **Presentation**, set the title and start language, pick the [persona](#persona) and choose under **Answering** how questions are answered (see [Answering questions](#answering-questions)). As soon as something changes, the **Unsaved changes** bar appears at the bottom – click **Save** there (or **Discard**). Without a title, the title from the file is used.
+  </Step>
+  <Step title="Share the link">
+    Under **Sharing**, copy the link (`https://avaluma.ai/slides/…`) and send it. Use **Open presentation** at the top right to try it yourself.
+  </Step>
+</Steps>
+
+## Supported formats
+
+| Format | What is included |
+|---|---|
+| PPTX | Slides, text, **speaker notes** and embedded **videos** (hidden slides are skipped) |
+| PDF | Slides and text |
+| PPT, ODP | Slides and text, no notes |
+| Keynote | Export as PowerPoint in Keynote (*File → Export To → PowerPoint*) and upload the PPTX |
+
+Up to 200 MB per file. Animations and transitions are not included – each slide is shown as a still image.
+
+<Tip>
+  The avatar uses the slide text, speaker notes and an automatic image description of each slide. Good **speaker notes** are the most effective way to get a good talk.
+</Tip>
+
+To replace the presentation, upload a new file under **File**. The link stays the same.
+
+## How PowerPoint files are rendered
+
+PowerPoint files are re-rendered for display. Most things look like the original, some can differ. After the conversion, the Studio shows **rendering notes** below the file: what is affected in your file and on which slides.
+
+### Fonts
+
+These fonts are rendered as in the original:
+
+Aptos, Arial, Calibri, Cambria, Century Gothic, Comic Sans MS, Courier New, Georgia, Segoe UI, Times New Roman, Lato, Montserrat, Open Sans, Poppins, Roboto
+
+Some of them are rendered with a freely available font that has the same character widths: the letters look slightly different, the line breaks stay. Any other font is replaced by a default font. The text stays readable, but line breaks and spacing may shift. This also applies to fonts embedded in the file and to the Aptos variants Narrow, Serif and Mono.
+
+### What can differ
+
+| In the file | In the talk |
+|---|---|
+| Emojis | appear in one colour |
+| Characters no font is available for | appear as boxes |
+| Bullets from symbol fonts (Wingdings, Webdings) | common ones are kept, rare ones replaced by a dot |
+| Text in a symbol font | may appear as the wrong character |
+| Chart types such as waterfall, treemap, sunburst or funnel | may be missing – insert them as a picture |
+| Animations | are not played, the slide shows all elements at once |
+| WordArt, 3D, glow, reflection, soft edges | may be missing or look different |
+| Embedded audio | is not played |
+
+Password-protected files cannot be converted. Remove the password before uploading.
+
+<Tip>
+  For an exact rendering, export the presentation as **PDF** in PowerPoint and upload the PDF. Speaker notes and videos are then not included, though.
+</Tip>
+
+## Review and edit slide content
+
+Once the presentation is **Ready**, the **Slides** section shows each slide in a large view. Browse with the arrows, the arrow keys or the thumbnails below. Underneath the slide you see what the avatar knows about it – you can correct or extend all of it:
+
+| Field | Content |
+|---|---|
+| Title | Slide title |
+| Text on the slide | Slide text taken from the file |
+| Visual content | Automatically generated description of images, charts and graphics |
+| Speaker notes | Guidance and additional knowledge on what the avatar should say about this slide |
+| Video: content / spoken text | Description and transcript of embedded videos. Lines with a timestamp like `[1:05] …` let the avatar jump to that point in the video |
+| Video: Play fullscreen | Embedded videos only. When on, the video fills the whole window while playing and closes by itself when it ends – also when the avatar starts it |
+
+Below the transcript of an embedded video there's a **preview** of the video. Click a timestamp to jump to that point in the video. **Insert timestamp at …** adds the video's current position to the transcript as a new line, where your cursor is.
+
+Changes to several slides are collected – edited slides are marked with a dot in the thumbnail strip. Click **Save changes**; they apply from the next conversation. Slide images and order cannot be changed.
+
+<Warning>
+  Uploading a new file regenerates the content from the file – your edits are lost.
+</Warning>
+
+## Persona
+
+The **persona** defines who presents the deck. It is saved and can be reused in other presentations: pick it in the **Persona** field or create a new one with **+ New persona**. A selected persona is shown compactly with picture, voice and avatar; click **Edit** to open its fields.
+
+| Field | Meaning |
+| --- | --- |
+| Name | How the avatar introduces itself, e.g. “Anna Miller” (required) |
+| Role | Optional, e.g. “Head of Sales at Example Inc.” |
+| Background | The description of the presenter: career, expertise, personality, way of speaking (max. 2,000 characters). The avatar uses it to answer questions about itself |
+| Avatar | The look, six avatars per page – browse with ‹ › |
+| Voice | Switch between female and male, preview with ▶. Every voice speaks German and English |
+
+Changes to a persona apply to **all presentations** that use it. The editor shows a notice when that is more than one. If you delete a persona, those presentations use the default avatar.
+
+<Tip>
+  Write the background the way the person would introduce themselves: key career steps, field of expertise, what they stand for. The avatar answers questions about itself only from this information and makes nothing up.
+</Tip>
+
+<Note>
+  If a viewer asks whether they are talking to a human, the avatar always says honestly that it is an AI avatar appearing as this persona.
+</Note>
+
+## Answering questions
+
+<ParamField path="Questions beyond the presentation" type="Select">
+  - **General knowledge allowed** (default): The presentation's content comes first. When the avatar answers from general knowledge, it says that this isn't from the presentation. It says openly when it doesn't know something for sure.
+  - **Presentation content only**: The avatar answers only from slides, speaker notes and videos (and web search, if enabled). It politely declines other questions. Good for mandatory training.
+</ParamField>
+
+<ParamField path="Web search" type="Toggle">
+  The avatar may look things up on the internet when a question needs current or external information, such as new regulations. It mentions that the answer comes from the internet. Off by default.
+</ParamField>
+
+<ParamField path="Directions" type="Text, optional">
+  Instructions for the flow, focus and tone of the talk, up to 10,000 characters. The avatar follows them when presenting and answering, for example: “Start with the topic map and ask which topic the audience wants to hear. Speak casually in short sentences.” With **Insert from file** you take the text from a `.txt` or `.md` file, such as a run sheet you wrote with an AI. The directions are kept when you upload a new file.
+</ParamField>
+
+## What viewers see
+
+Viewers open the link and click **Start presentation**. The browser asks for the microphone. The avatar greets them and presents slide by slide. Viewers can:
+
+- **interrupt and ask questions** at any time – the avatar jumps to the relevant slide if needed and then continues,
+- **hear just one topic** (“Just tell me about the technology”) – the avatar presents only the matching slides, returns to the overview or topic slide afterwards and asks which topic comes next. It works out which slides belong to a topic from their content; a direction such as “Slide 3 is the topic map: art = slides 4–9, culture = slides 10–15” makes it unambiguous,
+- **navigate themselves** (arrow keys, clicking the left/right edge of the slide or the thumbnails) – the avatar follows. **All slides** (grid icon below the slide) jumps straight to any slide,
+- adjust the **volume** of the avatar and videos in steps with the speaker icon below the slide (up to 200 % on computers, up to 100 % on Android phones),
+- show the whole page full screen with **Present fullscreen**,
+- **switch the language** by simply speaking English or German, or by asking for it.
+
+What the avatar says appears as text next to the avatar. Long answers scroll along; the text stays until the avatar speaks again.
+
+The avatar announces embedded videos, plays them and summarizes them afterwards. While a video plays, the microphone is muted. When viewers ask where something is explained in a video, the avatar jumps to that point and plays it.
+
+<Note>
+  To jump within a video, the avatar needs a transcript with timestamps. It's created automatically on upload. For presentations uploaded before October 28, 2026, upload the file once more under **File**, or add the timestamps by hand in the **Slides** section.
+</Note>
+
+Add `?lang=en` or `?lang=de` to the link to set the interface language and the start language for that link.
+
+## Protect access
+
+<ParamField path="Link active" type="toggle">
+  When the link is disabled, nobody can open the presentation. The link is kept and works again as soon as you re-enable it.
+</ParamField>
+
+<ParamField path="Password" type="optional">
+  Viewers have to enter the password before they see any slides or the title. A browser then stays unlocked for seven days. If you change or remove the password, all viewers have to enter the new password.
+</ParamField>
+
+<Note>
+  The link contains a random identifier that cannot be guessed. Without a password, anyone who knows the link can still open the presentation and start conversations.
+</Note>
+
+## Conversation minutes
+
+Conversations with the avatar count towards your account's monthly **minute quota** – just like conversations with your agents. Usage appears in the usage overview under **Agents**. See [Pricing & Billing](/en/billing/plans).
