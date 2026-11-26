@@ -14,7 +14,7 @@ Der Kiosk-Modus öffnet einen Agenten als **eigenständige Vollbild-Seite** — 
 
 <Steps>
   <Step title="Kiosk-URL holen">
-    Öffne den Agenten im [Dashboard](https://avaluma.ai), gehe zum Tab **Bereitstellung** und klappe den Abschnitt **Kiosk-URL** auf. Kopiere die fertige URL oder scanne den QR-Code mit dem Gerät. Du kannst die URL auch wie unten beschrieben selbst zusammenbauen.
+    Öffne den Agenten im [Dashboard](https://avaluma.ai), gehe zum Abschnitt **Bereitstellung** und klappe den Abschnitt **Kiosk-URL** auf. Kopiere die fertige URL oder scanne den QR-Code mit dem Gerät. Du kannst die URL auch wie unten beschrieben selbst zusammenbauen.
   </Step>
   <Step title="Zum Startbildschirm hinzufügen">
     Öffne die URL auf dem Gerät im Browser und füge sie zum Startbildschirm hinzu. Vom Startbildschirm gestartet läuft sie als echte Vollbild-Web-App, ohne Browser-Bedienelemente.
@@ -53,7 +53,7 @@ Alle Optionen werden als Query-Parameter an die `/kiosk`-URL gehängt. Ungültig
   Diagnose-Schalter für die Tonausgabe. Standardmäßig läuft der Ton des Agenten über die Web-Audio-API des Browsers (`on`). Mit `off` spielt stattdessen direkt das Audio-Element. Nur zur Fehlersuche gedacht, etwa um Ton- oder Lippensynchronisationsprobleme auf Mobilgeräten einzugrenzen. **Hinweis:** In Firefox kann der Agent mit `off` im Kiosk-Browser stumm bleiben — den Schalter nach dem Test wieder entfernen.
 </ParamField>
 <ParamField query="speakerphone" type="string" default="auto">
-  Diagnose-Schalter für die Tonausgabe auf Android. Standardmäßig (`auto`) wird der laute Systemlautsprecher bereits beim Einschalten des Mikrofons gewählt — der Ton ist damit von der ersten Sekunde an laut, ohne Aussetzer beim Verbindungsaufbau. Mit `late` wird erst nach dem Verbindungsaufbau umgeschaltet (das frühere Verhalten); das kostet ein bis zwei Sekunden ohne Ton und Mikrofon. Nur zum Vergleichen gedacht. Auf iOS und am Desktop ohne Wirkung, dort bietet der Browser keine solche Umschaltung an. Der Lautsprecher lässt sich **nicht** abschalten — auf Mobilgeräten wäre die Wiedergabe sonst zu leise.
+  Diagnose-Schalter für die Tonausgabe auf Android. Standardmäßig (`auto`) wird der laute Systemlautsprecher bereits beim Einschalten des Mikrofons gewählt — der Ton ist damit von der ersten Sekunde an laut, ohne Aussetzer beim Verbindungsaufbau. Mit `late` wird erst nach dem Verbindungsaufbau umgeschaltet (das frühere Verhalten); das kostet ein bis zwei Sekunden ohne Ton und Mikrofon. Nur zum Vergleichen gedacht. Weitere Diagnosewerte gegen einen stummen Lautsprecher auf manchen Android-Geräten (etwa Galaxy S25): `hop` schaltet vor dem Gesprächsbeginn einmal über die Hörmuschel auf den Lautsprecher; `hop-late` tut das erst, wenn der Agent zu sprechen beginnt (kurzer Aussetzer, wirkt nicht mit `mic=ptt`); `capture-first` wie `hop`, die Verbindung startet aber erst, wenn das Mikrofon freigegeben ist; `restart` startet das Mikrofon zur Kontrolle nur neu. Mit verbundenem Headset oder einem selbst gewählten Mikrofon wird nie umgeschaltet. Auf iOS und am Desktop ohne Wirkung, dort bietet der Browser keine solche Umschaltung an. Der Lautsprecher lässt sich **nicht** abschalten — auf Mobilgeräten wäre die Wiedergabe sonst zu leise.
 </ParamField>
 <ParamField query="audiodebug" type="string" default="off">
   Blendet mit `on` ein kleines Diagnose-Feld oben links ein: Pegel des Agent-Signals, aktives Audio-Gerät, Zustand der Audio-Ausgabe und Browser-Kennung. Gedacht für die Fehlersuche direkt am Gerät, ohne es an Entwicklerwerkzeuge anzuschließen. Ein Knopf kopiert die Werte in die Zwischenablage. Nach dem Test wieder entfernen — das Feld verdeckt einen Teil des Bildes.
@@ -74,6 +74,18 @@ Push-to-Talk, englische Oberfläche und ein Reset zum Start-Screen nach 60 Sekun
 <Note>
   **Mikrofon nicht verfügbar?** Kann der Agent nicht auf das Mikrofon zugreifen, blendet der Kiosk einen Hinweis mit der konkreten Ursache ein — Zugriff nicht erteilt, Gerät von einer anderen App belegt oder kein Mikrofon gefunden — samt technischem Fehlercode. Darunter liegt der Button **„Mikrofon aktivieren"**: Ein Tipp darauf fordert den Zugriff erneut an, sodass der Browser seine Abfrage anzeigt. Das Gespräch selbst läuft weiter, der Text-Chat bleibt nutzbar, und der Push-to-Talk-Button leuchtet beim Halten nicht auf, solange kein Mikrofon aktiv ist.
 </Note>
+
+## Logo
+
+Hast du im Abschnitt **Bereitstellung** Logos hochgeladen (bis zu vier), zeigt der Kiosk sie über dem Avatar: auf dem Startbildschirm und während des Gesprächs. Ein einzelnes Logo steht mittig, mehrere verteilen sich nebeneinander über die Breite, in der Reihenfolge aus dem Studio (mit den Pfeilen änderst du sie). Die Logos sitzen im freien Streifen, der im **Hochformat** über dem Avatar bleibt. Im Querformat oder mit `fit=cover` füllt der Avatar den Bildschirm, dann blendet der Kiosk die Logos aus, damit sie nichts verdecken. Für ein sauberes Ergebnis eignet sich ein PNG oder WebP mit transparentem Hintergrund. Die Hintergrundfarbe legst du mit `border` fest.
+
+Die Größe wählst du für jedes Logo einzeln: **Klein**, **Mittel** (Standard) oder **Groß**. So passt ein breiter Schriftzug neben ein quadratisches Signet. Die Größe gilt für den Kiosk und die Agentenseite gleichermaßen. Reicht der Platz über dem Avatar nicht, zeigt der Kiosk die Logos kleiner.
+
+Hat ein Logo eine Hintergrundfarbe, etwa Weiß, schalte an seiner Karte **Farbe transparent machen** ein. Dann klickst du in der Vorschau auf die Farbe, die verschwinden soll; die Stellen, die durchsichtig werden, zeigt ein Schachbrettmuster. Mit **Toleranz** erfasst du auch ähnliche Farbtöne, etwa Reste an den Kanten. Das Original bleibt erhalten: Schaltest du die Option wieder aus, ist das Logo sofort wie vorher.
+
+Mit **Schwarz-Weiß anzeigen** erscheinen alle Logos einfarbig. Im Kiosk sind sie weiß, auf einem hellen Hintergrund (`border`) schwarz. Auf der Agentenseite sind sie im dunklen Modus weiß und im hellen Modus schwarz. Dabei wird jede nicht durchsichtige Fläche einfarbig – mache Hintergrundfarben deshalb vorher transparent.
+
+In der [Website-Einbettung](/de/agents/embedding) erscheinen die Logos nicht.
 
 ## Ton & Lautstärke
 
@@ -98,12 +110,16 @@ Rechts daneben blendet ein **Zahnrad-Symbol** ein kleines Einstell-Panel ein. Do
 - das **Audio-Gerät** wählen. Auf Android erscheinen hier die Routing-Optionen des Systems, etwa „Speakerphone" (lauter Lautsprecher) und „Headset earpiece" (leise Ohrmuschel). Ist der Ton auf einem Android-Gerät zu leise, wähle hier **„Speakerphone"**.
 
 <Note>
+  **Die Gerätewahl bleibt.** Ein Mikrofon, das du hier oder über den Pfeil neben dem Mikrofon-Knopf wählst, wird pro Gerät und Browser gemerkt und bleibt aktiv — auch im nächsten Gespräch und nach einem Neuladen. Keine Automatik wechselt es. Mit **„Standard"** folgt der Agent wieder der Einstellung des Systems. Ist das gewählte Mikrofon nicht verfügbar, etwa weil es abgezogen ist, läuft das Gespräch mit dem Standardmikrofon weiter und ein Hinweis zeigt das an; steckst du es wieder ein, wird es wieder verwendet.
+</Note>
+
+<Note>
   **Android: Anruf-Lautstärke.** Sobald der Ton läuft, zeigt Android neben dem Lautstärkeregler ein kleines **Telefonsymbol** — die Lautstärke-Taste regelt dann die (getrennte) Anruf-Lautstärke, nicht die Medien-Lautstärke. Dreh sie am Gerät einmalig auf Maximum, damit der Kiosk laut genug ist. Reicht das nicht, hilft der **Lautstärke-Regler** oben rechts: Er wirkt zusätzlich und unabhängig davon.
 </Note>
 
 ### Wenn das Mikrofon ausfällt
 
-Bricht die Aufnahme während eines Gesprächs weg, merkt der Kiosk das und holt das Mikrofon selbst zurück — in den meisten Fällen bemerkt der Besucher nichts. Gelingt das nicht, erscheint ein Hinweis mit einem Knopf, der es erneut versucht. Scheitert das dreimal hintereinander, bleibt der Hinweis stehen — ein Tipp auf den Knopf startet einen neuen Anlauf.
+Bricht die Aufnahme während eines Gesprächs weg — das Gerät verschwindet oder das System schaltet es dauerhaft stumm —, merkt der Kiosk das und holt dasselbe Mikrofon selbst zurück — in den meisten Fällen bemerkt der Besucher nichts. Ein stilles Mikrofon gilt dabei nicht als Ausfall. Gelingt das nicht, erscheint ein Hinweis mit einem Knopf, der es erneut versucht. Scheitert das dreimal hintereinander, bleibt der Hinweis stehen — ein Tipp auf den Knopf startet einen neuen Anlauf.
 
 <Warning>
   **Bluetooth-Headsets in Firefox auf Android.** Zum Aufnehmen muss Android ein Headset vom Musik- auf das Telefonprofil umschalten. Firefox verwaltet diesen Wechsel unzuverlässig: Die Aufnahme kann abreißen, obwohl das Headset verbunden bleibt, und das Headset taucht in der Geräteauswahl gar nicht erst auf — dort steht nur „Default audio input device". Hilft der Knopf im Hinweis nicht weiter, trenne das Headset und nutze das Mikrofon des Geräts, oder wechsle zu Chrome. Mit Chrome und Samsung Internet tritt das Problem nach unseren Tests nicht auf.
